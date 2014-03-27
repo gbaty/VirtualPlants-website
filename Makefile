@@ -175,3 +175,11 @@ pseudoxml:
 	$(SPHINXBUILD) -b pseudoxml $(ALLSPHINXOPTS) $(BUILDDIR)/pseudoxml
 	@echo
 	@echo "Build finished. The pseudo-XML files are in $(BUILDDIR)/pseudoxml."
+
+
+site: clean html
+	python _scripts/copy_trees.py
+  
+# Copy changes to the repo from which they are served
+gh-pages: site
+	python _scripts/gh-pages.py

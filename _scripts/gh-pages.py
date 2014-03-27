@@ -29,7 +29,7 @@ from subprocess import Popen, PIPE, CalledProcessError, check_call
 
 pages_dir = 'gh-pages'
 html_dir = '_build/html'
-pages_repo = 'git@github.com:ipython/ipython.github.com.git'
+pages_repo = 'git@github.com:gbaty/gbaty.github.io.git'
 
 #-----------------------------------------------------------------------------
 # Functions
@@ -107,9 +107,6 @@ if __name__ == '__main__':
         sh('git add -A')
         sh('git commit -m"Updated website (automated commit)"')
         print
-        print 'Most recent 3 commits:'
-        sys.stdout.flush()
-        sh('git --no-pager log --oneline HEAD~3..')
     finally:
         cd(startdir)
 
