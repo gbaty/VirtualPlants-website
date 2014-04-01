@@ -32,13 +32,13 @@ if len(sys.argv) == 2 and sys.argv[1] == 'publish':
   pages_dir = 'gh-pages'
   dest_branch = 'master'
   html_dir = '_build/html'
-  pages_repo = 'git@github.com:openalea/openalea.github.io.git'
+  pages_repo = 'git@github.com:ORGANIZATION/ORGANIZATION.github.io.git'
 else :
   # Publish on your fork
   pages_dir = 'gh-pages'
   dest_branch = 'gh-pages'
   html_dir = '_build/html'
-  pages_repo = 'git@github.com:gbaty/openalea-website.git'
+  pages_repo = 'git@github.com:USERNAME/ORGANIZATION-website.git'
 
 print 'Prepare html to publish to %s' % pages_repo
 #-----------------------------------------------------------------------------

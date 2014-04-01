@@ -15,34 +15,39 @@ We choose to use sphinx to edit and build documentation and github to share it a
 Please have look to :ref:`Sphinx page <label-TODO>` and :ref:`github page <label-TODO>` for more information.
 
 
-Create repositories
-===================
-
-How to use github and sphinx to generate beautiful documentation.
 All tips and models are based on excellent work done by `IPython Team <http://ipython.org>`_ .
 Parts of this documentation directly come from `IPython-doc <https://github.com/ipython/ipython-doc/tree/gh-pages>`_ and `IPython-website <https://github.com/ipython/ipython-website>`_.
 
-Create documentation source repository
---------------------------------------
+Create official organization website
+====================================
 
-  * Generate a github project called "organization-website" that contains documentation sources (mainly sphinx rst files)
-  * Copy "_scripts" directory from `IPython website <https://github.com/ipython/ipython-website/tree/master/_scripts>`_
-  * Modify _scripts/gh-pages.py and change page_repo with your website address.
-      - For example: git@github.com:myorganization/myorganization.github.io.git
-  
-  * Create your sphinx project with sphinx-wizard
-      - To question "Separate source and build directories (y/n) [n]", answer n
+If you just want to contribute, please go to next step. This step is useful for organization owners only.
 
-  * Add to makefile :
+Create source repository
+------------------------
 
-.. code-block:: text
+* Generate a github project called "organization-website" with organization account, not with your user account. This project contains documentation sources (mainly sphinx rst files)
+* Prepare github directory :
 
-  site: clean html
-  	python _scripts/copy_trees.py
-  
-  # Copy changes to the repo from which they are served
-  gh-pages: site
-  	python _scripts/gh-pages.py
+.. code-block:: bash
+
+    git clone https://github.com/ORGANIZATION/ORGANIZATION-website
+    cd ORGANIZATION-website
+    mkdir _scripts
+
+* Copy scripts :download:`gh-pages.py` and :download:`copy_trees.py` into "_scripts" directory
+* Modify _scripts/gh-pages.py and change page_repo values. Generally, just replace ORGANIZATION and USERNAME.
+
+* Create your sphinx project with sphinx-wizard
+
+.. code-block:: bash
+
+    sphinx-quickstart
+
+    # To question "Separate source and build directories (y/n) [n]", answer n
+    # To question "Generate Makefile (y/n) [y]", answer n
+
+* Copy this :download:`Makefile` into directory
 
 
 Create html repository
@@ -50,33 +55,91 @@ Create html repository
 
 Create repository to put generated html files.
 
-  * create one repository for your user or organization as explained in `Github help pages <http://pages.github.com>`_
-  * create a file named ".nojekyll" in project myorganization.github.io this is required to 
-      - disable jekyll (and allow to put folder beginning with _, see `Github faq <http://help.github.com/articles/files-that-start-with-an-underscore-are-missing>`_)
-      - create a master branch necessary to build scripts
+* create one repository for your user or organization as explained in `Github help pages <http://pages.github.com>`_.
+    - Normally, just replace "-website" by ".github.io".
 
-Update your repositories
-========================
+* create a file named ".nojekyll" in project myorganization.github.io this is required to 
+    - disable jekyll (and allow to put folder beginning with _, see `Github faq <http://help.github.com/articles/files-that-start-with-an-underscore-are-missing>`_)
+    - create a master branch necessary to build scripts
+
+
+Create your personal repositories
+=================================
+
+First, fork on github ORGANIZATION-website (https://github.com/ORGANIZATION/ORGANIZATION-website).
+This step create a new project https://github.com/USERNAME/ORGANIZATION-website.
+
+Here, this repository is used for both sources and generated html files.
+
+Then, on a terminal, do
+
+.. code-block:: bash
+
+    # Checkout your fork
+
+    git clone https://github.com/USERNAME/ORGANIZATION-website
+    cd ORGANIZATION-website
+
+
+    # Create an empty branch used to host generated files
+    # Never work on this branch as script will replace all files automatically
+
+    git checkout --orphan gh-pages
+    git rm -rf . # clear branch
+    touch README.md
+    touch .nojekyll
+    git add README.md .nojekyll
+    git commit -m "Initial commit"
+    git push origin gh-pages
+
+
+    # Come back to source directory
+    git checkout master
+
+
+Standard workflow
+=================
 
 Local Editing
 -------------
 
 While your documentation has not reached a stable step :
 
-  * modify rst sources, add files, ...
-  * generate html files locally with "make html"
-  * fix warnings and errors
-  * check and fix links with "make linkcheck"
-  * check and fix doctests mith "make doctest"
-  * check result in _build/html/index.html
+* modify rst sources, add files, ...
+* generate html files locally with "make html"
+* fix warnings and errors
+* check and fix links with "make linkcheck"
+* check and fix doctests mith "make doctest"
+* check result in _build/html/index.html
 
-When your modifications are enough stable
+Share your work
+---------------
 
-  * remove "_build" directory and do all checks again (links, doctests, errors and warnings)
-  * Commit and push source modifications : see :ref:`github workflow <label-TODO>`
-  * generate a commit with "make gh-pages"
-  * check git state in gh-pages (normally all is ok)
-  * push gh-pages
+When your modifications are enough stable, you may want to share your work with other
 
-For the last step, id depends on workflow your team has chosen. 
-It may be a direct push (old svn approach) or a branch/pull-request approach
+* remove "_build" and "gh-pages" directory and do all checks again (links, doctests, errors and warnings)
+* Commit and push source modifications : see :ref:`github workflow <label-TODO>`
+* generate html files and an associated commit with "make gh-pages"
+* check git state in gh-pages (normally all is ok)
+* push gh-pages
+
+Publish your work on official website
+-------------------------------------
+
+Now, other developers can see sources on your fork and result at http://USERNAME.github.io/ORGANIZATION-website
+
+If your work is accepted, you may want to integrate your work in official website.
+For this last step, id depends on workflow your team has chosen.
+
+Generally, if you are a maintainer of official website, you can push html files to website with
+
+.. code-block:: bash
+
+    cd ORGANIZATION-website
+    # Remove all pages
+    #rm -rf gh-pages 
+    make publish
+
+If you are a contributor, just create a pull-request following standard git workflow.
+
+
