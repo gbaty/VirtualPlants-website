@@ -184,4 +184,5 @@ site: clean html
 gh-pages: site
 	python _scripts/gh-pages.py
 
-
+publish: site
+	python _scripts/gh-pages.py publish

@@ -27,11 +27,20 @@ from subprocess import Popen, PIPE, CalledProcessError, check_call
 # Globals
 #-----------------------------------------------------------------------------
 
-pages_dir = 'gh-pages'
-dest_branch = 'gh-pages'
-html_dir = '_build/html'
-pages_repo = 'git@github.com:gbaty/gbaty-website.git'
+if len(sys.argv) == 2 and sys.argv[1] == 'publish':
+  # Publish on official website
+  pages_dir = 'gh-pages'
+  dest_branch = 'master'
+  html_dir = '_build/html'
+  pages_repo = 'git@github.com:gbaty/gbaty.github.io.git'
+else :
+  # Publish on your fork
+  pages_dir = 'gh-pages'
+  dest_branch = 'gh-pages'
+  html_dir = '_build/html'
+  pages_repo = 'git@github.com:gbaty/gbaty-website.git'
 
+print 'Prepare html to publish to %s' % pages_repo
 #-----------------------------------------------------------------------------
 # Functions
 #-----------------------------------------------------------------------------
@@ -69,6 +78,7 @@ def sh3(cmd):
 def init_repo(path):
     """clone the gh-pages repo if we haven't already."""
     sh("git clone %s %s"%(pages_repo, path))
+    sh("git checkout %s" % dest_branch)
     # For an <x>.github.com site, the pages go in master, so we don't need
     # to checkout gh-pages.
 
