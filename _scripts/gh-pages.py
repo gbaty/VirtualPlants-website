@@ -28,8 +28,9 @@ from subprocess import Popen, PIPE, CalledProcessError, check_call
 #-----------------------------------------------------------------------------
 
 pages_dir = 'gh-pages'
+dest_branch = 'gh-pages'
 html_dir = '_build/html'
-pages_repo = 'git@github.com:gbaty/gbaty.github.io.git'
+pages_repo = 'git@github.com:gbaty/gbaty-website.git'
 
 #-----------------------------------------------------------------------------
 # Functions
@@ -82,7 +83,7 @@ if __name__ == '__main__':
     else:
         # ensure up-to-date before operating
         cd(pages_dir)
-        sh('git checkout master')
+        sh('git checkout %s' % dest_branch)
         sh('git pull')
         cd(startdir)
 
@@ -99,9 +100,8 @@ if __name__ == '__main__':
         cd(pages_dir)
         status = sh2('git status | head -1')
         branch = re.search('On branch (.*)$', status).group(1)
-        if branch != 'master':
-            e = 'On %r, git branch is %r, MUST be "master"' % (pages_dir,
-                                                                 branch)
+        if branch != dest_branch:
+            e = 'On %r, git branch is %r, MUST be %r' % (pages_dir, branch, dest_branch)
             raise RuntimeError(e)
 
         sh('git add -A')
