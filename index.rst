@@ -1,10 +1,24 @@
-=============
-devel-website
-=============
+===========================
+OpenAleaLab's documentation
+===========================
 
-Repository to store development tips
+OpenAleaLab is a multiparadigm modelling environnement for plants.
+It will permit to divide the modeller’s work into multiple tasks. Each task can be viewed as a virtual experiment.
 
-.. toctree ::
-  :maxdepth: 1
-  
-  sphinx-gh
+.. image:: images/oalab2013-10-16.png
+    :width: 800px
+
+
+
+Table of contents
+=================
+
+.. toctree::
+    :maxdepth: 1
+
+    install/index
+    user/index
+    modeller/index
+    dev/index
+    contribute/index
+
