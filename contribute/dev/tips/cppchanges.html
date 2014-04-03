@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Cpp compiler differences &mdash; OpenAleaLab 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/virtualplants.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="OpenAleaLab 1.0 documentation" href="../../../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">OpenAleaLab 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="cpp-compiler-differences">
+<h1>Cpp compiler differences<a class="headerlink" href="#cpp-compiler-differences" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="gcc-clang">
+<h2>gcc/clang<a class="headerlink" href="#gcc-clang" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="main-signature">
+<h3>main signature<a class="headerlink" href="#main-signature" title="Permalink to this headline">¶</a></h3>
+<p>Valid in gcc, not in clang because return value is required for main function.</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="n">main</span><span class="p">(){</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Replace it with</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="kt">int</span> <span class="n">main</span><span class="p">(){</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="libstdc-libc">
+<h2>libstdc++/libc++<a class="headerlink" href="#libstdc-libc" title="Permalink to this headline">¶</a></h2>
+<p>libc++ is not binary compatible with gcc&#8217;s libstdc++ (except for some low level stuff such as operator new).
+For example the std::string in gcc&#8217;s libstdc++ is refcounted, whereas in libc++ it uses the &#8220;short string optimization&#8221;.
+If you were to accidentally mix these two strings in the same program (and mistake them for the same data structure), you would inevitably get a run time crash.
+In order to turn this run time crash into a link time error, libc++ uses a C++11 language feature called inline namespace to change the ABI of
+<tt class="docutils literal"><span class="pre">std::string</span></tt> without impacting the API of <tt class="docutils literal"><span class="pre">std::string</span></tt>. That is, to you <tt class="docutils literal"><span class="pre">std::string</span></tt> looks the same. But to the linker, <tt class="docutils literal"><span class="pre">std::string</span></tt> is being mangled as if it is in namespace <tt class="docutils literal"><span class="pre">std::__1</span></tt>.
+Thus the linker knows that <tt class="docutils literal"><span class="pre">std::basic_string</span></tt> and <tt class="docutils literal"><span class="pre">std::__1::basic_string</span></tt> are two different data structures (the former coming from gcc&#8217;s libstdc++ and the latter coming from libc++).</p>
+<div class="section" id="ext-slist-class">
+<h3>ext/slist class<a class="headerlink" href="#ext-slist-class" title="Permalink to this headline">¶</a></h3>
+<p>Works with gcc/stdlib</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="cp">#include &lt;ext/slist&gt;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">slist</span> <span class="p">...</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>&lt;ext/slist&gt; has been removed in libc++ and can be replaced by forward_list but <strong>forward_list has neither size nor count methods!</strong></p>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="cp">#include &lt;forward_list&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="boost-python-standard-lib">
+<h3>boost/python - standard lib<a class="headerlink" href="#boost-python-standard-lib" title="Permalink to this headline">¶</a></h3>
+<p>With clang/libc++, order of headers inclusions matters if you want to use both std lib and boost :</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="cp">#define _LIBCPP_EXTERN_TEMPLATE(...)=</span>
+
+
+<span class="cp">#include &lt;string&gt;</span>
+<span class="cp">#include &lt;boost/python.hpp&gt;</span>
+
+<span class="c1">// generates 20 errors but ...</span>
+
+<span class="cp">#include &lt;boost/python.hpp&gt;</span>
+<span class="cp">#include &lt;string&gt;</span>
+
+<span class="c1">// works perfectly</span>
+</pre></div>
+</div>
+<p>Bug is not solved currently.
+See <a class="reference external" href="http://bugs.python.org/issue10910">http://bugs.python.org/issue10910</a> and <a class="reference external" href="error_boost_python.log">error_boost_python.log</a></p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Cpp compiler differences</a><ul>
+<li><a class="reference internal" href="#gcc-clang">gcc/clang</a><ul>
+<li><a class="reference internal" href="#main-signature">main signature</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#libstdc-libc">libstdc++/libc++</a><ul>
+<li><a class="reference internal" href="#ext-slist-class">ext/slist class</a></li>
+<li><a class="reference internal" href="#boost-python-standard-lib">boost/python - standard lib</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/contribute/dev/tips/cppchanges.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">OpenAleaLab 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Guillaume Baty.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3a0.
+    </div>
+  </body>
+</html>

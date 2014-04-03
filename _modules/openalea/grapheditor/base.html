@@ -1,0 +1,277 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>openalea.grapheditor.base &mdash; OpenAleaLab 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/virtualplants.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="OpenAleaLab 1.0 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">OpenAleaLab 1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for openalea.grapheditor.base</h1><div class="highlight"><pre>
+<span class="c"># -*- python -*-</span>
+<span class="c">#</span>
+<span class="c">#       OpenAlea.Visualea: OpenAlea graphical user interface</span>
+<span class="c">#</span>
+<span class="c">#       Copyright 2006-2010 INRIA - CIRAD - INRA</span>
+<span class="c">#</span>
+<span class="c">#       File author(s): Daniel Barbeau &lt;daniel.barbeau@sophia.inria.fr&gt;</span>
+<span class="c">#</span>
+<span class="c">#       Distributed under the Cecill-C License.</span>
+<span class="c">#       See accompanying file LICENSE.txt or copy at</span>
+<span class="c">#           http://www.cecill.info/licences/Licence_CeCILL-C_V1-en.html</span>
+<span class="c">#</span>
+<span class="c">#       OpenAlea WebSite : http://openalea.gforge.inria.fr</span>
+<span class="c">#</span>
+<span class="c">###############################################################################</span>
+
+
+<div class="viewcode-block" id="GraphAdapterBase"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.base.GraphAdapterBase">[docs]</a><span class="k">class</span> <span class="nc">GraphAdapterBase</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class for adapter to graph&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graph</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_graph</span><span class="p">(</span><span class="n">graph</span> <span class="k">if</span> <span class="n">graph</span> <span class="k">else</span> <span class="bp">self</span><span class="p">)</span>
+
+<div class="viewcode-block" id="GraphAdapterBase.set_graph"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.base.GraphAdapterBase.set_graph">[docs]</a>    <span class="k">def</span> <span class="nf">set_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graph</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="o">=</span> <span class="n">graph</span>
+</div>
+<div class="viewcode-block" id="GraphAdapterBase.new_vertex"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.base.GraphAdapterBase.new_vertex">[docs]</a>    <span class="k">def</span> <span class="nf">new_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vtype</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a new vertex at the defined position and add it to the model&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="GraphAdapterBase.add_vertex"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.base.GraphAdapterBase.add_vertex">[docs]</a>    <span class="k">def</span> <span class="nf">add_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add an existing vertex to the model.</span>
+
+<span class="sd">        Upon succes it must emit the following event tuple:</span>
+<span class="sd">        (&quot;vertex_added&quot;, (&quot;vertex_type&quot;, vertex)).</span>
+<span class="sd">          * &quot;vertex-type&quot; is a vertex-type string defined in the strategy </span>
+<span class="sd">            used for a particular graph type.</span>
+<span class="sd">          * &quot;vertex&quot; is the **observable** object representing a vertex.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="GraphAdapterBase.get_vertex"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.base.GraphAdapterBase.get_vertex">[docs]</a>    <span class="k">def</span> <span class="nf">get_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vid</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the vertex object matching vid. By default this is just vid!&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">vid</span>
+</div>
+<div class="viewcode-block" id="GraphAdapterBase.remove_vertex"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.base.GraphAdapterBase.remove_vertex">[docs]</a>    <span class="k">def</span> <span class="nf">remove_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Removes the specified vertex from the model.</span>
+
+<span class="sd">        Upon success it must emit the following event tuple:</span>
+<span class="sd">        (&quot;vertex_removed&quot;, (vertex,)).</span>
+<span class="sd">          * vertex is the **observable** object representing a vertex.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="GraphAdapterBase.remove_vertices"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.base.GraphAdapterBase.remove_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">remove_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertexList</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Removes a list of vertices by forwarding</span>
+<span class="sd">        them to self.remove_vertex&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertexList</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">remove_vertex</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="GraphAdapterBase.add_edge"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.base.GraphAdapterBase.add_edge">[docs]</a>    <span class="k">def</span> <span class="nf">add_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create an edge in the model between source and target.</span>
+
+<span class="sd">        Upon succes it must emit the following event tuple:</span>
+<span class="sd">        (&quot;edge_added&quot;, (&quot;edge_type&quot;, edge, sourceObs, targetObs)).</span>
+<span class="sd">          * &quot;edge-type&quot; is a edge-type string defined in the strategy</span>
+<span class="sd">            used for a particular graph type.</span>
+<span class="sd">          * edge, sourceObs and targetObs are the **observable** objects</span>
+<span class="sd">        representing an egde and its two anchors.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="GraphAdapterBase.remove_edge"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.base.GraphAdapterBase.remove_edge">[docs]</a>    <span class="k">def</span> <span class="nf">remove_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Removes the specified vertex from the model.</span>
+
+<span class="sd">        Upon success it must emit the following event tuple:</span>
+<span class="sd">        (&quot;edge_removed&quot;, (edge,)).</span>
+<span class="sd">          * edge is the observable object representing an edge.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="GraphAdapterBase.remove_edges"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.base.GraphAdapterBase.remove_edges">[docs]</a>    <span class="k">def</span> <span class="nf">remove_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edgeList</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Removes a list of vertices by forwarding</span>
+<span class="sd">        them to self.remove_vertex&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edgeList</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">remove_edge</span><span class="p">(</span><span class="o">*</span><span class="n">edge</span><span class="p">)</span>
+
+    <span class="c"># -- Utility methods, not always useful/relevant.</span></div>
+<div class="viewcode-block" id="GraphAdapterBase.replace_vertex"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.base.GraphAdapterBase.replace_vertex">[docs]</a>    <span class="k">def</span> <span class="nf">replace_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oldVertex</span><span class="p">,</span> <span class="n">newVertex</span><span class="p">):</span>
+        <span class="k">return</span>
+</div>
+<div class="viewcode-block" id="GraphAdapterBase.get_vertex_inputs"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.base.GraphAdapterBase.get_vertex_inputs">[docs]</a>    <span class="k">def</span> <span class="nf">get_vertex_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graphicalV</span><span class="p">):</span>
+        <span class="k">return</span>
+</div>
+<div class="viewcode-block" id="GraphAdapterBase.get_vertex_outputs"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.base.GraphAdapterBase.get_vertex_outputs">[docs]</a>    <span class="k">def</span> <span class="nf">get_vertex_outputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graphicalV</span><span class="p">):</span>
+        <span class="k">return</span>
+</div>
+<div class="viewcode-block" id="GraphAdapterBase.get_vertex_input"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.base.GraphAdapterBase.get_vertex_input">[docs]</a>    <span class="k">def</span> <span class="nf">get_vertex_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graphicalV</span><span class="p">,</span> <span class="n">pid</span><span class="p">):</span>
+        <span class="k">return</span>
+</div>
+<div class="viewcode-block" id="GraphAdapterBase.get_vertex_output"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.base.GraphAdapterBase.get_vertex_output">[docs]</a>    <span class="k">def</span> <span class="nf">get_vertex_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graphicalV</span><span class="p">,</span> <span class="n">pid</span><span class="p">):</span>
+        <span class="k">return</span>
+
+    <span class="c">#type checking</span></div>
+<div class="viewcode-block" id="GraphAdapterBase.is_input"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.base.GraphAdapterBase.is_input">[docs]</a>    <span class="k">def</span> <span class="nf">is_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="GraphAdapterBase.is_output"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.base.GraphAdapterBase.is_output">[docs]</a>    <span class="k">def</span> <span class="nf">is_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">True</span>
+
+    <span class="c">#other checks</span></div>
+<div class="viewcode-block" id="GraphAdapterBase.is_vertex_protected"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.base.GraphAdapterBase.is_vertex_protected">[docs]</a>    <span class="k">def</span> <span class="nf">is_vertex_protected</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="GraphAdapterBase.is_legal_connection"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.base.GraphAdapterBase.is_legal_connection">[docs]</a>    <span class="k">def</span> <span class="nf">is_legal_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">True</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="GraphAdapterBase.get_vertex_types"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.base.GraphAdapterBase.get_vertex_types">[docs]</a>    <span class="k">def</span> <span class="nf">get_vertex_types</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Used by the GraphListenerBase class to</span>
+<span class="sd">        check if the types declared here are really</span>
+<span class="sd">        implemented in the strategy&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s">&quot;vertex&quot;</span><span class="p">]</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="GraphAdapterBase.get_edge_types"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.base.GraphAdapterBase.get_edge_types">[docs]</a>    <span class="k">def</span> <span class="nf">get_edge_types</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Used by the GraphListenerBase class to</span>
+<span class="sd">        check if the types declared here are really</span>
+<span class="sd">        implemented in the strategy&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s">&quot;default&quot;</span><span class="p">]</span>
+
+
+
+</div></div>
+<div class="viewcode-block" id="GraphStrategyMaker"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.base.GraphStrategyMaker">[docs]</a><span class="k">def</span> <span class="nf">GraphStrategyMaker</span><span class="p">(</span><span class="n">graphView</span><span class="p">,</span> <span class="n">vertexWidgetMap</span><span class="p">,</span> <span class="n">edgeWidgetMap</span><span class="p">,</span>
+                       <span class="n">connectorTypes</span><span class="o">=</span><span class="p">[],</span> <span class="n">graphViewInitialiser</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                       <span class="n">adapterType</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+
+    <span class="k">class</span> <span class="nc">__GraphStrategy</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+        <span class="n">__sceneType__</span>            <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">__graphViewType__</span>        <span class="o">=</span> <span class="n">graphView</span>
+        <span class="n">__vertexWidgetMap__</span>      <span class="o">=</span> <span class="n">vertexWidgetMap</span>
+        <span class="n">__edgeWidgetMap__</span>        <span class="o">=</span> <span class="n">edgeWidgetMap</span>
+        <span class="n">__connectorTypes__</span>       <span class="o">=</span> <span class="n">connectorTypes</span>
+        <span class="n">__graphViewInitialiser__</span> <span class="o">=</span> <span class="nb">staticmethod</span><span class="p">(</span><span class="n">graphViewInitialiser</span> \
+                                                <span class="k">if</span> <span class="n">graphViewInitialiser</span> \
+                                                <span class="k">else</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">:</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">__adapterType__</span>          <span class="o">=</span> <span class="n">adapterType</span>
+
+        <span class="nd">@classmethod</span>
+        <span class="k">def</span> <span class="nf">create_view</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">observableGraph</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                        <span class="n">clone</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Instanciates the view&quot;&quot;&quot;</span>
+            <span class="n">view</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">__graphViewType__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">scene</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">__sceneType__</span><span class="o">.</span><span class="n">_make_scene</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">observableGraph</span><span class="p">,</span> <span class="n">clone</span><span class="p">)</span>
+            <span class="n">scene</span><span class="o">.</span><span class="n">initialise_from_model</span><span class="p">()</span>
+            <span class="n">view</span><span class="o">.</span><span class="n">set_canvas</span><span class="p">(</span><span class="n">scene</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">view</span>
+
+        <span class="nd">@classmethod</span>
+        <span class="k">def</span> <span class="nf">create_vertex_widget</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">vtype</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">VertexClass</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">__vertexWidgetMap__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">vtype</span><span class="p">)</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">VertexClass</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">VertexClass</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;vtype not found&quot;</span><span class="p">)</span>
+
+        <span class="nd">@classmethod</span>
+        <span class="k">def</span> <span class="nf">create_edge_widget</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">etype</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">VertexClass</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">__edgeWidgetMap__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">etype</span><span class="p">)</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">VertexClass</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">VertexClass</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;etype not found&quot;</span><span class="p">)</span>
+
+        <span class="nd">@classmethod</span>
+        <span class="k">def</span> <span class="nf">get_connector_types</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">__connectorTypes__</span>
+
+        <span class="nd">@classmethod</span>
+        <span class="k">def</span> <span class="nf">initialise_graph_view</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">graphView</span><span class="p">,</span> <span class="n">graphModel</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">cls</span><span class="o">.</span><span class="n">__graphViewInitialiser__</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">cls</span><span class="o">.</span><span class="n">__graphViewInitialiser__</span><span class="p">(</span><span class="n">graphView</span><span class="p">,</span> <span class="n">graphModel</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">__GraphStrategy</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">OpenAleaLab 1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Guillaume Baty.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3a0.
+    </div>
+  </body>
+</html>

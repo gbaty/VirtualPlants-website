@@ -1,0 +1,238 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Contract Suppliers &mdash; OpenAleaLab 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/virtualplants.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="OpenAleaLab 1.0 documentation" href="../../index.html" />
+    <link rel="up" title="Get involved" href="../index.html" />
+    <link rel="next" title="Overview" href="../../openalealab/overview/index.html" />
+    <link rel="prev" title="Plugin management" href="pep_plugins.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../openalealab/overview/index.html" title="Overview"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pep_plugins.html" title="Plugin management"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">OpenAleaLab 1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Get involved</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="contract-suppliers">
+<h1>Contract Suppliers<a class="headerlink" href="#contract-suppliers" title="Permalink to this headline">¶</a></h1>
+<p>In applications, some classes have a central role and are used by numerous other
+classes.</p>
+<div class="highlight-python"><div class="code-block-filename"><tt>interface.py</tt></div><div class="highlight"><pre><span class="k">class</span> <span class="nc">IHelper</span><span class="p">(</span><span class="n">Interface</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">seText</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+        <span class="k">pass</span>
+</pre></div>
+</div>
+<p>IReader is an interface that describe a contract.</p>
+<div class="highlight-python"><div class="code-block-filename"><tt>implementations.py</tt></div><div class="highlight"><pre><span class="k">class</span> <span class="nc">Helper1</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">setText</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+        <span class="k">print</span> <span class="n">text</span>
+
+<span class="k">class</span> <span class="nc">Helper2</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">setText</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">log</span><span class="p">():</span>
+        <span class="k">return</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Reader supplies IReader contract.</p>
+<div class="highlight-ini"><div class="code-block-filename"><tt>suppliers.ini</tt></div><div class="highlight"><pre><span class="k">[General]</span>
+<span class="c1"># Options common to all supplier managers</span>
+<span class="na">user_path</span> <span class="o">=</span> <span class="s">~/home/guillaume/plugins</span>
+
+<span class="k">[General.backend]</span>
+<span class="na">IHelper</span> <span class="o">=</span> <span class="s">&#39;Helper1&#39;</span>
+
+<span class="k">[General.backend.IReader]</span>
+<span class="na">tags</span> <span class="o">=</span> <span class="s">PyQt4, PySide</span>
+
+<span class="k">[TissueLab]</span>
+<span class="na">user_path</span> <span class="o">=</span> <span class="s">~/home/guillaume/plugins/tests/</span>
+
+<span class="k">[TissueLab.backend]</span>
+<span class="na">IHelper</span> <span class="o">=</span> <span class="s">&quot;Helper2&quot;</span>
+
+<span class="k">[TissueLab.helper]</span>
+<span class="na">user_path</span> <span class="o">=</span> <span class="s">~/home/guillaume/plugins/tests/</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">openalea.vpltk.catalog.controller</span> <span class="kn">import</span> <span class="n">Controller</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">controller</span> <span class="o">=</span> <span class="n">Controller</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Two appraoches are available. First one uses methods to search suppliers. It
+allows to pass numerous parameters to specify research.
+The second one use attributes approach. Syntax is easier but less powerful.</p>
+<div class="section" id="method-approach">
+<h2>Method approach<a class="headerlink" href="#method-approach" title="Permalink to this headline">¶</a></h2>
+<p>To get a supplier of IReader :
+To get a facotry of IHelper suppliers (for example to create several instances) :
+To get interface class :</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">service</span> <span class="o">=</span> <span class="n">controller</span><span class="o">.</span><span class="n">supplier</span><span class="p">(</span><span class="s">&#39;IHelper&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">facotry</span> <span class="o">=</span> <span class="n">controller</span><span class="o">.</span><span class="n">factory</span><span class="p">(</span><span class="s">&#39;IHelper&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">interface</span> <span class="o">=</span> <span class="n">controller</span><span class="o">.</span><span class="n">interface</span><span class="p">(</span><span class="s">&#39;IHelper&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">suppliers</span> <span class="o">=</span> <span class="n">controller</span><span class="o">.</span><span class="n">suppliers</span><span class="p">(</span><span class="s">&#39;IHelper&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">factories</span> <span class="o">=</span> <span class="n">controller</span><span class="o">.</span><span class="n">factories</span><span class="p">(</span><span class="s">&#39;IHelper&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">service_xyz</span> <span class="o">=</span> <span class="n">controller</span><span class="o">.</span><span class="n">service</span><span class="p">(</span><span class="n">identifier</span><span class="o">=</span><span class="s">&#39;Xyz&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="advanced-search">
+<h3>Advanced search<a class="headerlink" href="#advanced-search" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">service</span> <span class="o">=</span> <span class="n">controller</span><span class="o">.</span><span class="n">supplier</span><span class="p">(</span><span class="s">&#39;IHelper&#39;</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;PyQt4&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">service</span> <span class="o">=</span> <span class="n">controller</span><span class="o">.</span><span class="n">supplier</span><span class="p">(</span><span class="s">&#39;IHelper&#39;</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;PyQt4&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="direct-approach">
+<h2>Direct approach<a class="headerlink" href="#direct-approach" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">service</span> <span class="o">=</span> <span class="n">controller</span><span class="o">.</span><span class="n">helper</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">factory</span> <span class="o">=</span> <span class="n">controller</span><span class="o">.</span><span class="n">Helper</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">interface</span> <span class="o">=</span> <span class="n">controller</span><span class="o">.</span><span class="n">IHelper</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">suppliers</span> <span class="o">=</span> <span class="n">controller</span><span class="o">.</span><span class="n">helpers</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">factories</span> <span class="o">=</span> <span class="n">controller</span><span class="o">.</span><span class="n">Helpers</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">controller</span><span class="o">.</span><span class="n">tags</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;PyQt4&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">controller</span><span class="o">.</span><span class="n">IHelper</span><span class="o">.</span><span class="n">tags</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;PyQt4&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">service</span> <span class="o">=</span> <span class="n">controller</span><span class="o">.</span><span class="n">helper</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">controller</span><span class="o">.</span><span class="n">IHelper</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#39;Xyz&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">service_xyz</span> <span class="o">=</span> <span class="n">controller</span><span class="o">.</span><span class="n">helper</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Contract Suppliers</a><ul>
+<li><a class="reference internal" href="#method-approach">Method approach</a><ul>
+<li><a class="reference internal" href="#advanced-search">Advanced search</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#direct-approach">Direct approach</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pep_plugins.html"
+                        title="previous chapter">Plugin management</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../../openalealab/overview/index.html"
+                        title="next chapter">Overview</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/contribute/peps/pep_suppliers.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../openalealab/overview/index.html" title="Overview"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pep_plugins.html" title="Plugin management"
+             >previous</a> |</li>
+        <li><a href="../../index.html">OpenAleaLab 1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Get involved</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Guillaume Baty.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3a0.
+    </div>
+  </body>
+</html>

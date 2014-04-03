@@ -1,0 +1,744 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>OpenAlea Visualea’s API &mdash; OpenAleaLab 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/virtualplants.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="OpenAleaLab 1.0 documentation" href="../../../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">OpenAleaLab 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-openalea.visualea.mainwindow">
+<span id="openalea-visualea-s-api"></span><h1>OpenAlea Visualea&#8217;s API<a class="headerlink" href="#module-openalea.visualea.mainwindow" title="Permalink to this headline">¶</a></h1>
+<p>QT4 Main window</p>
+<dl class="class">
+<dt id="openalea.visualea.mainwindow.MainWindow">
+<em class="property">class </em><tt class="descclassname">openalea.visualea.mainwindow.</tt><tt class="descname">MainWindow</tt><span class="sig-paren">(</span><em>session</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.about">
+<tt class="descname">about</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.about"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.about" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display About Dialog</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.add_last_open">
+<tt class="descname">add_last_open</tt><span class="sig-paren">(</span><em>pkgid</em>, <em>factory_name</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.add_last_open"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.add_last_open" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register a new lest opened node.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.add_pkgdir">
+<tt class="descname">add_pkgdir</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.add_pkgdir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.add_pkgdir" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.clear_data_pool">
+<tt class="descname">clear_data_pool</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.clear_data_pool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.clear_data_pool" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear the data pool</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.clear_python_console">
+<tt class="descname">clear_python_console</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.clear_python_console"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.clear_python_console" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear python shell</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.closeEvent">
+<tt class="descname">closeEvent</tt><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.closeEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.closeEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close All subwindows</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.close_tab_workspace">
+<tt class="descname">close_tab_workspace</tt><span class="sig-paren">(</span><em>cindex</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.close_tab_workspace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.close_tab_workspace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close workspace indexed by cindex cindex is Node</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.contextMenuEvent">
+<tt class="descname">contextMenuEvent</tt><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.contextMenuEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.contextMenuEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Context menu event : Display the menu</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.current_view">
+<tt class="descname">current_view</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.current_view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.current_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the active widget</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.debug">
+<tt class="descname">debug</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.debug"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.debug" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.display_leftpanel">
+<tt class="descname">display_leftpanel</tt><span class="sig-paren">(</span><em>toggled</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.display_leftpanel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.display_leftpanel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.display_rightpanel">
+<tt class="descname">display_rightpanel</tt><span class="sig-paren">(</span><em>toggled</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.display_rightpanel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.display_rightpanel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.dragEnterEvent">
+<tt class="descname">dragEnterEvent</tt><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.dragEnterEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.dragEnterEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>todo</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.dropEvent">
+<tt class="descname">dropEvent</tt><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.dropEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.dropEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>todo</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.exec_python_script">
+<tt class="descname">exec_python_script</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.exec_python_script"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.exec_python_script" title="Permalink to this definition">¶</a></dt>
+<dd><p>Choose a python source and execute it</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.export_image">
+<tt class="descname">export_image</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.export_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.export_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Export current workspace to an image</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.export_image_svg">
+<tt class="descname">export_image_svg</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.export_image_svg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.export_image_svg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Export current workspace to an image</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.find_node">
+<tt class="descname">find_node</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.find_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.find_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find node Command</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.help">
+<tt class="descname">help</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.help"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.help" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display help</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.new_data">
+<tt class="descname">new_data</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.new_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.new_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Import file</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.new_graph">
+<tt class="descname">new_graph</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.new_graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.new_graph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new graph</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.new_package">
+<tt class="descname">new_package</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.new_package"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.new_package" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new user package</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.new_python_node">
+<tt class="descname">new_python_node</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.new_python_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.new_python_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new node</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.new_session">
+<tt class="descname">new_session</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.new_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.new_session" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.new_workspace">
+<tt class="descname">new_workspace</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.new_workspace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.new_workspace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an empty workspace</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.notify">
+<tt class="descname">notify</tt><span class="sig-paren">(</span><em>sender</em>, <em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.notify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.notify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Notification from observed</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.on_package_manager_focus_change">
+<tt class="descname">on_package_manager_focus_change</tt><span class="sig-paren">(</span><em>item</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.on_package_manager_focus_change"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.on_package_manager_focus_change" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.on_scene_focus_change">
+<tt class="descname">on_scene_focus_change</tt><span class="sig-paren">(</span><em>scene</em>, <em>item</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.on_scene_focus_change"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.on_scene_focus_change" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.on_session_started">
+<tt class="descname">on_session_started</tt><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.on_session_started"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.on_session_started" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.open_compositenode">
+<tt class="descname">open_compositenode</tt><span class="sig-paren">(</span><em>factory</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.open_compositenode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.open_compositenode" title="Permalink to this definition">¶</a></dt>
+<dd><p>open a  composite node editor</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.open_preferences">
+<tt class="descname">open_preferences</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.open_preferences"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.open_preferences" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open Preference dialog</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.open_python_console">
+<tt class="descname">open_python_console</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.open_python_console"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.open_python_console" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set focus on the python shell</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.open_session">
+<tt class="descname">open_session</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.open_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.open_session" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.open_widget_tab">
+<tt class="descname">open_widget_tab</tt><span class="sig-paren">(</span><em>graph</em>, <em>factory</em>, <em>caption=None</em>, <em>pos=-1</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.open_widget_tab"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.open_widget_tab" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open a widget in a tab giving an instance and its widget
+caption is append to the tab title</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.quit">
+<tt class="descname">quit</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.quit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.quit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Quit Application</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.read_settings">
+<tt class="descname">read_settings</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.read_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.read_settings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read application settings.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.redo_last_open_menu">
+<tt class="descname">redo_last_open_menu</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.redo_last_open_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.redo_last_open_menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create entries for last opened nodes.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.reinit_treeview">
+<tt class="descname">reinit_treeview</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.reinit_treeview"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.reinit_treeview" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reinitialise package and category views</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.reload_all">
+<tt class="descname">reload_all</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.reload_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.reload_all" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.reopen_last">
+<tt class="descname">reopen_last</tt><span class="sig-paren">(</span><em>action</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.reopen_last"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.reopen_last" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reopen a last open node.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.save_as">
+<tt class="descname">save_as</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.save_as"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.save_as" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save as menu entry</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.save_session">
+<tt class="descname">save_session</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.save_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.save_session" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save menu entry</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.search_node">
+<tt class="descname">search_node</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.search_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.search_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Activated when search line edit is validated</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.to_python_script">
+<tt class="descname">to_python_script</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.to_python_script"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.to_python_script" title="Permalink to this definition">¶</a></dt>
+<dd><p>Translate the active workspace into a python script</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.update_tabwidget">
+<tt class="descname">update_tabwidget</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.update_tabwidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.update_tabwidget" title="Permalink to this definition">¶</a></dt>
+<dd><p>open tab widget</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.web">
+<tt class="descname">web</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.web"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.web" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open OpenAlea website</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.write_settings">
+<tt class="descname">write_settings</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.write_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.write_settings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save application settings.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.mainwindow.MainWindow.ws_changed">
+<tt class="descname">ws_changed</tt><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/mainwindow.html#MainWindow.ws_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.mainwindow.MainWindow.ws_changed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Current workspace has changed</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-openalea.visualea.node_treeview"></span><p>Tree Item model for package manager.</p>
+<p>Only Package and Category objects are view as a tree item.
+Others are view as leaves.</p>
+<dl class="class">
+<dt id="openalea.visualea.node_treeview.CategoryModel">
+<em class="property">class </em><tt class="descclassname">openalea.visualea.node_treeview.</tt><tt class="descname">CategoryModel</tt><span class="sig-paren">(</span><em>pkgmanager</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#CategoryModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.CategoryModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>QT4 data model (model/view pattern) to view category</p>
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.CategoryModel.reset">
+<tt class="descname">reset</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#CategoryModel.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.CategoryModel.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openalea.visualea.node_treeview.DataPoolListView">
+<em class="property">class </em><tt class="descclassname">openalea.visualea.node_treeview.</tt><tt class="descname">DataPoolListView</tt><span class="sig-paren">(</span><em>main_win</em>, <em>datapool</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#DataPoolListView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.DataPoolListView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specialized QListView to display data pool contents</p>
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.DataPoolListView.contextMenuEvent">
+<tt class="descname">contextMenuEvent</tt><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#DataPoolListView.contextMenuEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.DataPoolListView.contextMenuEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Context menu event : Display the menu</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.DataPoolListView.dragEnterEvent">
+<tt class="descname">dragEnterEvent</tt><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#DataPoolListView.dragEnterEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.DataPoolListView.dragEnterEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.DataPoolListView.dragMoveEvent">
+<tt class="descname">dragMoveEvent</tt><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#DataPoolListView.dragMoveEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.DataPoolListView.dragMoveEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.DataPoolListView.dropEvent">
+<tt class="descname">dropEvent</tt><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#DataPoolListView.dropEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.DataPoolListView.dropEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.DataPoolListView.notify">
+<tt class="descname">notify</tt><span class="sig-paren">(</span><em>sender</em>, <em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#DataPoolListView.notify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.DataPoolListView.notify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Notification by observed</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.DataPoolListView.remove_element">
+<tt class="descname">remove_element</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#DataPoolListView.remove_element"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.DataPoolListView.remove_element" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove an element from the datapool</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.DataPoolListView.startDrag">
+<tt class="descname">startDrag</tt><span class="sig-paren">(</span><em>supportedActions</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#DataPoolListView.startDrag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.DataPoolListView.startDrag" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openalea.visualea.node_treeview.DataPoolModel">
+<em class="property">class </em><tt class="descclassname">openalea.visualea.node_treeview.</tt><tt class="descname">DataPoolModel</tt><span class="sig-paren">(</span><em>datapool</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#DataPoolModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.DataPoolModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>QT4 data model (model/view pattern) to support Data Pool</p>
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.DataPoolModel.data">
+<tt class="descname">data</tt><span class="sig-paren">(</span><em>index</em>, <em>role</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#DataPoolModel.data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.DataPoolModel.data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.DataPoolModel.flags">
+<tt class="descname">flags</tt><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#DataPoolModel.flags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.DataPoolModel.flags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.DataPoolModel.headerData">
+<tt class="descname">headerData</tt><span class="sig-paren">(</span><em>section</em>, <em>orientation</em>, <em>role</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#DataPoolModel.headerData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.DataPoolModel.headerData" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.DataPoolModel.reset">
+<tt class="descname">reset</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#DataPoolModel.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.DataPoolModel.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.DataPoolModel.rowCount">
+<tt class="descname">rowCount</tt><span class="sig-paren">(</span><em>parent</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#DataPoolModel.rowCount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.DataPoolModel.rowCount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openalea.visualea.node_treeview.NodeFactoryTreeView">
+<em class="property">class </em><tt class="descclassname">openalea.visualea.node_treeview.</tt><tt class="descname">NodeFactoryTreeView</tt><span class="sig-paren">(</span><em>main_win</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#NodeFactoryTreeView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.NodeFactoryTreeView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specialized TreeView to display node factory in a tree with Drag and Drop support</p>
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.NodeFactoryTreeView.collapsed">
+<tt class="descname">collapsed</tt><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#NodeFactoryTreeView.collapsed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.NodeFactoryTreeView.collapsed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.NodeFactoryTreeView.expanded">
+<tt class="descname">expanded</tt><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#NodeFactoryTreeView.expanded"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.NodeFactoryTreeView.expanded" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.NodeFactoryTreeView.reset">
+<tt class="descname">reset</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#NodeFactoryTreeView.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.NodeFactoryTreeView.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openalea.visualea.node_treeview.NodeFactoryView">
+<em class="property">class </em><tt class="descclassname">openalea.visualea.node_treeview.</tt><tt class="descname">NodeFactoryView</tt><span class="sig-paren">(</span><em>main_win</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#NodeFactoryView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.NodeFactoryView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for all view which display node factories.
+Implements Drag and Drop facilities.</p>
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.NodeFactoryView.add_composite_node">
+<tt class="descname">add_composite_node</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#NodeFactoryView.add_composite_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.NodeFactoryView.add_composite_node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.NodeFactoryView.add_data">
+<tt class="descname">add_data</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#NodeFactoryView.add_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.NodeFactoryView.add_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.NodeFactoryView.add_python_node">
+<tt class="descname">add_python_node</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#NodeFactoryView.add_python_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.NodeFactoryView.add_python_node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.NodeFactoryView.contextMenuEvent">
+<tt class="descname">contextMenuEvent</tt><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#NodeFactoryView.contextMenuEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.NodeFactoryView.contextMenuEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Context menu event : Display the menu</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.NodeFactoryView.dragEnterEvent">
+<tt class="descname">dragEnterEvent</tt><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#NodeFactoryView.dragEnterEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.NodeFactoryView.dragEnterEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.NodeFactoryView.dragMoveEvent">
+<tt class="descname">dragMoveEvent</tt><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#NodeFactoryView.dragMoveEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.NodeFactoryView.dragMoveEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.NodeFactoryView.dropEvent">
+<tt class="descname">dropEvent</tt><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#NodeFactoryView.dropEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.NodeFactoryView.dropEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.NodeFactoryView.duplicate_package">
+<tt class="descname">duplicate_package</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#NodeFactoryView.duplicate_package"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.NodeFactoryView.duplicate_package" title="Permalink to this definition">¶</a></dt>
+<dd><p>Duplicate a package</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.NodeFactoryView.edit_node">
+<tt class="descname">edit_node</tt><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#NodeFactoryView.edit_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.NodeFactoryView.edit_node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.NodeFactoryView.edit_package">
+<tt class="descname">edit_package</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#NodeFactoryView.edit_package"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.NodeFactoryView.edit_package" title="Permalink to this definition">¶</a></dt>
+<dd><p>Edit package Metadata</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.NodeFactoryView.edit_pkg_code">
+<tt class="descname">edit_pkg_code</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#NodeFactoryView.edit_pkg_code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.NodeFactoryView.edit_pkg_code" title="Permalink to this definition">¶</a></dt>
+<dd><p>Edit __wralea__</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.NodeFactoryView.edit_properties">
+<tt class="descname">edit_properties</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#NodeFactoryView.edit_properties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.NodeFactoryView.edit_properties" title="Permalink to this definition">¶</a></dt>
+<dd><p>Edit Node info</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.NodeFactoryView.get_current_pkg">
+<tt class="descname">get_current_pkg</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#NodeFactoryView.get_current_pkg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.NodeFactoryView.get_current_pkg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the current package</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="openalea.visualea.node_treeview.NodeFactoryView.get_item_info">
+<em class="property">static </em><tt class="descname">get_item_info</tt><span class="sig-paren">(</span><em>item</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#NodeFactoryView.get_item_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.NodeFactoryView.get_item_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return (package_id, factory_id, mimetype) corresponding to item.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.NodeFactoryView.grab_icon">
+<tt class="descname">grab_icon</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#NodeFactoryView.grab_icon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.NodeFactoryView.grab_icon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the package icon</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.NodeFactoryView.mouseDoubleClickEvent">
+<tt class="descname">mouseDoubleClickEvent</tt><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#NodeFactoryView.mouseDoubleClickEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.NodeFactoryView.mouseDoubleClickEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.NodeFactoryView.move_package">
+<tt class="descname">move_package</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#NodeFactoryView.move_package"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.NodeFactoryView.move_package" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move a package</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.NodeFactoryView.open_node">
+<tt class="descname">open_node</tt><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#NodeFactoryView.open_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.NodeFactoryView.open_node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.NodeFactoryView.reinit_treeview">
+<tt class="descname">reinit_treeview</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#NodeFactoryView.reinit_treeview"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.NodeFactoryView.reinit_treeview" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.NodeFactoryView.reload_package">
+<tt class="descname">reload_package</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#NodeFactoryView.reload_package"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.NodeFactoryView.reload_package" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reload package</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.NodeFactoryView.remove_node">
+<tt class="descname">remove_node</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#NodeFactoryView.remove_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.NodeFactoryView.remove_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the node from the package</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.NodeFactoryView.remove_package">
+<tt class="descname">remove_package</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#NodeFactoryView.remove_package"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.NodeFactoryView.remove_package" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove selected package</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.NodeFactoryView.startDrag">
+<tt class="descname">startDrag</tt><span class="sig-paren">(</span><em>supportedActions</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#NodeFactoryView.startDrag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.NodeFactoryView.startDrag" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openalea.visualea.node_treeview.PkgModel">
+<em class="property">class </em><tt class="descclassname">openalea.visualea.node_treeview.</tt><tt class="descname">PkgModel</tt><span class="sig-paren">(</span><em>pkgmanager</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#PkgModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.PkgModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>QT4 data model (model/view pattern) to support pkgmanager</p>
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.PkgModel.columnCount">
+<tt class="descname">columnCount</tt><span class="sig-paren">(</span><em>parent</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#PkgModel.columnCount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.PkgModel.columnCount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.PkgModel.data">
+<tt class="descname">data</tt><span class="sig-paren">(</span><em>index</em>, <em>role</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#PkgModel.data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.PkgModel.data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.PkgModel.flags">
+<tt class="descname">flags</tt><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#PkgModel.flags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.PkgModel.flags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.PkgModel.get_full_name">
+<tt class="descname">get_full_name</tt><span class="sig-paren">(</span><em>item</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#PkgModel.get_full_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.PkgModel.get_full_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>construct a full unique name from item
+using parent.parent.item syntax</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.PkgModel.headerData">
+<tt class="descname">headerData</tt><span class="sig-paren">(</span><em>section</em>, <em>orientation</em>, <em>role</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#PkgModel.headerData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.PkgModel.headerData" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.PkgModel.index">
+<tt class="descname">index</tt><span class="sig-paren">(</span><em>row</em>, <em>column</em>, <em>parent</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#PkgModel.index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.PkgModel.index" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.PkgModel.parent">
+<tt class="descname">parent</tt><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#PkgModel.parent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.PkgModel.parent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.PkgModel.reset">
+<tt class="descname">reset</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#PkgModel.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.PkgModel.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.PkgModel.rowCount">
+<tt class="descname">rowCount</tt><span class="sig-paren">(</span><em>parent</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#PkgModel.rowCount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.PkgModel.rowCount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openalea.visualea.node_treeview.SearchListView">
+<em class="property">class </em><tt class="descclassname">openalea.visualea.node_treeview.</tt><tt class="descname">SearchListView</tt><span class="sig-paren">(</span><em>main_win</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#SearchListView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.SearchListView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specialized QListView to display search results with Drag and Drop support</p>
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.SearchListView.reset">
+<tt class="descname">reset</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#SearchListView.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.SearchListView.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openalea.visualea.node_treeview.SearchModel">
+<em class="property">class </em><tt class="descclassname">openalea.visualea.node_treeview.</tt><tt class="descname">SearchModel</tt><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#SearchModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.SearchModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>QT4 data model (model/view pattern) to support Search result</p>
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.SearchModel.columnCount">
+<tt class="descname">columnCount</tt><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#SearchModel.columnCount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.SearchModel.columnCount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.SearchModel.data">
+<tt class="descname">data</tt><span class="sig-paren">(</span><em>index</em>, <em>role</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#SearchModel.data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.SearchModel.data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.SearchModel.flags">
+<tt class="descname">flags</tt><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#SearchModel.flags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.SearchModel.flags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.SearchModel.headerData">
+<tt class="descname">headerData</tt><span class="sig-paren">(</span><em>section</em>, <em>orientation</em>, <em>role</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#SearchModel.headerData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.SearchModel.headerData" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.SearchModel.index">
+<tt class="descname">index</tt><span class="sig-paren">(</span><em>row</em>, <em>column</em>, <em>parent</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#SearchModel.index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.SearchModel.index" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.SearchModel.rowCount">
+<tt class="descname">rowCount</tt><span class="sig-paren">(</span><em>parent</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#SearchModel.rowCount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.SearchModel.rowCount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.visualea.node_treeview.SearchModel.set_results">
+<tt class="descname">set_results</tt><span class="sig-paren">(</span><em>results</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#SearchModel.set_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.SearchModel.set_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the search results : results is a list of factory</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="openalea.visualea.node_treeview.get_icon">
+<tt class="descclassname">openalea.visualea.node_treeview.</tt><tt class="descname">get_icon</tt><span class="sig-paren">(</span><em>item</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#get_icon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.get_icon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return Icon object depending of the type of item</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="openalea.visualea.node_treeview.item_compare">
+<tt class="descclassname">openalea.visualea.node_treeview.</tt><tt class="descname">item_compare</tt><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/visualea/node_treeview.html#item_compare"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.visualea.node_treeview.item_compare" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/contribute/dev/archi/api_openalea_visualea.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">OpenAleaLab 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Guillaume Baty.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3a0.
+    </div>
+  </body>
+</html>

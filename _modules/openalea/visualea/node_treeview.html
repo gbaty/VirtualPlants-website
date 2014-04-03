@@ -1,0 +1,1157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>openalea.visualea.node_treeview &mdash; OpenAleaLab 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/virtualplants.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="OpenAleaLab 1.0 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">OpenAleaLab 1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for openalea.visualea.node_treeview</h1><div class="highlight"><pre>
+<span class="c"># -*- python -*-</span>
+<span class="c">#</span>
+<span class="c">#       OpenAlea.Visualea: OpenAlea graphical user interface</span>
+<span class="c">#</span>
+<span class="c">#       Copyright 2006-2009 INRIA - CIRAD - INRA</span>
+<span class="c">#</span>
+<span class="c">#       File author(s): Samuel Dufour-Kowalski &lt;samuel.dufour@sophia.inria.fr&gt;</span>
+<span class="c">#                       Christophe Pradal &lt;christophe.prada@cirad.fr&gt;</span>
+<span class="c">#</span>
+<span class="c">#       Distributed under the CeCILL v2 License.</span>
+<span class="c">#       See accompanying file LICENSE.txt or copy at</span>
+<span class="c">#           http://www.cecill.info/licences/Licence_CeCILL_V2-en.html</span>
+<span class="c">#</span>
+<span class="c">#       OpenAlea WebSite : http://openalea.gforge.inria.fr</span>
+<span class="c">#</span>
+<span class="c">################################################################################</span>
+<span class="sd">&quot;&quot;&quot;Tree Item model for package manager.</span>
+
+<span class="sd">Only Package and Category objects are view as a tree item.</span>
+<span class="sd">Others are view as leaves.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__license__</span> <span class="o">=</span> <span class="s">&quot;CeCILL v2&quot;</span>
+<span class="n">__revision__</span> <span class="o">=</span> <span class="s">&quot; $Id: node_treeview.py 3773 2013-04-05 14:39:50Z diener $ &quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">weakref</span> <span class="kn">import</span> <span class="n">ref</span>
+
+<span class="kn">from</span> <span class="nn">openalea.vpltk.qt</span> <span class="kn">import</span> <span class="n">qt</span>
+
+<span class="kn">from</span> <span class="nn">openalea.core.node</span> <span class="kn">import</span> <span class="n">NodeFactory</span><span class="p">,</span> <span class="n">AbstractFactory</span>
+<span class="kn">from</span> <span class="nn">openalea.core.data</span> <span class="kn">import</span> <span class="n">DataFactory</span>
+<span class="kn">from</span> <span class="nn">openalea.core.package</span> <span class="kn">import</span> <span class="n">Package</span><span class="p">,</span> <span class="n">UserPackage</span>
+<span class="kn">from</span> <span class="nn">openalea.core.compositenode</span> <span class="kn">import</span> <span class="n">CompositeNodeFactory</span>
+<span class="kn">from</span> <span class="nn">openalea.core.pkgmanager</span> <span class="kn">import</span> <span class="n">PackageManager</span>
+<span class="kn">from</span> <span class="nn">openalea.core.pkgmanager</span> <span class="kn">import</span> <span class="n">PseudoGroup</span><span class="p">,</span> <span class="n">PseudoPackage</span>
+<span class="kn">from</span> <span class="nn">openalea.core</span> <span class="kn">import</span> <span class="n">cli</span>
+
+<span class="kn">from</span> <span class="nn">openalea.visualea.dialogs</span> <span class="kn">import</span> <span class="n">EditPackage</span><span class="p">,</span> <span class="n">NewGraph</span><span class="p">,</span> <span class="n">NewPackage</span><span class="p">,</span> <span class="n">NewData</span>
+<span class="kn">from</span> <span class="nn">openalea.visualea.util</span> <span class="kn">import</span> <span class="n">open_dialog</span><span class="p">,</span> <span class="n">exception_display</span><span class="p">,</span> <span class="n">busy_cursor</span>
+<span class="kn">from</span> <span class="nn">openalea.visualea.node_widget</span> <span class="kn">import</span> <span class="n">SignalSlotListener</span>
+<span class="kn">from</span> <span class="nn">openalea.visualea.code_editor</span> <span class="kn">import</span> <span class="n">get_editor</span>
+<span class="kn">from</span> <span class="nn">openalea.visualea.util</span> <span class="kn">import</span> <span class="n">grab_icon</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">images_rc</span>
+
+<span class="kn">from</span> <span class="nn">openalea.vpltk.qt.compat</span> <span class="kn">import</span> <span class="n">to_qvariant</span>
+
+<span class="c"># Utilities function</span>
+
+<span class="n">icon_dict</span> <span class="o">=</span> <span class="bp">None</span>
+
+<div class="viewcode-block" id="get_icon"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.get_icon">[docs]</a><span class="k">def</span> <span class="nf">get_icon</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Return Icon object depending of the type of item &quot;&quot;&quot;</span>
+
+    <span class="k">global</span> <span class="n">icon_dict</span>
+    <span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="n">icon_dict</span><span class="p">):</span>
+        <span class="c"># dict to do a switch</span>
+        <span class="n">icon_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">PseudoGroup</span> <span class="p">:</span> <span class="n">to_qvariant</span><span class="p">(</span><span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QPixmap</span><span class="p">(</span><span class="s">&quot;:/icons/category.png&quot;</span><span class="p">)),</span>
+            <span class="n">CompositeNodeFactory</span> <span class="p">:</span> <span class="n">to_qvariant</span><span class="p">(</span><span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QPixmap</span><span class="p">(</span><span class="s">&quot;:/icons/diagram.png&quot;</span><span class="p">)),</span>
+            <span class="n">NodeFactory</span> <span class="p">:</span> <span class="n">to_qvariant</span><span class="p">(</span><span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QPixmap</span><span class="p">(</span><span class="s">&quot;:/icons/node.png&quot;</span><span class="p">)),</span>
+            <span class="n">DataFactory</span> <span class="p">:</span> <span class="n">to_qvariant</span><span class="p">(</span><span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QPixmap</span><span class="p">(</span><span class="s">&quot;:/icons/data.png&quot;</span><span class="p">)),</span>
+            <span class="n">UserPackage</span> <span class="p">:</span> <span class="n">to_qvariant</span><span class="p">(</span><span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QPixmap</span><span class="p">(</span><span class="s">&quot;:/icons/usrpkg.png&quot;</span><span class="p">)),</span>
+            <span class="n">Package</span> <span class="p">:</span>  <span class="n">to_qvariant</span><span class="p">(</span><span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QPixmap</span><span class="p">(</span><span class="s">&quot;:/icons/pkg.png&quot;</span><span class="p">)),</span>
+            <span class="p">}</span>
+
+    <span class="c"># Get icon from dictionary</span>
+    <span class="k">if</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="ow">in</span> <span class="n">icon_dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">icon_dict</span><span class="p">[</span><span class="nb">type</span><span class="p">(</span><span class="n">item</span><span class="p">)]</span>
+
+    <span class="k">elif</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">PseudoPackage</span><span class="p">)):</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">is_real_package</span><span class="p">()):</span>
+
+            <span class="c"># Try to load package specific icon</span>
+            <span class="n">icon</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">metainfo</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;icon&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">icon</span><span class="p">):</span>
+                <span class="n">icon</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">icon</span><span class="p">)</span>
+                <span class="n">pix</span> <span class="o">=</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QPixmap</span><span class="p">(</span><span class="n">icon</span><span class="p">)</span>
+                <span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="n">pix</span><span class="o">.</span><span class="n">isNull</span><span class="p">()):</span>
+                    <span class="k">return</span> <span class="n">to_qvariant</span><span class="p">(</span><span class="n">pix</span><span class="p">)</span>
+
+            <span class="c"># Standard icon</span>
+            <span class="k">return</span> <span class="n">icon_dict</span><span class="p">[</span><span class="nb">type</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">item</span><span class="p">)]</span>
+
+        <span class="k">return</span> <span class="n">to_qvariant</span><span class="p">(</span><span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QPixmap</span><span class="p">(</span><span class="s">&quot;:/icons/pseudopkg.png&quot;</span><span class="p">))</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">to_qvariant</span><span class="p">()</span>
+
+
+<span class="c"># Qt4 Models/View classes</span></div>
+<span class="n">type_hierarchy</span> <span class="o">=</span> <span class="p">[(</span><span class="n">Package</span><span class="p">,</span> <span class="n">UserPackage</span><span class="p">,</span> <span class="n">PseudoPackage</span><span class="p">,</span> <span class="n">PseudoGroup</span><span class="p">),</span> <span class="p">(</span><span class="n">CompositeNodeFactory</span><span class="p">,),</span> <span class="p">(</span><span class="n">NodeFactory</span><span class="p">,),</span> <span class="p">(</span><span class="n">DataFactory</span><span class="p">,)]</span>
+<span class="n">type_order_map</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">types</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">type_hierarchy</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">types</span><span class="p">:</span>
+        <span class="n">type_order_map</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+
+<div class="viewcode-block" id="item_compare"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.item_compare">[docs]</a><span class="k">def</span> <span class="nf">item_compare</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="nb">type</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">cmp</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">get_id</span><span class="p">(),</span> <span class="n">y</span><span class="o">.</span><span class="n">get_id</span><span class="p">())</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">tx</span><span class="p">,</span> <span class="n">ty</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nb">type</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">type_order_map</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span> 
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">t</span><span class="p">):</span>
+                <span class="n">tx</span> <span class="o">=</span> <span class="n">t</span>
+                <span class="k">break</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">type_order_map</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span> 
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="n">t</span><span class="p">):</span>
+                <span class="n">ty</span> <span class="o">=</span> <span class="n">t</span>
+                <span class="k">break</span>
+        <span class="k">return</span> <span class="nb">cmp</span><span class="p">(</span><span class="n">type_order_map</span><span class="p">[</span><span class="n">tx</span><span class="p">],</span> <span class="n">type_order_map</span><span class="p">[</span><span class="n">ty</span><span class="p">])</span>
+</div>
+<div class="viewcode-block" id="PkgModel"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.PkgModel">[docs]</a><span class="k">class</span> <span class="nc">PkgModel</span> <span class="p">(</span><span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QAbstractItemModel</span><span class="p">)</span> <span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; QT4 data model (model/view pattern) to support pkgmanager &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pkgmanager</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+
+        <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QAbstractItemModel</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pman</span> <span class="o">=</span> <span class="n">pkgmanager</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rootItem</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pman</span><span class="o">.</span><span class="n">get_pseudo_pkg</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent_map</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">row_map</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">index_map</span> <span class="o">=</span> <span class="p">{}</span> <span class="c"># map between name and Index object</span>
+
+
+<div class="viewcode-block" id="PkgModel.reset"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.PkgModel.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">rootItem</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pman</span><span class="o">.</span><span class="n">get_pseudo_pkg</span><span class="p">()</span>
+        <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QAbstractItemModel</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="PkgModel.columnCount"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.PkgModel.columnCount">[docs]</a>    <span class="k">def</span> <span class="nf">columnCount</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">1</span>
+
+</div>
+<div class="viewcode-block" id="PkgModel.data"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.PkgModel.data">[docs]</a>    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">index</span><span class="o">.</span><span class="n">isValid</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">to_qvariant</span><span class="p">()</span>
+
+        <span class="n">item</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">internalPointer</span><span class="p">()</span>
+
+        <span class="c"># Text</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">role</span> <span class="o">==</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">DisplayRole</span><span class="p">):</span>
+
+            <span class="c"># Add size info</span>
+            <span class="n">lenstr</span><span class="o">=</span><span class="s">&#39;&#39;</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">l</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">nb_public_values</span><span class="p">()</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="p">:</span> <span class="n">lenstr</span> <span class="o">=</span> <span class="s">&quot; ( </span><span class="si">%i</span><span class="s"> )&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">l</span><span class="p">,)</span>
+            <span class="k">except</span><span class="p">:</span> <span class="k">pass</span>
+
+            <span class="k">return</span> <span class="n">to_qvariant</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">get_id</span><span class="p">())</span> <span class="o">+</span> <span class="n">lenstr</span><span class="p">)</span>
+
+        <span class="c"># Tool Tip</span>
+        <span class="k">elif</span><span class="p">(</span> <span class="n">role</span> <span class="o">==</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ToolTipRole</span> <span class="p">):</span>
+            <span class="k">return</span> <span class="n">to_qvariant</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">get_tip</span><span class="p">()))</span>
+
+        <span class="c"># Icon</span>
+        <span class="k">elif</span><span class="p">(</span><span class="n">role</span> <span class="o">==</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">DecorationRole</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">get_icon</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">to_qvariant</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="PkgModel.flags"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.PkgModel.flags">[docs]</a>    <span class="k">def</span> <span class="nf">flags</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">index</span><span class="o">.</span><span class="n">isValid</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsEnabled</span>
+
+        <span class="k">return</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsEnabled</span> <span class="o">|</span> \
+               <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsSelectable</span> <span class="o">|</span> \
+               <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsDragEnabled</span>
+
+</div>
+<div class="viewcode-block" id="PkgModel.headerData"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.PkgModel.headerData">[docs]</a>    <span class="k">def</span> <span class="nf">headerData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">orientation</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">to_qvariant</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="PkgModel.get_full_name"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.PkgModel.get_full_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_full_name</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span> <span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;construct a full unique name from item</span>
+<span class="sd">        using parent.parent.item syntax</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">item</span> <span class="ow">is</span> <span class="bp">None</span> <span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+        <span class="k">try</span> <span class="p">:</span>
+            <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">item</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="p">:</span>
+                <span class="k">return</span> <span class="n">item</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span> <span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">return</span> <span class="n">item</span><span class="o">.</span><span class="n">name</span>
+</div>
+<div class="viewcode-block" id="PkgModel.index"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.PkgModel.index">[docs]</a>    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">parent</span><span class="o">.</span><span class="n">isValid</span><span class="p">()):</span>
+            <span class="n">parentItem</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rootItem</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">parentItem</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">internalPointer</span><span class="p">()</span>
+
+        <span class="n">l</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">parentItem</span><span class="o">.</span><span class="n">iter_public_values</span><span class="p">())</span>
+        <span class="n">l</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">item_compare</span><span class="p">)</span><span class="c"># (lambda x,y : cmp(x.get_id(), y.get_id())))</span>
+        <span class="n">childItem</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="n">row</span><span class="p">]</span>
+
+        <span class="c"># save parent and row</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent_map</span><span class="p">[</span><span class="nb">id</span><span class="p">(</span><span class="n">childItem</span><span class="p">)]</span> <span class="o">=</span> <span class="n">parentItem</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">row_map</span><span class="p">[</span><span class="nb">id</span><span class="p">(</span><span class="n">childItem</span><span class="p">)]</span> <span class="o">=</span> <span class="n">row</span>
+
+        <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createIndex</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">childItem</span><span class="p">)</span>
+
+        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_full_name</span><span class="p">(</span><span class="n">childItem</span><span class="p">)</span>
+        <span class="c">#self.index_map[childItem.name] = i</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">index_map</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+
+        <span class="k">return</span> <span class="n">i</span>
+
+</div>
+<div class="viewcode-block" id="PkgModel.parent"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.PkgModel.parent">[docs]</a>    <span class="k">def</span> <span class="nf">parent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">index</span><span class="o">.</span><span class="n">isValid</span><span class="p">()):</span>
+            <span class="k">return</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QModelIndex</span><span class="p">()</span>
+
+        <span class="n">childItem</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">internalPointer</span><span class="p">()</span>
+
+        <span class="n">parentItem</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_map</span><span class="p">[</span><span class="nb">id</span><span class="p">(</span><span class="n">childItem</span><span class="p">)]</span>
+
+        <span class="c"># Test if it is the root</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="n">parentItem</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_map</span> <span class="p">):</span>
+            <span class="k">return</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QModelIndex</span><span class="p">()</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">row_map</span><span class="p">[</span><span class="nb">id</span><span class="p">(</span><span class="n">parentItem</span><span class="p">)]</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">createIndex</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">parentItem</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="PkgModel.rowCount"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.PkgModel.rowCount">[docs]</a>    <span class="k">def</span> <span class="nf">rowCount</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">parent</span><span class="o">.</span><span class="n">isValid</span><span class="p">()):</span>
+            <span class="n">parentItem</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rootItem</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">parentItem</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">internalPointer</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parentItem</span><span class="p">,</span> <span class="n">AbstractFactory</span><span class="p">):</span>
+            <span class="k">return</span> <span class="mi">0</span>
+
+        <span class="c"># Return the number of DIFFERENT OBJECTS</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="n">parentItem</span><span class="o">.</span><span class="n">nb_public_values</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">l</span>
+
+
+</div></div>
+<div class="viewcode-block" id="CategoryModel"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.CategoryModel">[docs]</a><span class="k">class</span> <span class="nc">CategoryModel</span> <span class="p">(</span><span class="n">PkgModel</span><span class="p">)</span> <span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; QT4 data model (model/view pattern) to view category &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pkgmanager</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+
+        <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QAbstractItemModel</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pman</span> <span class="o">=</span> <span class="n">pkgmanager</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rootItem</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pman</span><span class="o">.</span><span class="n">get_pseudo_cat</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent_map</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">row_map</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">index_map</span> <span class="o">=</span> <span class="p">{}</span>
+
+
+<div class="viewcode-block" id="CategoryModel.reset"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.CategoryModel.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rootItem</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pman</span><span class="o">.</span><span class="n">get_pseudo_cat</span><span class="p">()</span>
+        <span class="c"># self.parent_map = {}</span>
+        <span class="c"># self.row_map = {}</span>
+        <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QAbstractItemModel</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+
+</div></div>
+<div class="viewcode-block" id="DataPoolModel"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.DataPoolModel">[docs]</a><span class="k">class</span> <span class="nc">DataPoolModel</span> <span class="p">(</span><span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QAbstractListModel</span><span class="p">)</span> <span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; QT4 data model (model/view pattern) to support Data Pool &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datapool</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+
+        <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QAbstractListModel</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datapool</span> <span class="o">=</span> <span class="n">datapool</span>
+
+
+<div class="viewcode-block" id="DataPoolModel.reset"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.DataPoolModel.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QAbstractItemModel</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="DataPoolModel.data"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.DataPoolModel.data">[docs]</a>    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">index</span><span class="o">.</span><span class="n">isValid</span><span class="p">()):</span>
+            <span class="k">return</span> <span class="n">to_qvariant</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">index</span><span class="o">.</span><span class="n">row</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datapool</span><span class="o">.</span><span class="n">keys</span><span class="p">()))):</span>
+            <span class="k">return</span> <span class="n">to_qvariant</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">role</span> <span class="o">==</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">DisplayRole</span><span class="p">):</span>
+            <span class="n">l</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datapool</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="n">l</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="n">index</span><span class="o">.</span><span class="n">row</span><span class="p">()]</span>
+            <span class="c">#classname = self.datapool[name].__class__</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datapool</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
+            <span class="k">if</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">30</span><span class="p">)</span> <span class="p">:</span> <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="p">[:</span><span class="mi">30</span><span class="p">]</span> <span class="o">+</span> <span class="s">&quot;...&quot;</span>
+            <span class="k">return</span> <span class="n">to_qvariant</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s"> ( </span><span class="si">%s</span><span class="s"> )&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+
+        <span class="c"># Icon</span>
+        <span class="k">elif</span><span class="p">(</span> <span class="n">role</span> <span class="o">==</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">DecorationRole</span> <span class="p">):</span>
+            <span class="k">return</span> <span class="n">to_qvariant</span><span class="p">(</span><span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QPixmap</span><span class="p">(</span><span class="s">&quot;:/icons/ccmime.png&quot;</span><span class="p">))</span>
+
+        <span class="c"># Tool Tip</span>
+        <span class="k">elif</span><span class="p">(</span> <span class="n">role</span> <span class="o">==</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ToolTipRole</span> <span class="p">):</span>
+            <span class="n">l</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datapool</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="n">l</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="n">index</span><span class="o">.</span><span class="n">row</span><span class="p">()]</span>
+
+            <span class="n">tips</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span><span class="p">]</span>
+
+            <span class="n">tips</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">%</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datapool</span><span class="p">[</span><span class="n">name</span><span class="p">]),))</span>
+            <span class="n">tips</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;Dir :&quot;</span><span class="p">)</span>
+
+            <span class="n">temp</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">dir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datapool</span><span class="p">[</span><span class="n">name</span><span class="p">])):</span>
+                <span class="n">s</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+                <span class="k">if</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">20</span><span class="p">):</span> <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="p">[:</span><span class="mi">20</span><span class="p">]</span>
+                <span class="n">temp</span> <span class="o">+=</span> <span class="n">s</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\t\t</span><span class="s">&quot;</span>
+                <span class="c"># 2 column view</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="o">%</span><span class="mi">2</span><span class="p">):</span>
+                    <span class="n">tips</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+                    <span class="n">temp</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+
+            <span class="k">if</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span> <span class="p">:</span> <span class="n">tips</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+            <span class="n">tipstr</span> <span class="o">=</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tips</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">to_qvariant</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">tipstr</span><span class="p">))</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">to_qvariant</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="DataPoolModel.flags"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.DataPoolModel.flags">[docs]</a>    <span class="k">def</span> <span class="nf">flags</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">index</span><span class="o">.</span><span class="n">isValid</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsEnabled</span>
+
+        <span class="k">return</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsEnabled</span> <span class="o">|</span> \
+               <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsSelectable</span> <span class="o">|</span> \
+               <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsDragEnabled</span>
+
+</div>
+<div class="viewcode-block" id="DataPoolModel.headerData"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.DataPoolModel.headerData">[docs]</a>    <span class="k">def</span> <span class="nf">headerData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">orientation</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">to_qvariant</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="DataPoolModel.rowCount"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.DataPoolModel.rowCount">[docs]</a>    <span class="k">def</span> <span class="nf">rowCount</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datapool</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+
+
+</div></div>
+<div class="viewcode-block" id="SearchModel"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.SearchModel">[docs]</a><span class="k">class</span> <span class="nc">SearchModel</span> <span class="p">(</span><span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QAbstractListModel</span><span class="p">)</span> <span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; QT4 data model (model/view pattern) to support Search result&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+
+        <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QAbstractListModel</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">searchresult</span> <span class="o">=</span> <span class="p">[]</span>
+
+
+<div class="viewcode-block" id="SearchModel.set_results"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.SearchModel.set_results">[docs]</a>    <span class="k">def</span> <span class="nf">set_results</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">results</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Set the search results : results is a list of factory &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">searchresult</span> <span class="o">=</span> <span class="n">results</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="SearchModel.index"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.SearchModel.index">[docs]</a>    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">row</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">searchresult</span><span class="p">)):</span>
+            <span class="n">factory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">searchresult</span><span class="p">[</span><span class="n">row</span><span class="p">]</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">createIndex</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">factory</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QModelIndex</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="SearchModel.data"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.SearchModel.data">[docs]</a>    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">index</span><span class="o">.</span><span class="n">isValid</span><span class="p">()):</span>
+            <span class="k">return</span> <span class="n">to_qvariant</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">index</span><span class="o">.</span><span class="n">row</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">searchresult</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="n">to_qvariant</span><span class="p">()</span>
+
+        <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">searchresult</span><span class="p">[</span><span class="n">index</span><span class="o">.</span><span class="n">row</span><span class="p">()]</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">role</span> <span class="o">==</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">DisplayRole</span><span class="p">):</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">index</span><span class="o">.</span><span class="n">column</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">to_qvariant</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">package</span><span class="o">.</span><span class="n">get_id</span><span class="p">()))</span>
+            <span class="k">return</span> <span class="n">to_qvariant</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">name</span><span class="o">+</span> <span class="s">&quot; (&quot;</span><span class="o">+</span><span class="n">item</span><span class="o">.</span><span class="n">package</span><span class="o">.</span><span class="n">name</span><span class="o">+</span><span class="s">&quot;)&quot;</span><span class="p">))</span>
+
+        <span class="c"># Icon</span>
+        <span class="k">elif</span><span class="p">(</span> <span class="n">role</span> <span class="o">==</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">DecorationRole</span> <span class="p">):</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">index</span><span class="o">.</span><span class="n">column</span><span class="p">()</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span> <span class="p">:</span> <span class="k">return</span> <span class="n">to_qvariant</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">get_icon</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+        <span class="c"># Tool Tip</span>
+        <span class="k">elif</span><span class="p">(</span> <span class="n">role</span> <span class="o">==</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ToolTipRole</span> <span class="p">):</span>
+            <span class="k">return</span> <span class="n">to_qvariant</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">get_tip</span><span class="p">()))</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">to_qvariant</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="SearchModel.flags"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.SearchModel.flags">[docs]</a>    <span class="k">def</span> <span class="nf">flags</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">index</span><span class="o">.</span><span class="n">isValid</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsEnabled</span>
+
+        <span class="k">return</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsEnabled</span> <span class="o">|</span> \
+               <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsSelectable</span> <span class="o">|</span> \
+               <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsDragEnabled</span>
+
+</div>
+<div class="viewcode-block" id="SearchModel.headerData"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.SearchModel.headerData">[docs]</a>    <span class="k">def</span> <span class="nf">headerData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">orientation</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">to_qvariant</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="SearchModel.rowCount"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.SearchModel.rowCount">[docs]</a>    <span class="k">def</span> <span class="nf">rowCount</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">parent</span><span class="o">.</span><span class="n">isValid</span><span class="p">()):</span>
+            <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">searchresult</span><span class="p">)</span>
+        <span class="k">else</span> <span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+
+</div>
+<div class="viewcode-block" id="SearchModel.columnCount"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.SearchModel.columnCount">[docs]</a>    <span class="k">def</span> <span class="nf">columnCount</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">2</span>
+
+
+<span class="c">################################################################################</span>
+<span class="c"># Views</span>
+</div></div>
+<div class="viewcode-block" id="NodeFactoryView"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.NodeFactoryView">[docs]</a><span class="k">class</span> <span class="nc">NodeFactoryView</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Base class for all view which display node factories.</span>
+<span class="sd">    Implements Drag and Drop facilities.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">main_win</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        @param main_win : main window</span>
+<span class="sd">        @param parent : parent widget</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_win</span> <span class="o">=</span> <span class="n">ref</span><span class="p">(</span><span class="n">main_win</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setDragEnabled</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setDropIndicatorShown</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setAcceptDrops</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">()</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+
+<div class="viewcode-block" id="NodeFactoryView.dragEnterEvent"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.NodeFactoryView.dragEnterEvent">[docs]</a>    <span class="k">def</span> <span class="nf">dragEnterEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="n">mimedata</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">mimeData</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">mimedata</span><span class="o">.</span><span class="n">hasFormat</span><span class="p">(</span><span class="n">NodeFactory</span><span class="o">.</span><span class="n">mimetype</span><span class="p">)</span> <span class="ow">or</span> <span class="n">mimedata</span><span class="o">.</span><span class="n">hasFormat</span><span class="p">(</span><span class="n">CompositeNodeFactory</span><span class="o">.</span><span class="n">mimetype</span><span class="p">):</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">ignore</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="NodeFactoryView.dragMoveEvent"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.NodeFactoryView.dragMoveEvent">[docs]</a>    <span class="k">def</span> <span class="nf">dragMoveEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="n">mimedata</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">mimeData</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">mimedata</span><span class="o">.</span><span class="n">hasFormat</span><span class="p">(</span><span class="n">NodeFactory</span><span class="o">.</span><span class="n">mimetype</span><span class="p">)</span> <span class="ow">or</span> <span class="n">mimedata</span><span class="o">.</span><span class="n">hasFormat</span><span class="p">(</span><span class="n">CompositeNodeFactory</span><span class="o">.</span><span class="n">mimetype</span><span class="p">):</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">setDropAction</span><span class="p">(</span><span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">MoveAction</span><span class="p">)</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">ignore</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="NodeFactoryView.dropEvent"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.NodeFactoryView.dropEvent">[docs]</a>    <span class="k">def</span> <span class="nf">dropEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">ignore</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="NodeFactoryView.startDrag"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.NodeFactoryView.startDrag">[docs]</a>    <span class="k">def</span> <span class="nf">startDrag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">supportedActions</span><span class="p">):</span>
+
+        <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()</span>
+
+        <span class="n">itemData</span> <span class="o">=</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QByteArray</span><span class="p">()</span>
+        <span class="n">dataStream</span> <span class="o">=</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QDataStream</span><span class="p">(</span><span class="n">itemData</span><span class="p">,</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QIODevice</span><span class="o">.</span><span class="n">WriteOnly</span><span class="p">)</span>
+        <span class="n">pixmap</span> <span class="o">=</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QPixmap</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">DecorationRole</span><span class="p">))</span>
+
+        <span class="p">(</span><span class="n">pkg_id</span><span class="p">,</span> <span class="n">factory_id</span><span class="p">,</span> <span class="n">mimetype</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_item_info</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+        <span class="n">dataStream</span><span class="o">.</span><span class="n">writeString</span><span class="p">(</span><span class="n">pkg_id</span><span class="p">)</span>
+        <span class="n">dataStream</span><span class="o">.</span><span class="n">writeString</span><span class="p">(</span><span class="n">factory_id</span><span class="p">)</span>
+        <span class="n">mimeData</span> <span class="o">=</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QMimeData</span><span class="p">()</span>
+
+        <span class="n">mimeData</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span><span class="n">mimetype</span><span class="p">,</span> <span class="n">itemData</span><span class="p">)</span>
+
+        <span class="n">drag</span> <span class="o">=</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QDrag</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">drag</span><span class="o">.</span><span class="n">setMimeData</span><span class="p">(</span><span class="n">mimeData</span><span class="p">)</span>
+        <span class="n">drag</span><span class="o">.</span><span class="n">setHotSpot</span><span class="p">(</span><span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QPoint</span><span class="p">(</span><span class="n">pixmap</span><span class="o">.</span><span class="n">width</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">pixmap</span><span class="o">.</span><span class="n">height</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span>
+        <span class="n">drag</span><span class="o">.</span><span class="n">setPixmap</span><span class="p">(</span><span class="n">pixmap</span><span class="p">)</span>
+
+        <span class="n">drag</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">MoveAction</span><span class="p">)</span>
+
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="NodeFactoryView.get_item_info"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.NodeFactoryView.get_item_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_item_info</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return (package_id, factory_id, mimetype) corresponding to item.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c"># put in the Mime Data pkg id and factory id</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">internalPointer</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">mimetype</span> <span class="ow">in</span> <span class="p">[</span><span class="n">NodeFactory</span><span class="o">.</span><span class="n">mimetype</span><span class="p">,</span> <span class="n">CompositeNodeFactory</span><span class="o">.</span><span class="n">mimetype</span><span class="p">]:</span>
+
+            <span class="n">factory_id</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_id</span><span class="p">()</span>
+            <span class="n">pkg_id</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">package</span><span class="o">.</span><span class="n">get_id</span><span class="p">()</span>
+
+            <span class="k">return</span> <span class="p">(</span><span class="n">pkg_id</span><span class="p">,</span> <span class="n">factory_id</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">mimetype</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="s">&quot;0&quot;</span><span class="p">,</span><span class="s">&quot;0&quot;</span><span class="p">,</span> <span class="s">&quot;openalea/notype&quot;</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="NodeFactoryView.contextMenuEvent"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.NodeFactoryView.contextMenuEvent">[docs]</a>    <span class="k">def</span> <span class="nf">contextMenuEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Context menu event : Display the menu&quot;&quot;&quot;</span>
+
+        <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()</span>
+        <span class="n">obj</span> <span class="o">=</span>  <span class="n">item</span><span class="o">.</span><span class="n">internalPointer</span><span class="p">()</span>
+        <span class="n">menu</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">AbstractFactory</span><span class="p">)):</span> <span class="c"># Factory</span>
+            <span class="n">menu</span> <span class="o">=</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QMenu</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="n">action</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s">&quot;Open&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;triggered()&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_node</span><span class="p">)</span>
+
+            <span class="n">action</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s">&quot;Edit&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;triggered()&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">edit_node</span><span class="p">)</span>
+
+            <span class="n">action</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s">&quot;Properties&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;triggered()&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">edit_properties</span><span class="p">)</span>
+
+            <span class="n">menu</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
+
+            <span class="n">action</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s">&quot;Remove&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;triggered()&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove_node</span><span class="p">)</span>
+
+        <span class="k">elif</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">PseudoPackage</span><span class="p">)):</span> <span class="c"># Package</span>
+
+            <span class="n">enabled</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">is_real_package</span><span class="p">()</span>
+            <span class="n">pkg</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">item</span>
+
+            <span class="n">menu</span> <span class="o">=</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QMenu</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+            <span class="n">action</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s">&quot;Open URL&quot;</span><span class="p">)</span>
+            <span class="n">action</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">enabled</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;triggered()&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_node</span><span class="p">)</span>
+
+            <span class="n">action</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s">&quot;Meta informations&quot;</span><span class="p">)</span>
+            <span class="n">action</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">enabled</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;triggered()&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">edit_package</span><span class="p">)</span>
+
+            <span class="n">action</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s">&quot;Edit Code&quot;</span><span class="p">)</span>
+            <span class="n">action</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">enabled</span> <span class="ow">and</span> <span class="n">pkg</span><span class="o">.</span><span class="n">is_editable</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;triggered()&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">edit_pkg_code</span><span class="p">)</span>
+
+            <span class="n">menu</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
+
+            <span class="n">action</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s">&quot;Add Python Node&quot;</span><span class="p">)</span>
+            <span class="n">action</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">enabled</span> <span class="ow">and</span> <span class="n">pkg</span><span class="o">.</span><span class="n">is_editable</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;triggered()&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_python_node</span><span class="p">)</span>
+
+            <span class="n">action</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s">&quot;Add Composite Node&quot;</span><span class="p">)</span>
+            <span class="n">action</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">enabled</span> <span class="ow">and</span> <span class="n">pkg</span><span class="o">.</span><span class="n">is_editable</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;triggered()&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_composite_node</span><span class="p">)</span>
+
+            <span class="n">action</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s">&quot;Add Data File&quot;</span><span class="p">)</span>
+            <span class="n">action</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">enabled</span> <span class="ow">and</span> <span class="n">pkg</span><span class="o">.</span><span class="n">is_editable</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;triggered()&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_data</span><span class="p">)</span>
+
+            <span class="n">menu</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
+
+            <span class="n">action</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s">&quot;Grab Icon&quot;</span><span class="p">)</span>
+            <span class="n">action</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">enabled</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;triggered()&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">grab_icon</span><span class="p">)</span>
+
+            <span class="n">menu</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
+
+            <span class="n">action</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s">&quot;Move/Rename Package&quot;</span><span class="p">)</span>
+            <span class="n">action</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">enabled</span> <span class="ow">and</span> <span class="n">pkg</span><span class="o">.</span><span class="n">is_editable</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;triggered()&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">move_package</span><span class="p">)</span>
+
+            <span class="n">action</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s">&quot;Copy Package&quot;</span><span class="p">)</span>
+            <span class="n">action</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">enabled</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;triggered()&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">duplicate_package</span><span class="p">)</span>
+
+            <span class="n">action</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s">&quot;Remove Package&quot;</span><span class="p">)</span>
+            <span class="n">action</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">enabled</span> <span class="ow">and</span> <span class="n">pkg</span><span class="o">.</span><span class="n">is_editable</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;triggered()&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove_package</span><span class="p">)</span>
+
+
+            <span class="n">menu</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
+
+            <span class="n">action</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s">&quot;Reload Package&quot;</span><span class="p">)</span>
+            <span class="n">action</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">enabled</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;triggered()&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">reload_package</span><span class="p">)</span>
+
+
+        <span class="k">if</span><span class="p">(</span><span class="n">menu</span><span class="p">):</span>
+            <span class="n">menu</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">globalPos</span><span class="p">())</span>
+            <span class="n">menu</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="NodeFactoryView.get_current_pkg"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.NodeFactoryView.get_current_pkg">[docs]</a>    <span class="k">def</span> <span class="nf">get_current_pkg</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return the current package &quot;&quot;&quot;</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()</span>
+        <span class="n">obj</span> <span class="o">=</span>  <span class="n">item</span><span class="o">.</span><span class="n">internalPointer</span><span class="p">()</span>
+        <span class="c"># obj is necessary a pseudo package (menu disbled in other case)</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">item</span>
+
+        <span class="k">return</span> <span class="n">obj</span>
+
+</div>
+<div class="viewcode-block" id="NodeFactoryView.add_python_node"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.NodeFactoryView.add_python_node">[docs]</a>    <span class="k">def</span> <span class="nf">add_python_node</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+        <span class="n">pman</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">()</span><span class="o">.</span><span class="n">pman</span> <span class="c"># pkgmanager</span>
+        <span class="n">pkg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_pkg</span><span class="p">()</span>
+
+        <span class="n">dialog</span> <span class="o">=</span> <span class="n">NewGraph</span><span class="p">(</span><span class="s">&quot;New Python Node&quot;</span><span class="p">,</span> <span class="n">pman</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">pkg_id</span><span class="o">=</span><span class="n">pkg</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">ret</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">):</span>
+            <span class="n">dialog</span><span class="o">.</span><span class="n">create_nodefactory</span><span class="p">(</span><span class="n">pman</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reinit_treeview</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="NodeFactoryView.add_composite_node"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.NodeFactoryView.add_composite_node">[docs]</a>    <span class="k">def</span> <span class="nf">add_composite_node</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+        <span class="n">pman</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">()</span><span class="o">.</span><span class="n">pman</span> <span class="c"># pkgmanager</span>
+        <span class="n">pkg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_pkg</span><span class="p">()</span>
+
+        <span class="n">dialog</span> <span class="o">=</span> <span class="n">NewGraph</span><span class="p">(</span><span class="s">&quot;New Composite Node&quot;</span><span class="p">,</span> <span class="n">pman</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">pkg_id</span><span class="o">=</span><span class="n">pkg</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">ret</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">):</span>
+            <span class="n">newfactory</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">create_cnfactory</span><span class="p">(</span><span class="n">pman</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reinit_treeview</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="NodeFactoryView.add_data"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.NodeFactoryView.add_data">[docs]</a>    <span class="k">def</span> <span class="nf">add_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+        <span class="n">pman</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">()</span><span class="o">.</span><span class="n">pman</span> <span class="c"># pkgmanager</span>
+        <span class="n">pkg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_pkg</span><span class="p">()</span>
+
+        <span class="n">dialog</span> <span class="o">=</span> <span class="n">NewData</span><span class="p">(</span><span class="s">&quot;Import Data&quot;</span><span class="p">,</span> <span class="n">pman</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">pkg_id</span><span class="o">=</span><span class="n">pkg</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">ret</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">):</span>
+            <span class="n">newfactory</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">create_datafactory</span><span class="p">(</span><span class="n">pman</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reinit_treeview</span><span class="p">()</span>
+
+
+</div>
+<div class="viewcode-block" id="NodeFactoryView.remove_package"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.NodeFactoryView.remove_package">[docs]</a>    <span class="k">def</span> <span class="nf">remove_package</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Remove selected package &quot;&quot;&quot;</span>
+
+        <span class="n">pkg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_pkg</span><span class="p">()</span>
+        <span class="n">pman</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">()</span><span class="o">.</span><span class="n">pman</span> <span class="c"># pkgmanager</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="n">pkg</span><span class="o">.</span><span class="n">is_directory</span><span class="p">()):</span>
+            <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;Error&quot;</span><span class="p">,</span>
+                                             <span class="s">&quot;Cannot Remove old style package</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="n">pkg</span><span class="o">.</span><span class="n">is_editable</span><span class="p">()):</span> <span class="k">return</span>
+
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">question</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;Remove package&quot;</span><span class="p">,</span>
+                                         <span class="s">&quot;Remove </span><span class="si">%s</span><span class="s">?</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">pkg</span><span class="o">.</span><span class="n">name</span><span class="p">,),</span>
+                                         <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span><span class="p">,</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">No</span><span class="p">,)</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">No</span><span class="p">):</span>
+            <span class="k">return</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">pkg</span><span class="o">.</span><span class="n">remove_files</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">AssertionError</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">del</span> <span class="n">pman</span><span class="p">[</span><span class="n">pkg</span><span class="o">.</span><span class="n">get_id</span><span class="p">()]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reinit_treeview</span><span class="p">()</span>
+
+
+</div>
+<div class="viewcode-block" id="NodeFactoryView.grab_icon"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.NodeFactoryView.grab_icon">[docs]</a>    <span class="k">def</span> <span class="nf">grab_icon</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Set the package icon &quot;&quot;&quot;</span>
+
+        <span class="n">pkg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_pkg</span><span class="p">()</span>
+        <span class="n">pix</span> <span class="o">=</span> <span class="n">grab_icon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">main_win</span><span class="p">())</span>
+
+        <span class="n">fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pkg</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s">&quot;icon.png&quot;</span><span class="p">)</span>
+        <span class="n">pix</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+        <span class="n">pkg</span><span class="o">.</span><span class="n">set_icon</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">reinit_treeview</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="NodeFactoryView.edit_pkg_code"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.NodeFactoryView.edit_pkg_code">[docs]</a>    <span class="k">def</span> <span class="nf">edit_pkg_code</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Edit __wralea__ &quot;&quot;&quot;</span>
+
+        <span class="n">pkg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_pkg</span><span class="p">()</span>
+        <span class="n">pman</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">()</span><span class="o">.</span><span class="n">pman</span> <span class="c"># pkgmanager</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="n">pkg</span><span class="o">.</span><span class="n">is_directory</span><span class="p">()):</span>
+            <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;Error&quot;</span><span class="p">,</span>
+                                             <span class="s">&quot;Cannot edit code of old style package</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">pkg</span><span class="o">.</span><span class="n">get_wralea_path</span><span class="p">()</span>
+        <span class="n">widget</span> <span class="o">=</span> <span class="n">get_editor</span><span class="p">()(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">edit_file</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">widget</span><span class="o">.</span><span class="n">is_widget</span><span class="p">())</span> <span class="p">:</span> <span class="n">open_dialog</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">main_win</span><span class="p">(),</span> <span class="n">widget</span><span class="p">,</span> <span class="n">pkg</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="NodeFactoryView.reload_package"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.NodeFactoryView.reload_package">[docs]</a>    <span class="k">def</span> <span class="nf">reload_package</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Reload package &quot;&quot;&quot;</span>
+
+        <span class="n">pkg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_pkg</span><span class="p">()</span>
+        <span class="n">pman</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">()</span><span class="o">.</span><span class="n">pman</span> <span class="c"># pkgmanager</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="n">pkg</span><span class="o">.</span><span class="n">is_directory</span><span class="p">()):</span>
+            <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;Error&quot;</span><span class="p">,</span>
+                                             <span class="s">&quot;Cannot reload old style package</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="n">pman</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">pkg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reinit_treeview</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="NodeFactoryView.duplicate_package"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.NodeFactoryView.duplicate_package">[docs]</a>    <span class="k">def</span> <span class="nf">duplicate_package</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Duplicate a package &quot;&quot;&quot;</span>
+
+        <span class="n">pkg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_pkg</span><span class="p">()</span>
+        <span class="n">pman</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">()</span><span class="o">.</span><span class="n">pman</span> <span class="c"># pkgmanager</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="n">pkg</span><span class="o">.</span><span class="n">is_directory</span><span class="p">()):</span>
+            <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;Error&quot;</span><span class="p">,</span>
+                                             <span class="s">&quot;Cannot duplicate old style package</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+
+        <span class="n">dialog</span> <span class="o">=</span> <span class="n">NewPackage</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">pman</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span><span class="p">,</span> <span class="n">metainfo</span><span class="o">=</span><span class="n">pkg</span><span class="o">.</span><span class="n">metainfo</span><span class="p">)</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">ret</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">):</span>
+            <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">metainfo</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span>
+
+            <span class="n">newpkg</span> <span class="o">=</span> <span class="n">pman</span><span class="o">.</span><span class="n">create_user_package</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">metainfo</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+            <span class="n">newpkg</span><span class="o">.</span><span class="n">clone_from_package</span><span class="p">(</span><span class="n">pkg</span><span class="p">)</span>
+            <span class="n">pman</span><span class="o">.</span><span class="n">add_package</span><span class="p">(</span><span class="n">newpkg</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reinit_treeview</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="NodeFactoryView.move_package"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.NodeFactoryView.move_package">[docs]</a>    <span class="k">def</span> <span class="nf">move_package</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Move a package &quot;&quot;&quot;</span>
+
+        <span class="n">pkg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_pkg</span><span class="p">()</span>
+        <span class="n">pman</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">()</span><span class="o">.</span><span class="n">pman</span> <span class="c"># pkgmanager</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="n">pkg</span><span class="o">.</span><span class="n">is_directory</span><span class="p">()):</span>
+            <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;Error&quot;</span><span class="p">,</span>
+                                      <span class="s">&quot;Cannot move old style package</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+
+        <span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">ok</span><span class="p">)</span> <span class="o">=</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QInputDialog</span><span class="o">.</span><span class="n">getText</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;Move/Rename Package&quot;</span><span class="p">,</span>
+                                                  <span class="s">&quot;Full new name (ex: openalea.data)&quot;</span><span class="p">,</span>
+                                                  <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QLineEdit</span><span class="o">.</span><span class="n">Normal</span><span class="p">,</span> <span class="p">)</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">ok</span><span class="p">):</span>
+            <span class="n">new_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+            <span class="n">old_name</span> <span class="o">=</span> <span class="n">pkg</span><span class="o">.</span><span class="n">name</span>
+            <span class="n">pman</span><span class="o">.</span><span class="n">rename_package</span><span class="p">(</span><span class="n">old_name</span><span class="p">,</span> <span class="n">new_name</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reinit_treeview</span><span class="p">()</span>
+
+
+
+</div>
+<div class="viewcode-block" id="NodeFactoryView.edit_package"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.NodeFactoryView.edit_package">[docs]</a>    <span class="k">def</span> <span class="nf">edit_package</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Edit package Metadata &quot;&quot;&quot;</span>
+
+        <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_pkg</span><span class="p">()</span>
+
+        <span class="n">dialog</span> <span class="o">=</span> <span class="n">EditPackage</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="NodeFactoryView.mouseDoubleClickEvent"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.NodeFactoryView.mouseDoubleClickEvent">[docs]</a>    <span class="k">def</span> <span class="nf">mouseDoubleClickEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+
+        <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()</span>
+        <span class="n">obj</span> <span class="o">=</span>  <span class="n">item</span><span class="o">.</span><span class="n">internalPointer</span><span class="p">()</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">CompositeNodeFactory</span><span class="p">)):</span>
+            <span class="n">session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">main_win</span><span class="p">()</span><span class="o">.</span><span class="n">session</span>
+            <span class="k">for</span> <span class="n">ws</span> <span class="ow">in</span> <span class="n">session</span><span class="o">.</span><span class="n">workspaces</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">obj</span> <span class="o">==</span> <span class="n">ws</span><span class="o">.</span><span class="n">factory</span><span class="p">:</span>
+                    <span class="n">res</span> <span class="o">=</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">main_win</span><span class="p">(),</span> <span class="s">&quot;Other instances are already opened!&quot;</span><span class="p">,</span>
+                                                    <span class="sd">&quot;&quot;&quot;You are trying to open a composite node that has already been opened.</span>
+<span class="sd">Doing this might cause confusion later on.</span>
+<span class="sd">Do you want to continue?&quot;&quot;&quot;</span><span class="p">,</span>
+                                                    <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span> <span class="o">|</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Cancel</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">res</span> <span class="o">==</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Cancel</span><span class="p">:</span>
+                        <span class="k">return</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">break</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">edit_node</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Package</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">open_node</span><span class="p">()</span>
+
+</div>
+    <span class="nd">@busy_cursor</span>
+    <span class="nd">@exception_display</span>
+<div class="viewcode-block" id="NodeFactoryView.open_node"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.NodeFactoryView.open_node">[docs]</a>    <span class="k">def</span> <span class="nf">open_node</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Instantiate Node : open a dialog &quot;&quot;&quot;</span>
+
+        <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()</span>
+        <span class="n">obj</span> <span class="o">=</span>  <span class="n">item</span><span class="o">.</span><span class="n">internalPointer</span><span class="p">()</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">AbstractFactory</span><span class="p">)):</span>
+            <span class="n">widget</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">instantiate_widget</span><span class="p">(</span><span class="n">autonomous</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="n">open_dialog</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">main_win</span><span class="p">(),</span> <span class="n">widget</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_id</span><span class="p">())</span>
+
+
+        <span class="k">elif</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">PseudoPackage</span><span class="p">)):</span>
+            <span class="c"># Display URL</span>
+            <span class="n">urlstr</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_metainfo</span><span class="p">(</span><span class="s">&#39;url&#39;</span><span class="p">)</span>
+            <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QDesktopServices</span><span class="o">.</span><span class="n">openUrl</span><span class="p">(</span><span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QUrl</span><span class="p">(</span><span class="n">urlstr</span><span class="p">))</span>
+
+</div>
+    <span class="nd">@busy_cursor</span>
+    <span class="nd">@exception_display</span>
+<div class="viewcode-block" id="NodeFactoryView.edit_node"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.NodeFactoryView.edit_node">[docs]</a>    <span class="k">def</span> <span class="nf">edit_node</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Edit Node in tab workspace&quot;&quot;&quot;</span>
+
+        <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()</span>
+        <span class="n">obj</span> <span class="o">=</span>  <span class="n">item</span><span class="o">.</span><span class="n">internalPointer</span><span class="p">()</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">CompositeNodeFactory</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">main_win</span><span class="p">()</span><span class="o">.</span><span class="n">open_compositenode</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+        <span class="k">elif</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">NodeFactory</span><span class="p">)</span>
+             <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">DataFactory</span><span class="p">)</span>
+             <span class="p">):</span>
+            <span class="n">widget</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">instantiate_widget</span><span class="p">(</span><span class="n">edit</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">widget</span><span class="o">.</span><span class="n">is_widget</span><span class="p">())</span> <span class="p">:</span>
+                <span class="n">open_dialog</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">main_win</span><span class="p">(),</span> <span class="n">widget</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_id</span><span class="p">())</span>
+
+</div>
+<div class="viewcode-block" id="NodeFactoryView.edit_properties"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.NodeFactoryView.edit_properties">[docs]</a>    <span class="k">def</span> <span class="nf">edit_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Edit Node info&quot;&quot;&quot;</span>
+
+        <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()</span>
+        <span class="n">obj</span> <span class="o">=</span>  <span class="n">item</span><span class="o">.</span><span class="n">internalPointer</span><span class="p">()</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">DataFactory</span><span class="p">)):</span>
+            <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">information</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;Properties&quot;</span><span class="p">,</span> <span class="s">&quot;Data : </span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+            <span class="k">return</span>
+
+        <span class="n">d</span> <span class="o">=</span> <span class="n">NewGraph</span><span class="p">(</span><span class="s">&quot;Node Properties&quot;</span><span class="p">,</span> <span class="n">PackageManager</span><span class="p">(),</span> <span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">ret</span><span class="p">):</span>
+            <span class="n">d</span><span class="o">.</span><span class="n">update_factory</span><span class="p">()</span>
+
+
+</div>
+<div class="viewcode-block" id="NodeFactoryView.remove_node"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.NodeFactoryView.remove_node">[docs]</a>    <span class="k">def</span> <span class="nf">remove_node</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Remove the node from the package &quot;&quot;&quot;</span>
+
+        <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()</span>
+        <span class="n">obj</span> <span class="o">=</span>  <span class="n">item</span><span class="o">.</span><span class="n">internalPointer</span><span class="p">()</span>
+
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">question</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;Remove Model&quot;</span><span class="p">,</span>
+                                         <span class="s">&quot;Remove </span><span class="si">%s</span><span class="s">?</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">,),</span>
+                                         <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span><span class="p">,</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">No</span><span class="p">,)</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span><span class="p">):</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">obj</span><span class="o">.</span><span class="n">package</span><span class="p">[</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">clean_files</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+            <span class="k">del</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">package</span><span class="p">[</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">package</span><span class="o">.</span><span class="n">write</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reinit_treeview</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="NodeFactoryView.reinit_treeview"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.NodeFactoryView.reinit_treeview">[docs]</a>    <span class="k">def</span> <span class="nf">reinit_treeview</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_win</span><span class="p">()</span><span class="o">.</span><span class="n">reinit_treeview</span><span class="p">()</span>
+
+</div></div>
+<div class="viewcode-block" id="NodeFactoryTreeView"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.NodeFactoryTreeView">[docs]</a><span class="k">class</span> <span class="nc">NodeFactoryTreeView</span><span class="p">(</span><span class="n">NodeFactoryView</span><span class="p">,</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QTreeView</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Specialized TreeView to display node factory in a tree with Drag and Drop support  &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">main_win</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        @param main_win : main window</span>
+<span class="sd">        @param parent : parent widget</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QTreeView</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+        <span class="n">NodeFactoryView</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">main_win</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setSelectionMode</span><span class="p">(</span><span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QAbstractItemView</span><span class="o">.</span><span class="n">SingleSelection</span><span class="p">)</span>
+        <span class="c">#self.setAnimated(True)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;expanded (const QModelIndex &amp;)&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">expanded</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;collapsed (const QModelIndex &amp;)&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">collapsed</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">expanded_items</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="NodeFactoryTreeView.collapsed"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.NodeFactoryTreeView.collapsed">[docs]</a>    <span class="k">def</span> <span class="nf">collapsed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">()</span><span class="o">.</span><span class="n">get_full_name</span><span class="p">(</span><span class="n">index</span><span class="o">.</span><span class="n">internalPointer</span><span class="p">()</span> <span class="p">)</span>
+        <span class="c">#self.expanded_items.remove(index.internalPointer().name)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">expanded_items</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="NodeFactoryTreeView.expanded"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.NodeFactoryTreeView.expanded">[docs]</a>    <span class="k">def</span> <span class="nf">expanded</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">()</span><span class="o">.</span><span class="n">get_full_name</span><span class="p">(</span><span class="n">index</span><span class="o">.</span><span class="n">internalPointer</span><span class="p">()</span> <span class="p">)</span>
+        <span class="c">#self.expanded_items.add(index.internalPointer().name)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">expanded_items</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="NodeFactoryTreeView.reset"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.NodeFactoryTreeView.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QTreeView</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expanded_items</span><span class="p">):</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">()</span><span class="o">.</span><span class="n">index_map</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setExpanded</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="SearchListView"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.SearchListView">[docs]</a><span class="k">class</span> <span class="nc">SearchListView</span><span class="p">(</span><span class="n">NodeFactoryView</span><span class="p">,</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QTreeView</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Specialized QListView to display search results with Drag and Drop support &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">main_win</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        @param main_win : main window</span>
+<span class="sd">        @param parent : parent widget</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QListView</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+        <span class="n">NodeFactoryView</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">main_win</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setRootIsDecorated</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="SearchListView.reset"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.SearchListView.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QTreeView</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">()</span><span class="o">.</span><span class="n">columnCount</span><span class="p">(</span><span class="bp">None</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">resizeColumnToContents</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+
+</div></div>
+<div class="viewcode-block" id="DataPoolListView"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.DataPoolListView">[docs]</a><span class="k">class</span> <span class="nc">DataPoolListView</span><span class="p">(</span><span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QListView</span><span class="p">,</span> <span class="n">SignalSlotListener</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Specialized QListView to display data pool contents &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">main_win</span><span class="p">,</span> <span class="n">datapool</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        @param main_win : main window</span>
+<span class="sd">        @param datapool : datapool instance</span>
+<span class="sd">        @param parent : parent widget</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QListView</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+        <span class="n">SignalSlotListener</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_win</span> <span class="o">=</span> <span class="n">ref</span><span class="p">(</span><span class="n">main_win</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setDragEnabled</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setDropIndicatorShown</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setAcceptDrops</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">initialise</span><span class="p">(</span><span class="n">datapool</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="DataPoolListView.notify"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.DataPoolListView.notify">[docs]</a>    <span class="k">def</span> <span class="nf">notify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sender</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Notification by observed &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="DataPoolListView.dragEnterEvent"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.DataPoolListView.dragEnterEvent">[docs]</a>    <span class="k">def</span> <span class="nf">dragEnterEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">mimeData</span><span class="p">()</span><span class="o">.</span><span class="n">hasFormat</span><span class="p">(</span><span class="s">&quot;openalea/data_instance&quot;</span><span class="p">):</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">ignore</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="DataPoolListView.dragMoveEvent"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.DataPoolListView.dragMoveEvent">[docs]</a>    <span class="k">def</span> <span class="nf">dragMoveEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">mimeData</span><span class="p">()</span><span class="o">.</span><span class="n">hasFormat</span><span class="p">(</span><span class="s">&quot;openalea/data_instance&quot;</span><span class="p">):</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">setDropAction</span><span class="p">(</span><span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">MoveAction</span><span class="p">)</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">ignore</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="DataPoolListView.dropEvent"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.DataPoolListView.dropEvent">[docs]</a>    <span class="k">def</span> <span class="nf">dropEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+
+        <span class="n">event</span><span class="o">.</span><span class="n">ignore</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="DataPoolListView.startDrag"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.DataPoolListView.startDrag">[docs]</a>    <span class="k">def</span> <span class="nf">startDrag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">supportedActions</span><span class="p">):</span>
+
+        <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()</span>
+
+        <span class="n">itemData</span> <span class="o">=</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QByteArray</span><span class="p">()</span>
+        <span class="n">dataStream</span> <span class="o">=</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QDataStream</span><span class="p">(</span><span class="n">itemData</span><span class="p">,</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QIODevice</span><span class="o">.</span><span class="n">WriteOnly</span><span class="p">)</span>
+        <span class="n">pixmap</span> <span class="o">=</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QPixmap</span><span class="p">(</span><span class="s">&quot;:/icons/ccmime.png&quot;</span><span class="p">)</span>
+
+        <span class="n">l</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">()</span><span class="o">.</span><span class="n">datapool</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">l</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">row</span><span class="p">()]</span>
+
+        <span class="n">dataStream</span><span class="o">.</span><span class="n">writeString</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="n">mimeData</span> <span class="o">=</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QMimeData</span><span class="p">()</span>
+        <span class="n">mimeData</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span><span class="s">&quot;openalea/data_instance&quot;</span><span class="p">,</span> <span class="n">itemData</span><span class="p">)</span>
+
+        <span class="n">linecode</span> <span class="o">=</span> <span class="n">cli</span><span class="o">.</span><span class="n">get_datapool_code</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">mimeData</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">linecode</span><span class="p">)</span>
+
+        <span class="n">drag</span> <span class="o">=</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QDrag</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">drag</span><span class="o">.</span><span class="n">setMimeData</span><span class="p">(</span><span class="n">mimeData</span><span class="p">)</span>
+        <span class="n">drag</span><span class="o">.</span><span class="n">setHotSpot</span><span class="p">(</span><span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QPoint</span><span class="p">(</span><span class="n">pixmap</span><span class="o">.</span><span class="n">width</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">pixmap</span><span class="o">.</span><span class="n">height</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span>
+        <span class="n">drag</span><span class="o">.</span><span class="n">setPixmap</span><span class="p">(</span><span class="n">pixmap</span><span class="p">)</span>
+
+        <span class="n">drag</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">MoveAction</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="DataPoolListView.contextMenuEvent"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.DataPoolListView.contextMenuEvent">[docs]</a>    <span class="k">def</span> <span class="nf">contextMenuEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Context menu event : Display the menu&quot;&quot;&quot;</span>
+
+
+        <span class="n">menu</span> <span class="o">=</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QMenu</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">action</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s">&quot;Remove&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;triggered()&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove_element</span><span class="p">)</span>
+
+        <span class="n">menu</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">globalPos</span><span class="p">())</span>
+        <span class="n">menu</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="DataPoolListView.remove_element"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.node_treeview.DataPoolListView.remove_element">[docs]</a>    <span class="k">def</span> <span class="nf">remove_element</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Remove an element from the datapool&quot;&quot;&quot;</span>
+
+        <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()</span>
+
+        <span class="n">model</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">model</span><span class="p">()</span>
+        <span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="n">model</span><span class="p">)</span> <span class="p">:</span> <span class="k">return</span>
+
+        <span class="n">datapool</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">datapool</span>
+
+        <span class="n">l</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">()</span><span class="o">.</span><span class="n">datapool</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">l</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">row</span><span class="p">()]</span>
+
+        <span class="k">del</span><span class="p">(</span><span class="n">datapool</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
+</pre></div></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">OpenAleaLab 1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Guillaume Baty.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3a0.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Create a developer documentation with sphinx and github &mdash; OpenAleaLab 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/virtualplants.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="OpenAleaLab 1.0 documentation" href="../../index.html" />
+    <link rel="up" title="Get involved" href="../index.html" />
+    <link rel="next" title="Documentation to write" href="../todo/documentation-to-write.html" />
+    <link rel="prev" title="Get involved" href="../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../todo/documentation-to-write.html" title="Documentation to write"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="Get involved"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">OpenAleaLab 1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Get involved</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="create-a-developer-documentation-with-sphinx-and-github">
+<h1>Create a developer documentation with sphinx and github<a class="headerlink" href="#create-a-developer-documentation-with-sphinx-and-github" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>When developing a software, it is necessary to have a place to share and put documentation.
+For users, this documentation must be nice and easy to read. It must allow to search specific topics.
+For developers, this documentation must be easy to write, easy to read and browse and keep history.
+It is also important that documentation facilitate link to real code, for example by providing syntax highlighting or extraction of code&#8217;s documentation.</p>
+<p>We choose to use sphinx to edit and build documentation and github to share it and keep history.
+Please have look to <em class="xref std std-ref">Sphinx page</em> and <em class="xref std std-ref">github page</em> for more information.</p>
+<p>All tips and models are based on excellent work done by <a class="reference external" href="http://ipython.org">IPython Team</a> .
+Parts of this documentation directly come from <a class="reference external" href="https://github.com/ipython/ipython-doc/tree/gh-pages">IPython-doc</a> and <a class="reference external" href="https://github.com/ipython/ipython-website">IPython-website</a>.</p>
+</div>
+<div class="section" id="create-official-organization-website">
+<h2>Create official organization website<a class="headerlink" href="#create-official-organization-website" title="Permalink to this headline">¶</a></h2>
+<p>If you just want to contribute, please go to next step. This step is useful for organization owners only.</p>
+<div class="section" id="create-source-repository">
+<h3>Create source repository<a class="headerlink" href="#create-source-repository" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Generate a github project called &#8220;organization-website&#8221; with organization account, not with your user account. This project contains documentation sources (mainly sphinx rst files)</li>
+<li>Prepare github directory :</li>
+</ul>
+<div class="highlight-bash"><div class="highlight"><pre>git clone https://github.com/ORGANIZATION/ORGANIZATION-website
+<span class="nb">cd </span>ORGANIZATION-website
+mkdir _scripts
+</pre></div>
+</div>
+<ul class="simple">
+<li>Copy scripts <a class="reference download internal" href="../../_downloads/gh-pages.py"><tt class="xref download docutils literal"><span class="pre">gh-pages.py</span></tt></a> and <a class="reference download internal" href="../../_downloads/copy_trees.py"><tt class="xref download docutils literal"><span class="pre">copy_trees.py</span></tt></a> into &#8220;_scripts&#8221; directory</li>
+<li>Modify _scripts/gh-pages.py and change page_repo values. Generally, just replace ORGANIZATION and USERNAME.</li>
+<li>Create your sphinx project with sphinx-wizard</li>
+</ul>
+<div class="highlight-bash"><div class="highlight"><pre>sphinx-quickstart
+
+<span class="c"># To question &quot;Separate source and build directories (y/n) [n]&quot;, answer n</span>
+<span class="c"># To question &quot;Generate Makefile (y/n) [y]&quot;, answer n</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>Copy this <a class="reference download internal" href="../../_downloads/Makefile"><tt class="xref download docutils literal"><span class="pre">Makefile</span></tt></a> into directory</li>
+</ul>
+</div>
+<div class="section" id="create-html-repository">
+<h3>Create html repository<a class="headerlink" href="#create-html-repository" title="Permalink to this headline">¶</a></h3>
+<p>Create repository to put generated html files.</p>
+<ul>
+<li><dl class="first docutils">
+<dt>create one repository for your user or organization as explained in <a class="reference external" href="http://pages.github.com">Github help pages</a>.</dt>
+<dd><ul class="first last simple">
+<li>Normally, just replace &#8220;-website&#8221; by &#8221;.github.io&#8221;.</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>create a file named &#8221;.nojekyll&#8221; in project myorganization.github.io this is required to</dt>
+<dd><ul class="first last simple">
+<li>disable jekyll (and allow to put folder beginning with _, see <a class="reference external" href="http://help.github.com/articles/files-that-start-with-an-underscore-are-missing">Github faq</a>)</li>
+<li>create a master branch necessary to build scripts</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="create-your-personal-repositories">
+<h2>Create your personal repositories<a class="headerlink" href="#create-your-personal-repositories" title="Permalink to this headline">¶</a></h2>
+<p>First, fork on github ORGANIZATION-website (<a class="reference external" href="https://github.com/ORGANIZATION/ORGANIZATION-website">https://github.com/ORGANIZATION/ORGANIZATION-website</a>).
+This step create a new project <a class="reference external" href="https://github.com/USERNAME/ORGANIZATION-website">https://github.com/USERNAME/ORGANIZATION-website</a>.</p>
+<p>Here, this repository is used for both sources and generated html files.</p>
+<p>Then, on a terminal, do</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="c"># Checkout your fork</span>
+
+git clone https://github.com/USERNAME/ORGANIZATION-website
+<span class="nb">cd </span>ORGANIZATION-website
+
+
+<span class="c"># Create an empty branch used to host generated files</span>
+<span class="c"># Never work on this branch as script will replace all files automatically</span>
+
+git checkout --orphan gh-pages
+git rm -rf . <span class="c"># clear branch</span>
+touch README.md
+touch .nojekyll
+git add README.md .nojekyll
+git commit -m <span class="s2">&quot;Initial commit&quot;</span>
+git push origin gh-pages
+
+
+<span class="c"># Come back to source directory</span>
+git checkout master
+</pre></div>
+</div>
+</div>
+<div class="section" id="standard-workflow">
+<h2>Standard workflow<a class="headerlink" href="#standard-workflow" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="local-editing">
+<h3>Local Editing<a class="headerlink" href="#local-editing" title="Permalink to this headline">¶</a></h3>
+<p>While your documentation has not reached a stable step :</p>
+<ul class="simple">
+<li>modify rst sources, add files, ...</li>
+<li>generate html files locally with &#8220;make html&#8221;</li>
+<li>fix warnings and errors</li>
+<li>check and fix links with &#8220;make linkcheck&#8221;</li>
+<li>check and fix doctests mith &#8220;make doctest&#8221;</li>
+<li>check result in _build/html/index.html</li>
+</ul>
+</div>
+<div class="section" id="share-your-work">
+<h3>Share your work<a class="headerlink" href="#share-your-work" title="Permalink to this headline">¶</a></h3>
+<p>When your modifications are enough stable, you may want to share your work with other</p>
+<ul class="simple">
+<li>remove &#8220;_build&#8221; and &#8220;gh-pages&#8221; directory and do all checks again (links, doctests, errors and warnings)</li>
+<li>Commit and push source modifications : see <em class="xref std std-ref">github workflow</em></li>
+<li>generate html files and an associated commit with &#8220;make gh-pages&#8221;</li>
+<li>check git state in gh-pages (normally all is ok)</li>
+<li>push gh-pages</li>
+</ul>
+</div>
+<div class="section" id="publish-your-work-on-official-website">
+<h3>Publish your work on official website<a class="headerlink" href="#publish-your-work-on-official-website" title="Permalink to this headline">¶</a></h3>
+<p>Now, other developers can see sources on your fork and result at <a class="reference external" href="http://USERNAME.github.io/ORGANIZATION-website">http://USERNAME.github.io/ORGANIZATION-website</a></p>
+<p>If your work is accepted, you may want to integrate your work in official website.
+For this last step, id depends on workflow your team has chosen.</p>
+<p>Generally, if you are a maintainer of official website, you can push html files to website with</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nb">cd </span>ORGANIZATION-website
+<span class="c"># Remove all pages</span>
+<span class="c">#rm -rf gh-pages</span>
+make publish
+</pre></div>
+</div>
+<p>If you are a contributor, just create a pull-request following standard git workflow.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Create a developer documentation with sphinx and github</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#create-official-organization-website">Create official organization website</a><ul>
+<li><a class="reference internal" href="#create-source-repository">Create source repository</a></li>
+<li><a class="reference internal" href="#create-html-repository">Create html repository</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#create-your-personal-repositories">Create your personal repositories</a></li>
+<li><a class="reference internal" href="#standard-workflow">Standard workflow</a><ul>
+<li><a class="reference internal" href="#local-editing">Local Editing</a></li>
+<li><a class="reference internal" href="#share-your-work">Share your work</a></li>
+<li><a class="reference internal" href="#publish-your-work-on-official-website">Publish your work on official website</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../index.html"
+                        title="previous chapter">Get involved</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../todo/documentation-to-write.html"
+                        title="next chapter">Documentation to write</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/contribute/documentation/sphinx-gh.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../todo/documentation-to-write.html" title="Documentation to write"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="Get involved"
+             >previous</a> |</li>
+        <li><a href="../../index.html">OpenAleaLab 1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Get involved</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Guillaume Baty.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3a0.
+    </div>
+  </body>
+</html>

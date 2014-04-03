@@ -1,0 +1,671 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>OpenAlea Grapheditor’s API &mdash; OpenAleaLab 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/virtualplants.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="OpenAleaLab 1.0 documentation" href="../../../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">OpenAleaLab 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="openalea-grapheditor-s-api">
+<h1>OpenAlea Grapheditor&#8217;s API<a class="headerlink" href="#openalea-grapheditor-s-api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-openalea.grapheditor.base">
+<span id="api"></span><h2>API<a class="headerlink" href="#module-openalea.grapheditor.base" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="openalea.grapheditor.base.GraphAdapterBase">
+<em class="property">class </em><tt class="descclassname">openalea.grapheditor.base.</tt><tt class="descname">GraphAdapterBase</tt><span class="sig-paren">(</span><em>graph=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/base.html#GraphAdapterBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.base.GraphAdapterBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for adapter to graph</p>
+<dl class="method">
+<dt id="openalea.grapheditor.base.GraphAdapterBase.add_edge">
+<tt class="descname">add_edge</tt><span class="sig-paren">(</span><em>source</em>, <em>target</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/base.html#GraphAdapterBase.add_edge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.base.GraphAdapterBase.add_edge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an edge in the model between source and target.</p>
+<p>Upon succes it must emit the following event tuple:
+(&#8220;edge_added&#8221;, (&#8220;edge_type&#8221;, edge, sourceObs, targetObs)).</p>
+<blockquote>
+<div><ul class="simple">
+<li>&#8220;edge-type&#8221; is a edge-type string defined in the strategy
+used for a particular graph type.</li>
+<li>edge, sourceObs and targetObs are the <strong>observable</strong> objects</li>
+</ul>
+</div></blockquote>
+<p>representing an egde and its two anchors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.base.GraphAdapterBase.add_vertex">
+<tt class="descname">add_vertex</tt><span class="sig-paren">(</span><em>vertex</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/base.html#GraphAdapterBase.add_vertex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.base.GraphAdapterBase.add_vertex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an existing vertex to the model.</p>
+<p>Upon succes it must emit the following event tuple:
+(&#8220;vertex_added&#8221;, (&#8220;vertex_type&#8221;, vertex)).</p>
+<blockquote>
+<div><ul class="simple">
+<li>&#8220;vertex-type&#8221; is a vertex-type string defined in the strategy 
+used for a particular graph type.</li>
+<li>&#8220;vertex&#8221; is the <strong>observable</strong> object representing a vertex.</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="openalea.grapheditor.base.GraphAdapterBase.get_edge_types">
+<em class="property">classmethod </em><tt class="descname">get_edge_types</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/base.html#GraphAdapterBase.get_edge_types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.base.GraphAdapterBase.get_edge_types" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used by the GraphListenerBase class to
+check if the types declared here are really
+implemented in the strategy</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.base.GraphAdapterBase.get_vertex">
+<tt class="descname">get_vertex</tt><span class="sig-paren">(</span><em>vid=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/base.html#GraphAdapterBase.get_vertex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.base.GraphAdapterBase.get_vertex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the vertex object matching vid. By default this is just vid!</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.base.GraphAdapterBase.get_vertex_input">
+<tt class="descname">get_vertex_input</tt><span class="sig-paren">(</span><em>graphicalV</em>, <em>pid</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/base.html#GraphAdapterBase.get_vertex_input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.base.GraphAdapterBase.get_vertex_input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.base.GraphAdapterBase.get_vertex_inputs">
+<tt class="descname">get_vertex_inputs</tt><span class="sig-paren">(</span><em>graphicalV</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/base.html#GraphAdapterBase.get_vertex_inputs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.base.GraphAdapterBase.get_vertex_inputs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.base.GraphAdapterBase.get_vertex_output">
+<tt class="descname">get_vertex_output</tt><span class="sig-paren">(</span><em>graphicalV</em>, <em>pid</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/base.html#GraphAdapterBase.get_vertex_output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.base.GraphAdapterBase.get_vertex_output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.base.GraphAdapterBase.get_vertex_outputs">
+<tt class="descname">get_vertex_outputs</tt><span class="sig-paren">(</span><em>graphicalV</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/base.html#GraphAdapterBase.get_vertex_outputs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.base.GraphAdapterBase.get_vertex_outputs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="openalea.grapheditor.base.GraphAdapterBase.get_vertex_types">
+<em class="property">classmethod </em><tt class="descname">get_vertex_types</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/base.html#GraphAdapterBase.get_vertex_types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.base.GraphAdapterBase.get_vertex_types" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used by the GraphListenerBase class to
+check if the types declared here are really
+implemented in the strategy</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.base.GraphAdapterBase.is_input">
+<tt class="descname">is_input</tt><span class="sig-paren">(</span><em>input</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/base.html#GraphAdapterBase.is_input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.base.GraphAdapterBase.is_input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.base.GraphAdapterBase.is_legal_connection">
+<tt class="descname">is_legal_connection</tt><span class="sig-paren">(</span><em>src</em>, <em>dst</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/base.html#GraphAdapterBase.is_legal_connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.base.GraphAdapterBase.is_legal_connection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.base.GraphAdapterBase.is_output">
+<tt class="descname">is_output</tt><span class="sig-paren">(</span><em>output</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/base.html#GraphAdapterBase.is_output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.base.GraphAdapterBase.is_output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.base.GraphAdapterBase.is_vertex_protected">
+<tt class="descname">is_vertex_protected</tt><span class="sig-paren">(</span><em>vertex</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/base.html#GraphAdapterBase.is_vertex_protected"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.base.GraphAdapterBase.is_vertex_protected" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.base.GraphAdapterBase.new_vertex">
+<tt class="descname">new_vertex</tt><span class="sig-paren">(</span><em>vtype=None</em>, <em>position=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/base.html#GraphAdapterBase.new_vertex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.base.GraphAdapterBase.new_vertex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new vertex at the defined position and add it to the model</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.base.GraphAdapterBase.remove_edge">
+<tt class="descname">remove_edge</tt><span class="sig-paren">(</span><em>source</em>, <em>target</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/base.html#GraphAdapterBase.remove_edge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.base.GraphAdapterBase.remove_edge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes the specified vertex from the model.</p>
+<p>Upon success it must emit the following event tuple:
+(&#8220;edge_removed&#8221;, (edge,)).</p>
+<blockquote>
+<div><ul class="simple">
+<li>edge is the observable object representing an edge.</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.base.GraphAdapterBase.remove_edges">
+<tt class="descname">remove_edges</tt><span class="sig-paren">(</span><em>edgeList</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/base.html#GraphAdapterBase.remove_edges"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.base.GraphAdapterBase.remove_edges" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes a list of vertices by forwarding
+them to self.remove_vertex</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.base.GraphAdapterBase.remove_vertex">
+<tt class="descname">remove_vertex</tt><span class="sig-paren">(</span><em>vertex</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/base.html#GraphAdapterBase.remove_vertex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.base.GraphAdapterBase.remove_vertex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes the specified vertex from the model.</p>
+<p>Upon success it must emit the following event tuple:
+(&#8220;vertex_removed&#8221;, (vertex,)).</p>
+<blockquote>
+<div><ul class="simple">
+<li>vertex is the <strong>observable</strong> object representing a vertex.</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.base.GraphAdapterBase.remove_vertices">
+<tt class="descname">remove_vertices</tt><span class="sig-paren">(</span><em>vertexList</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/base.html#GraphAdapterBase.remove_vertices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.base.GraphAdapterBase.remove_vertices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes a list of vertices by forwarding
+them to self.remove_vertex</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.base.GraphAdapterBase.replace_vertex">
+<tt class="descname">replace_vertex</tt><span class="sig-paren">(</span><em>oldVertex</em>, <em>newVertex</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/base.html#GraphAdapterBase.replace_vertex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.base.GraphAdapterBase.replace_vertex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.base.GraphAdapterBase.set_graph">
+<tt class="descname">set_graph</tt><span class="sig-paren">(</span><em>graph</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/base.html#GraphAdapterBase.set_graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.base.GraphAdapterBase.set_graph" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="openalea.grapheditor.base.GraphStrategyMaker">
+<tt class="descclassname">openalea.grapheditor.base.</tt><tt class="descname">GraphStrategyMaker</tt><span class="sig-paren">(</span><em>graphView</em>, <em>vertexWidgetMap</em>, <em>edgeWidgetMap</em>, <em>connectorTypes=</em>, <span class="optional">[</span><span class="optional">]</span><em>graphViewInitialiser=None</em>, <em>adapterType=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/base.html#GraphStrategyMaker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.base.GraphStrategyMaker" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<span class="target" id="module-openalea.grapheditor.interfaces"></span><p>Interfaces for the generic graph view module. The graph view widget
+won&#8217;t check for inheritance of the object&#8217;s it is passed. Instead, it
+will check the interfaces match more or less.</p>
+<dl class="class">
+<dt id="openalea.grapheditor.interfaces.IGraphAdapter">
+<em class="property">class </em><tt class="descclassname">openalea.grapheditor.interfaces.</tt><tt class="descname">IGraphAdapter</tt><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphAdapter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphAdapter" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphAdapter.add_edge">
+<tt class="descname">add_edge</tt><span class="sig-paren">(</span><em>*args</em>, <em>**kargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphAdapter.add_edge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphAdapter.add_edge" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphAdapter.add_vertex">
+<tt class="descname">add_vertex</tt><span class="sig-paren">(</span><em>*args</em>, <em>**kargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphAdapter.add_vertex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphAdapter.add_vertex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphAdapter.get_edge_types">
+<tt class="descname">get_edge_types</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphAdapter.get_edge_types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphAdapter.get_edge_types" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphAdapter.get_vertex">
+<tt class="descname">get_vertex</tt><span class="sig-paren">(</span><em>*args</em>, <em>**kargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphAdapter.get_vertex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphAdapter.get_vertex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphAdapter.get_vertex_input">
+<tt class="descname">get_vertex_input</tt><span class="sig-paren">(</span><em>*args</em>, <em>**kargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphAdapter.get_vertex_input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphAdapter.get_vertex_input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphAdapter.get_vertex_inputs">
+<tt class="descname">get_vertex_inputs</tt><span class="sig-paren">(</span><em>*args</em>, <em>**kargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphAdapter.get_vertex_inputs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphAdapter.get_vertex_inputs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphAdapter.get_vertex_output">
+<tt class="descname">get_vertex_output</tt><span class="sig-paren">(</span><em>*args</em>, <em>**kargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphAdapter.get_vertex_output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphAdapter.get_vertex_output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphAdapter.get_vertex_outputs">
+<tt class="descname">get_vertex_outputs</tt><span class="sig-paren">(</span><em>*args</em>, <em>**kargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphAdapter.get_vertex_outputs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphAdapter.get_vertex_outputs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphAdapter.get_vertex_types">
+<tt class="descname">get_vertex_types</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphAdapter.get_vertex_types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphAdapter.get_vertex_types" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphAdapter.is_input">
+<tt class="descname">is_input</tt><span class="sig-paren">(</span><em>*args</em>, <em>**kargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphAdapter.is_input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphAdapter.is_input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphAdapter.is_output">
+<tt class="descname">is_output</tt><span class="sig-paren">(</span><em>*args</em>, <em>**kargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphAdapter.is_output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphAdapter.is_output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphAdapter.remove_edge">
+<tt class="descname">remove_edge</tt><span class="sig-paren">(</span><em>*args</em>, <em>**kargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphAdapter.remove_edge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphAdapter.remove_edge" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphAdapter.remove_vertex">
+<tt class="descname">remove_vertex</tt><span class="sig-paren">(</span><em>*args</em>, <em>**kargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphAdapter.remove_vertex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphAdapter.remove_vertex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphAdapter.remove_vertices">
+<tt class="descname">remove_vertices</tt><span class="sig-paren">(</span><em>*args</em>, <em>**kargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphAdapter.remove_vertices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphAdapter.remove_vertices" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openalea.grapheditor.interfaces.IGraphListener">
+<em class="property">class </em><tt class="descclassname">openalea.grapheditor.interfaces.</tt><tt class="descname">IGraphListener</tt><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphListener"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphListener" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphListener.clear">
+<tt class="descname">clear</tt><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphListener.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphListener.clear" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphListener.edge_added">
+<tt class="descname">edge_added</tt><span class="sig-paren">(</span><em>edgeModel</em>, <em>srcPort</em>, <em>dstPort</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphListener.edge_added"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphListener.edge_added" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphListener.edge_removed">
+<tt class="descname">edge_removed</tt><span class="sig-paren">(</span><em>edgeModel</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphListener.edge_removed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphListener.edge_removed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphListener.find_closest_connectable">
+<tt class="descname">find_closest_connectable</tt><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphListener.find_closest_connectable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphListener.find_closest_connectable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphListener.initialise_from_model">
+<tt class="descname">initialise_from_model</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphListener.initialise_from_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphListener.initialise_from_model" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphListener.is_connectable">
+<tt class="descname">is_connectable</tt><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphListener.is_connectable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphListener.is_connectable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphListener.post_addition">
+<tt class="descname">post_addition</tt><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphListener.post_addition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphListener.post_addition" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphListener.vertex_added">
+<tt class="descname">vertex_added</tt><span class="sig-paren">(</span><em>vtype</em>, <em>vertexModel</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphListener.vertex_added"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphListener.vertex_added" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphListener.vertex_removed">
+<tt class="descname">vertex_removed</tt><span class="sig-paren">(</span><em>vtype</em>, <em>vertexModel</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphListener.vertex_removed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphListener.vertex_removed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openalea.grapheditor.interfaces.IGraphViewAnnotation">
+<em class="property">class </em><tt class="descclassname">openalea.grapheditor.interfaces.</tt><tt class="descname">IGraphViewAnnotation</tt><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphViewAnnotation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphViewAnnotation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interface for Annotations</p>
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphViewAnnotation.notify">
+<tt class="descname">notify</tt><span class="sig-paren">(</span><em>sender</em>, <em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphViewAnnotation.notify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphViewAnnotation.notify" title="Permalink to this definition">¶</a></dt>
+<dd><p>(&#8220;metadata_changed&#8221;, &#8220;text&#8221;, &#8220;a string&#8221;, str)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphViewAnnotation.set_text">
+<tt class="descname">set_text</tt><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphViewAnnotation.set_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphViewAnnotation.set_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>to change the visible text</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openalea.grapheditor.interfaces.IGraphViewConnectable">
+<em class="property">class </em><tt class="descclassname">openalea.grapheditor.interfaces.</tt><tt class="descname">IGraphViewConnectable</tt><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphViewConnectable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphViewConnectable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interface for connectable objects</p>
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphViewConnectable.get_scene_center">
+<tt class="descname">get_scene_center</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphViewConnectable.get_scene_center"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphViewConnectable.get_scene_center" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphViewConnectable.set_highlighted">
+<tt class="descname">set_highlighted</tt><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphViewConnectable.set_highlighted"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphViewConnectable.set_highlighted" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openalea.grapheditor.interfaces.IGraphViewEdge">
+<em class="property">class </em><tt class="descclassname">openalea.grapheditor.interfaces.</tt><tt class="descname">IGraphViewEdge</tt><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphViewEdge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphViewEdge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interface for edges between two vertexs.</p>
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphViewEdge.notify">
+<tt class="descname">notify</tt><span class="sig-paren">(</span><em>sender</em>, <em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphViewEdge.notify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphViewEdge.notify" title="Permalink to this definition">¶</a></dt>
+<dd><p>(&#8220;metadata_changed&#8221;, &#8220;canvasPosition&#8221;, [x,x], list)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphViewEdge.update_line_destination">
+<tt class="descname">update_line_destination</tt><span class="sig-paren">(</span><em>*pos</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphViewEdge.update_line_destination"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphViewEdge.update_line_destination" title="Permalink to this definition">¶</a></dt>
+<dd><p>updates this edge&#8217;s ending point. Called when
+dest point is moved</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphViewEdge.update_line_source">
+<tt class="descname">update_line_source</tt><span class="sig-paren">(</span><em>*pos</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphViewEdge.update_line_source"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphViewEdge.update_line_source" title="Permalink to this definition">¶</a></dt>
+<dd><p>updates this edge&#8217;s starting point. Called when
+source point is moved</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openalea.grapheditor.interfaces.IGraphViewElement">
+<em class="property">class </em><tt class="descclassname">openalea.grapheditor.interfaces.</tt><tt class="descname">IGraphViewElement</tt><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphViewElement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphViewElement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for elements in a GraphView</p>
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphViewElement.add_to_view">
+<tt class="descname">add_to_view</tt><span class="sig-paren">(</span><em>view</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphViewElement.add_to_view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphViewElement.add_to_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>add this element to the graphical view</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphViewElement.get_view_data">
+<tt class="descname">get_view_data</tt><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphViewElement.get_view_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphViewElement.get_view_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphViewElement.initialise_from_model">
+<tt class="descname">initialise_from_model</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphViewElement.initialise_from_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphViewElement.initialise_from_model" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphViewElement.notify">
+<tt class="descname">notify</tt><span class="sig-paren">(</span><em>sender</em>, <em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphViewElement.notify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphViewElement.notify" title="Permalink to this definition">¶</a></dt>
+<dd><p>called by the observed objects
+Expected event = (&#8220;metadata_changed&#8221;, &#8220;position&#8221;, [x,x], list)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphViewElement.position_changed">
+<tt class="descname">position_changed</tt><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphViewElement.position_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphViewElement.position_changed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Place the element&#8217;s representation in
+the view space</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphViewElement.remove_from_view">
+<tt class="descname">remove_from_view</tt><span class="sig-paren">(</span><em>view</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphViewElement.remove_from_view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphViewElement.remove_from_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>remove this element from the graphical view</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphViewElement.store_view_data">
+<tt class="descname">store_view_data</tt><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphViewElement.store_view_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphViewElement.store_view_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openalea.grapheditor.interfaces.IGraphViewFloatingEdge">
+<em class="property">class </em><tt class="descclassname">openalea.grapheditor.interfaces.</tt><tt class="descname">IGraphViewFloatingEdge</tt><span class="sig-paren">(</span><em>src</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphViewFloatingEdge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphViewFloatingEdge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interface for edges to be drawn during
+creation time, ie while the user drags.</p>
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphViewFloatingEdge.consolidate">
+<tt class="descname">consolidate</tt><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphViewFloatingEdge.consolidate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphViewFloatingEdge.consolidate" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns whatever object is under the mouse
+pointer at the time the button was released</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphViewFloatingEdge.get_connections">
+<tt class="descname">get_connections</tt><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphViewFloatingEdge.get_connections"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphViewFloatingEdge.get_connections" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openalea.grapheditor.interfaces.IGraphViewStrategies">
+<em class="property">class </em><tt class="descclassname">openalea.grapheditor.interfaces.</tt><tt class="descname">IGraphViewStrategies</tt><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphViewStrategies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphViewStrategies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define implementations of this trait
+class to define the behaviour of the graph.
+For example : DataFlowGraphViewTrait, TreeGraphViewTrait,
+NetworkGraphViewTrait...</p>
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphViewStrategies.create_edge_widget">
+<tt class="descname">create_edge_widget</tt><span class="sig-paren">(</span><em>etype</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphViewStrategies.create_edge_widget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphViewStrategies.create_edge_widget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instanciates an edge matching etype</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphViewStrategies.create_vertex_widget">
+<tt class="descname">create_vertex_widget</tt><span class="sig-paren">(</span><em>vtype</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphViewStrategies.create_vertex_widget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphViewStrategies.create_vertex_widget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instanciates a node matching vtype</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphViewStrategies.create_view">
+<tt class="descname">create_view</tt><span class="sig-paren">(</span><em>parent</em>, <em>graph</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphViewStrategies.create_view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphViewStrategies.create_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instanciates the view</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphViewStrategies.get_connector_types">
+<tt class="descname">get_connector_types</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphViewStrategies.get_connector_types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphViewStrategies.get_connector_types" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphViewStrategies.get_graph_model_type">
+<tt class="descname">get_graph_model_type</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphViewStrategies.get_graph_model_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphViewStrategies.get_graph_model_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the classobj defining the graph type</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphViewStrategies.initialise_graph_view">
+<tt class="descname">initialise_graph_view</tt><span class="sig-paren">(</span><em>graphView</em>, <em>graphModel</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphViewStrategies.initialise_graph_view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphViewStrategies.initialise_graph_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>intialise graph view from model</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openalea.grapheditor.interfaces.IGraphViewVertex">
+<em class="property">class </em><tt class="descclassname">openalea.grapheditor.interfaces.</tt><tt class="descname">IGraphViewVertex</tt><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphViewVertex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphViewVertex" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="openalea.grapheditor.interfaces.IGraphViewVertex.lock_position">
+<tt class="descname">lock_position</tt><span class="sig-paren">(</span><em>val=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IGraphViewVertex.lock_position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IGraphViewVertex.lock_position" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openalea.grapheditor.interfaces.IInterfaceMetaClass">
+<em class="property">class </em><tt class="descclassname">openalea.grapheditor.interfaces.</tt><tt class="descname">IInterfaceMetaClass</tt><span class="sig-paren">(</span><em>name</em>, <em>bases</em>, <em>dic</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IInterfaceMetaClass"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IInterfaceMetaClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a method to the interface class that checks
+that the given object implements the class&#8217; interface.
+Allows some sort of safe-ducktyping</p>
+<dl class="method">
+<dt id="openalea.grapheditor.interfaces.IInterfaceMetaClass.check">
+<tt class="descname">check</tt><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/grapheditor/interfaces.html#IInterfaceMetaClass.check"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.grapheditor.interfaces.IInterfaceMetaClass.check" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if obj matches this interface.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="class-diagrams">
+<h2>Class diagrams<a class="headerlink" href="#class-diagrams" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="graphical-edges-and-vertices">
+<h3>Graphical edges and vertices<a class="headerlink" href="#graphical-edges-and-vertices" title="Permalink to this headline">¶</a></h3>
+<p class="graphviz">
+digraph inheritanceeee735f5b6 {
+rankdir=LR;
+size=&quot;8.0, 12.0&quot;;
+  &quot;QtGui.QAbstractGraphicsShapeItem&quot; [style=&quot;setlinewidth(0.5)&quot;,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,tooltip=&quot;QAbstractGraphicsShapeItem(QGraphicsItem parent=None, QGraphicsScene scene=None)&quot;,height=0.25,shape=box,fontsize=10];
+  &quot;QtGui.QGraphicsItem&quot; -&gt; &quot;QtGui.QAbstractGraphicsShapeItem&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;QtGui.QGraphicsEllipseItem&quot; [style=&quot;setlinewidth(0.5)&quot;,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,tooltip=&quot;QGraphicsEllipseItem(QGraphicsItem parent=None, QGraphicsScene scene=None)&quot;,height=0.25,shape=box,fontsize=10];
+  &quot;QtGui.QAbstractGraphicsShapeItem&quot; -&gt; &quot;QtGui.QGraphicsEllipseItem&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;QtGui.QGraphicsItem&quot; [style=&quot;setlinewidth(0.5)&quot;,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,tooltip=&quot;QGraphicsItem(QGraphicsItem parent=None, QGraphicsScene scene=None)&quot;,height=0.25,shape=box,fontsize=10];
+  &quot;sip.wrapper&quot; -&gt; &quot;QtGui.QGraphicsItem&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;QtGui.QGraphicsPathItem&quot; [style=&quot;setlinewidth(0.5)&quot;,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,tooltip=&quot;QGraphicsPathItem(QGraphicsItem parent=None, QGraphicsScene scene=None)&quot;,height=0.25,shape=box,fontsize=10];
+  &quot;QtGui.QAbstractGraphicsShapeItem&quot; -&gt; &quot;QtGui.QGraphicsPathItem&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;baselisteners.GraphElementListenerBase&quot; [style=&quot;setlinewidth(0.5)&quot;,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,tooltip=&quot;Base class for elements in a GraphView&quot;,height=0.25,shape=box,fontsize=10];
+  &quot;observer.AbstractListener&quot; -&gt; &quot;baselisteners.GraphElementListenerBase&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;observer.AbstractListener&quot; [style=&quot;setlinewidth(0.5)&quot;,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,tooltip=&quot;Listener base class&quot;,height=0.25,shape=box,fontsize=10];
+  &quot;qtgraphview.DefaultGraphicalFloatingEdge&quot; [shape=box,style=&quot;setlinewidth(0.5)&quot;,fontsize=10,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,height=0.25];
+  &quot;QtGui.QGraphicsPathItem&quot; -&gt; &quot;qtgraphview.DefaultGraphicalFloatingEdge&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;qtgraphview.FloatingEdge&quot; -&gt; &quot;qtgraphview.DefaultGraphicalFloatingEdge&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;qtgraphview.DefaultGraphicalVertex&quot; [shape=box,style=&quot;setlinewidth(0.5)&quot;,fontsize=10,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,height=0.25];
+  &quot;qtgraphview.Vertex&quot; -&gt; &quot;qtgraphview.DefaultGraphicalVertex&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;QtGui.QGraphicsEllipseItem&quot; -&gt; &quot;qtgraphview.DefaultGraphicalVertex&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;qtgraphview.Edge&quot; [style=&quot;setlinewidth(0.5)&quot;,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,tooltip=&quot;Base class for Qt based edges.&quot;,height=0.25,shape=box,fontsize=10];
+  &quot;qtgraphview.Element&quot; -&gt; &quot;qtgraphview.Edge&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;qtgraphview.Element&quot; [style=&quot;setlinewidth(0.5)&quot;,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,tooltip=&quot;Base class for elements in a qtgraphview.View.&quot;,height=0.25,shape=box,fontsize=10];
+  &quot;baselisteners.GraphElementListenerBase&quot; -&gt; &quot;qtgraphview.Element&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;qtgraphview.FloatingEdge&quot; [shape=box,style=&quot;setlinewidth(0.5)&quot;,fontsize=10,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,height=0.25];
+  &quot;qtgraphview.Edge&quot; -&gt; &quot;qtgraphview.FloatingEdge&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;qtgraphview.Vertex&quot; [style=&quot;setlinewidth(0.5)&quot;,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,tooltip=&quot;An abstract graphic item that represents a graph vertex.&quot;,height=0.25,shape=box,fontsize=10];
+  &quot;qtgraphview.Element&quot; -&gt; &quot;qtgraphview.Vertex&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;sip.simplewrapper&quot; [shape=box,style=&quot;setlinewidth(0.5)&quot;,fontsize=10,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,height=0.25];
+  &quot;sip.wrapper&quot; [shape=box,style=&quot;setlinewidth(0.5)&quot;,fontsize=10,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,height=0.25];
+  &quot;sip.simplewrapper&quot; -&gt; &quot;sip.wrapper&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+}
+</p>
+</div>
+<div class="section" id="scene">
+<h3>Scene<a class="headerlink" href="#scene" title="Permalink to this headline">¶</a></h3>
+<p class="graphviz">
+digraph inheritance3ccf52aa1c {
+rankdir=LR;
+size=&quot;8.0, 12.0&quot;;
+  &quot;QtCore.QObject&quot; [style=&quot;setlinewidth(0.5)&quot;,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,tooltip=&quot;QObject(QObject parent=None)&quot;,height=0.25,shape=box,fontsize=10];
+  &quot;sip.wrapper&quot; -&gt; &quot;QtCore.QObject&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;QtGui.QGraphicsScene&quot; [style=&quot;setlinewidth(0.5)&quot;,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,tooltip=&quot;QGraphicsScene(QObject parent=None)&quot;,height=0.25,shape=box,fontsize=10];
+  &quot;QtCore.QObject&quot; -&gt; &quot;QtGui.QGraphicsScene&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;baselisteners.GraphListenerBase&quot; [style=&quot;setlinewidth(0.5)&quot;,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,tooltip=&quot;This object strictly watches the given graph.&quot;,height=0.25,shape=box,fontsize=10];
+  &quot;observer.AbstractListener&quot; -&gt; &quot;baselisteners.GraphListenerBase&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;observer.AbstractListener&quot; [style=&quot;setlinewidth(0.5)&quot;,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,tooltip=&quot;Listener base class&quot;,height=0.25,shape=box,fontsize=10];
+  &quot;qtgraphview.Scene&quot; [style=&quot;setlinewidth(0.5)&quot;,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,tooltip=&quot;A Qt implementation of GraphListenerBase&quot;,height=0.25,shape=box,fontsize=10];
+  &quot;QtGui.QGraphicsScene&quot; -&gt; &quot;qtgraphview.Scene&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;baselisteners.GraphListenerBase&quot; -&gt; &quot;qtgraphview.Scene&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;sip.simplewrapper&quot; [shape=box,style=&quot;setlinewidth(0.5)&quot;,fontsize=10,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,height=0.25];
+  &quot;sip.wrapper&quot; [shape=box,style=&quot;setlinewidth(0.5)&quot;,fontsize=10,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,height=0.25];
+  &quot;sip.simplewrapper&quot; -&gt; &quot;sip.wrapper&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+}
+</p>
+</div>
+<div class="section" id="graphelementlistenerbase">
+<h3>GraphElementListenerBase<a class="headerlink" href="#graphelementlistenerbase" title="Permalink to this headline">¶</a></h3>
+<p class="graphviz">
+digraph inheritance1ba65fa599 {
+rankdir=LR;
+size=&quot;8.0, 12.0&quot;;
+  &quot;baselisteners.GraphElementListenerBase&quot; [style=&quot;setlinewidth(0.5)&quot;,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,tooltip=&quot;Base class for elements in a GraphView&quot;,height=0.25,shape=box,fontsize=10];
+  &quot;observer.AbstractListener&quot; -&gt; &quot;baselisteners.GraphElementListenerBase&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;observer.AbstractListener&quot; [style=&quot;setlinewidth(0.5)&quot;,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,tooltip=&quot;Listener base class&quot;,height=0.25,shape=box,fontsize=10];
+}
+</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">OpenAlea Grapheditor&#8217;s API</a><ul>
+<li><a class="reference internal" href="#module-openalea.grapheditor.base">API</a></li>
+<li><a class="reference internal" href="#class-diagrams">Class diagrams</a><ul>
+<li><a class="reference internal" href="#graphical-edges-and-vertices">Graphical edges and vertices</a></li>
+<li><a class="reference internal" href="#scene">Scene</a></li>
+<li><a class="reference internal" href="#graphelementlistenerbase">GraphElementListenerBase</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/contribute/dev/archi/api_openalea_grapheditor.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">OpenAleaLab 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Guillaume Baty.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3a0.
+    </div>
+  </body>
+</html>

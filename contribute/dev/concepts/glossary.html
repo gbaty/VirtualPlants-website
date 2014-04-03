@@ -1,0 +1,198 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Glossary &mdash; OpenAleaLab 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/virtualplants.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="OpenAleaLab 1.0 documentation" href="../../../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">OpenAleaLab 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="glossary">
+<span id="id1"></span><h1>Glossary<a class="headerlink" href="#glossary" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="glossaire-francais">
+<h2>Glossaire français<a class="headerlink" href="#glossaire-francais" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="api">
+<h3>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h3>
+<p>Ensemble des classes, fonctions, attributs et méthodes fournies par une bibliothèque et accessible de l&#8217;extérieur.</p>
+</div>
+<div class="section" id="concept">
+<h3>Concept<a class="headerlink" href="#concept" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="contrat">
+<h3>Contrat<a class="headerlink" href="#contrat" title="Permalink to this headline">¶</a></h3>
+<p>Information permettant à un objet informatique de décrire ce qu&#8217;il s&#8217;engage à faire.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<dl class="last docutils">
+<dt>Par exemple, un éditeur de texte propose le contrat suivant :</dt>
+<dd><ul class="first last simple">
+<li>afficher du texte</li>
+<li>éditer du texte</li>
+<li>charger un fichier</li>
+<li>sauver un fichier</li>
+</ul>
+</dd>
+</dl>
+</div>
+<p>Ce contrat permet aux objets informatiques de communiquer entre eux et déléguer le travail.
+Concrêtement, cette information est définie à l&#8217;aide d&#8217;Interface constituant une API</p>
+<div class="section" id="contrat-explicite">
+<h4>Contrat explicite<a class="headerlink" href="#contrat-explicite" title="Permalink to this headline">¶</a></h4>
+<p>La manière dont l&#8217;objet se comporte est décrit explicitement.
+La forme n&#8217;est pas imposé. Il peut s&#8217;agir d&#8217;instructions informatiques ou de
+documentations.</p>
+</div>
+<div class="section" id="contrat-implicite">
+<h4>Contrat implicite<a class="headerlink" href="#contrat-implicite" title="Permalink to this headline">¶</a></h4>
+<p>Ce dit dans le cas où l&#8217;on peut déduire comment se comporte un objet mais
+aucune instruction ou documentation ne le certifie.
+Utiliser ce type de contrat est dangereux.</p>
+</div>
+<div class="section" id="coupling">
+<h4>Coupling<a class="headerlink" href="#coupling" title="Permalink to this headline">¶</a></h4>
+<p>High/Strong/Tight coupling
+Low/Weak/Loose coupling</p>
+</div>
+</div>
+<div class="section" id="extension-openalealab">
+<h3>Extension OpenAleaLab<a class="headerlink" href="#extension-openalealab" title="Permalink to this headline">¶</a></h3>
+<p>Spécialisation du lab OpenAleaLab pour une thématique scientifique précise.
+Dans d&#8217;autres logiciels, on appelle parfois cela une &#8220;couche metier&#8221; car elle est utilisé dans metier donné.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Exemple: TissueLab est l&#8217;extension permettant de travailler sur les tissus biologiques</p>
+</div>
+</div>
+<div class="section" id="interface">
+<h3>Interface<a class="headerlink" href="#interface" title="Permalink to this headline">¶</a></h3>
+<p>Instructions informatiques décrivant un contrat.</p>
+<p>Par exemple, une classe virtuelle pure mais de nombreuses approches sont possibles.
+L&#8217;interface peut être plus ou moins contraingnante.
+Par exemple en imposant le nom des méthodes, le nom et les paramètres, le nom, les paramètres et les types, et ainsi de suite.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Exemple de définition d&#8217;interface en Python décrivant un contrat d&#8217;éditeur de texte</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">ITextEditor</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">display</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+        <span class="k">pass</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Glossary</a><ul>
+<li><a class="reference internal" href="#glossaire-francais">Glossaire français</a><ul>
+<li><a class="reference internal" href="#api">API</a></li>
+<li><a class="reference internal" href="#concept">Concept</a></li>
+<li><a class="reference internal" href="#contrat">Contrat</a><ul>
+<li><a class="reference internal" href="#contrat-explicite">Contrat explicite</a></li>
+<li><a class="reference internal" href="#contrat-implicite">Contrat implicite</a></li>
+<li><a class="reference internal" href="#coupling">Coupling</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#extension-openalealab">Extension OpenAleaLab</a></li>
+<li><a class="reference internal" href="#interface">Interface</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/contribute/dev/concepts/glossary.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">OpenAleaLab 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Guillaume Baty.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3a0.
+    </div>
+  </body>
+</html>

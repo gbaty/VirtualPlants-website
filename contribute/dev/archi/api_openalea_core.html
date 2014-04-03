@@ -1,0 +1,862 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>OpenAlea core’s API &mdash; OpenAleaLab 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/virtualplants.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="OpenAleaLab 1.0 documentation" href="../../../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">OpenAleaLab 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="openalea-core-s-api">
+<h1>OpenAlea core&#8217;s API<a class="headerlink" href="#openalea-core-s-api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-openalea.core.package">
+<span id="openalea-core-package"></span><h2>openalea.core.package<a class="headerlink" href="#module-openalea.core.package" title="Permalink to this headline">¶</a></h2>
+<p>This module defines Package classes.</p>
+<p>A Package is a deplyment unit and contains a factories (Node generator)
+and meta informations (authors, license, doc...)</p>
+<dl class="class">
+<dt id="openalea.core.package.AbstractPackageReader">
+<em class="property">class </em><tt class="descclassname">openalea.core.package.</tt><tt class="descname">AbstractPackageReader</tt><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#AbstractPackageReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.AbstractPackageReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract class to add a package in the package manager.</p>
+<dl class="method">
+<dt id="openalea.core.package.AbstractPackageReader.register_packages">
+<tt class="descname">register_packages</tt><span class="sig-paren">(</span><em>pkgmanager</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#AbstractPackageReader.register_packages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.AbstractPackageReader.register_packages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create and add a package in the package manager.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openalea.core.package.DynamicPackage">
+<em class="property">class </em><tt class="descclassname">openalea.core.package.</tt><tt class="descname">DynamicPackage</tt><span class="sig-paren">(</span><em>name</em>, <em>metainfo</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#DynamicPackage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.DynamicPackage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Package for dynamical parsing of python file</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="openalea.core.package.FactoryExistsError">
+<em class="property">exception </em><tt class="descclassname">openalea.core.package.</tt><tt class="descname">FactoryExistsError</tt><a class="reference internal" href="../../../_modules/openalea/core/package.html#FactoryExistsError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.FactoryExistsError" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="openalea.core.package.Package">
+<em class="property">class </em><tt class="descclassname">openalea.core.package.</tt><tt class="descname">Package</tt><span class="sig-paren">(</span><em>name</em>, <em>metainfo</em>, <em>path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#Package"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.Package" title="Permalink to this definition">¶</a></dt>
+<dd><p>A Package is a dictionnary of node factory.
+Each node factory is able to generate node and their widgets.</p>
+<p>Meta informations are associated with a package.</p>
+<dl class="method">
+<dt id="openalea.core.package.Package.add_factory">
+<tt class="descname">add_factory</tt><span class="sig-paren">(</span><em>factory</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#Package.add_factory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.Package.add_factory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add to the package a factory ( node or subgraph )</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.package.Package.get_factory">
+<tt class="descname">get_factory</tt><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#Package.get_factory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.Package.get_factory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the factory associated with id</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.package.Package.get_id">
+<tt class="descname">get_id</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#Package.get_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.Package.get_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the package id</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.package.Package.get_metainfo">
+<tt class="descname">get_metainfo</tt><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#Package.get_metainfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.Package.get_metainfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a meta information.
+See the standard key in the __init__ function documentation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> &#8211; todo</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.package.Package.get_names">
+<tt class="descname">get_names</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#Package.get_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.Package.get_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all the factory names in a list</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.package.Package.get_pkg_files">
+<tt class="descname">get_pkg_files</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#Package.get_pkg_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.Package.get_pkg_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the list of python filename of the package.
+The filename are relative to self.path</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.package.Package.get_tip">
+<tt class="descname">get_tip</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#Package.get_tip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.Package.get_tip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the package description</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.package.Package.get_wralea_path">
+<tt class="descname">get_wralea_path</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#Package.get_wralea_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.Package.get_wralea_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the full path of the wralea.py (if set)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.package.Package.is_directory">
+<tt class="descname">is_directory</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#Package.is_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.Package.is_directory" title="Permalink to this definition">¶</a></dt>
+<dd><p>New style package.
+A package is embeded in a unique directory.
+This directory can not contain more than one package.
+Thus, you can move, copy or delete a package by acting on the directory without ambiguity.</p>
+<p>Return True if the package is embeded in a directory.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.package.Package.is_editable">
+<tt class="descname">is_editable</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#Package.is_editable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.Package.is_editable" title="Permalink to this definition">¶</a></dt>
+<dd><p>A convention (for the GUI) to ensure that the user can modify the package.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openalea.core.package.Package.mimetype">
+<tt class="descname">mimetype</tt><em class="property"> = 'openalea/package'</em><a class="headerlink" href="#openalea.core.package.Package.mimetype" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.package.Package.reload">
+<tt class="descname">reload</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#Package.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.Package.reload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reload all python file of the package</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.package.Package.remove_files">
+<tt class="descname">remove_files</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#Package.remove_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.Package.remove_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove pkg files</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.package.Package.update_factory">
+<tt class="descname">update_factory</tt><span class="sig-paren">(</span><em>old_name</em>, <em>factory</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#Package.update_factory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.Package.update_factory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update factory (change its name)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openalea.core.package.PyPackageReader">
+<em class="property">class </em><tt class="descclassname">openalea.core.package.</tt><tt class="descname">PyPackageReader</tt><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#PyPackageReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.PyPackageReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build packages from wralea file
+Use &#8216;register_package&#8217; function</p>
+<dl class="method">
+<dt id="openalea.core.package.PyPackageReader.build_package">
+<tt class="descname">build_package</tt><span class="sig-paren">(</span><em>wraleamodule</em>, <em>pkgmanager</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#PyPackageReader.build_package"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.PyPackageReader.build_package" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build package and update pkgmanager</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.package.PyPackageReader.filename_to_module">
+<tt class="descname">filename_to_module</tt><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#PyPackageReader.filename_to_module"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.PyPackageReader.filename_to_module" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform the filename ending with .py to the module name</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.package.PyPackageReader.get_pkg_name">
+<tt class="descname">get_pkg_name</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#PyPackageReader.get_pkg_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.PyPackageReader.get_pkg_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the OpenAlea (uniq) full package name</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.package.PyPackageReader.register_packages">
+<tt class="descname">register_packages</tt><span class="sig-paren">(</span><em>pkgmanager</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#PyPackageReader.register_packages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.PyPackageReader.register_packages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute Wralea.py</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openalea.core.package.PyPackageReaderVlab">
+<em class="property">class </em><tt class="descclassname">openalea.core.package.</tt><tt class="descname">PyPackageReaderVlab</tt><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#PyPackageReaderVlab"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.PyPackageReaderVlab" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build a package from  a vlab specification file.</p>
+<dl class="method">
+<dt id="openalea.core.package.PyPackageReaderVlab.register_packages">
+<tt class="descname">register_packages</tt><span class="sig-paren">(</span><em>pkgmanager</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#PyPackageReaderVlab.register_packages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.PyPackageReaderVlab.register_packages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create and add a package in the package manager.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openalea.core.package.PyPackageReaderWralea">
+<em class="property">class </em><tt class="descclassname">openalea.core.package.</tt><tt class="descname">PyPackageReaderWralea</tt><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#PyPackageReaderWralea"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.PyPackageReaderWralea" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build a package from  a __wralea__.py
+Use module variable</p>
+<dl class="method">
+<dt id="openalea.core.package.PyPackageReaderWralea.build_package">
+<tt class="descname">build_package</tt><span class="sig-paren">(</span><em>wraleamodule</em>, <em>pkgmanager</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#PyPackageReaderWralea.build_package"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.PyPackageReaderWralea.build_package" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build package and update pkgmanager</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openalea.core.package.PyPackageWriter">
+<em class="property">class </em><tt class="descclassname">openalea.core.package.</tt><tt class="descname">PyPackageWriter</tt><span class="sig-paren">(</span><em>package</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#PyPackageWriter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.PyPackageWriter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a wralea python file</p>
+<dl class="method">
+<dt id="openalea.core.package.PyPackageWriter.get_factories_str">
+<tt class="descname">get_factories_str</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#PyPackageWriter.get_factories_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.PyPackageWriter.get_factories_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a dict of (name:repr) of all factory</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.package.PyPackageWriter.get_str">
+<tt class="descname">get_str</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#PyPackageWriter.get_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.PyPackageWriter.get_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return string to write</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openalea.core.package.PyPackageWriter.pkg_template">
+<tt class="descname">pkg_template</tt><em class="property"> = '\n$PKGNAME\n\n$METAINFO\n\n$ALL\n\n$FACTORY_DECLARATION\n'</em><a class="headerlink" href="#openalea.core.package.PyPackageWriter.pkg_template" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="openalea.core.package.PyPackageWriter.wralea_template">
+<tt class="descname">wralea_template</tt><em class="property"> = '\n# This file has been generated at $TIME\n\nfrom openalea.core import *\n\n$PKG_DECLARATION\n\n'</em><a class="headerlink" href="#openalea.core.package.PyPackageWriter.wralea_template" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.package.PyPackageWriter.write_wralea">
+<tt class="descname">write_wralea</tt><span class="sig-paren">(</span><em>full_filename</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#PyPackageWriter.write_wralea"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.PyPackageWriter.write_wralea" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write the wralea.py in the specified filename</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="openalea.core.package.UnknownNodeError">
+<em class="property">exception </em><tt class="descclassname">openalea.core.package.</tt><tt class="descname">UnknownNodeError</tt><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#UnknownNodeError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.UnknownNodeError" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="openalea.core.package.UserPackage">
+<em class="property">class </em><tt class="descclassname">openalea.core.package.</tt><tt class="descname">UserPackage</tt><span class="sig-paren">(</span><em>name</em>, <em>metainfo</em>, <em>path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#UserPackage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.UserPackage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Package user editable and persistent</p>
+<dl class="method">
+<dt id="openalea.core.package.UserPackage.add_data_file">
+<tt class="descname">add_data_file</tt><span class="sig-paren">(</span><em>filename</em>, <em>description=''</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#UserPackage.add_data_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.UserPackage.add_data_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a file in a package
+(copy it in the directory)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.package.UserPackage.add_factory">
+<tt class="descname">add_factory</tt><span class="sig-paren">(</span><em>factory</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#UserPackage.add_factory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.UserPackage.add_factory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write change on disk</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.package.UserPackage.clone_from_package">
+<tt class="descname">clone_from_package</tt><span class="sig-paren">(</span><em>pkg</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#UserPackage.clone_from_package"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.UserPackage.clone_from_package" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy the contents of pkg in self</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.package.UserPackage.create_user_compositenode">
+<tt class="descname">create_user_compositenode</tt><span class="sig-paren">(</span><em>name</em>, <em>category</em>, <em>description</em>, <em>inputs</em>, <em>outputs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#UserPackage.create_user_compositenode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.UserPackage.create_user_compositenode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a new user composite node factory to the package
+and save the package.
+Returns the cn factory.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.package.UserPackage.create_user_node">
+<tt class="descname">create_user_node</tt><span class="sig-paren">(</span><em>name</em>, <em>category</em>, <em>description</em>, <em>inputs</em>, <em>outputs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#UserPackage.create_user_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.UserPackage.create_user_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a new user node factory
+This function create a new python module in the package directory
+The factory is added to the package
+and the package is saved.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.package.UserPackage.is_editable">
+<tt class="descname">is_editable</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#UserPackage.is_editable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.UserPackage.is_editable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.package.UserPackage.remove_files">
+<tt class="descname">remove_files</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#UserPackage.remove_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.UserPackage.remove_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove pkg files</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.package.UserPackage.set_icon">
+<tt class="descname">set_icon</tt><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#UserPackage.set_icon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.UserPackage.set_icon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set package icon
+Copy filename in the package dir</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.package.UserPackage.write">
+<tt class="descname">write</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/package.html#UserPackage.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.package.UserPackage.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the writer class</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-openalea.core.pkgmanager">
+<span id="openalea-core-pkgmanager"></span><h2>openalea.core.pkgmanager<a class="headerlink" href="#module-openalea.core.pkgmanager" title="Permalink to this headline">¶</a></h2>
+<p>This module defines the package manager.</p>
+<p>It is able to find installed package and their wralea.py
+It stores the packages and nodes informations</p>
+<dl class="exception">
+<dt id="openalea.core.pkgmanager.IllFormedUrlError">
+<em class="property">exception </em><tt class="descclassname">openalea.core.pkgmanager.</tt><tt class="descname">IllFormedUrlError</tt><span class="sig-paren">(</span><em>url</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#IllFormedUrlError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.IllFormedUrlError" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="openalea.core.pkgmanager.Logger">
+<em class="property">class </em><tt class="descclassname">openalea.core.pkgmanager.</tt><tt class="descname">Logger</tt><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#Logger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.Logger" title="Permalink to this definition">¶</a></dt>
+<dd><p>OpenAlea logging class</p>
+<dl class="method">
+<dt id="openalea.core.pkgmanager.Logger.add">
+<tt class="descname">add</tt><span class="sig-paren">(</span><em>msg</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#Logger.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.Logger.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write to log file</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.Logger.print_log">
+<tt class="descname">print_log</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#Logger.print_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.Logger.print_log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print log file</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openalea.core.pkgmanager.PackageManager">
+<em class="property">class </em><tt class="descclassname">openalea.core.pkgmanager.</tt><tt class="descname">PackageManager</tt><span class="sig-paren">(</span><em>verbose=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>The PackageManager is a Dictionary of Packages
+It can locate OpenAlea packages on the system (with wralea).</p>
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.add_package">
+<tt class="descname">add_package</tt><span class="sig-paren">(</span><em>package</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.add_package"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.add_package" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a package to the pkg manager</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.add_wralea_path">
+<tt class="descname">add_wralea_path</tt><span class="sig-paren">(</span><em>path</em>, <em>container</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.add_wralea_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.add_wralea_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a search path for wralea files</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>path</strong> &#8211; a path string</li>
+<li><strong>container</strong> &#8211; set containing the path</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.clear">
+<tt class="descname">clear</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all packages</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.create_readers">
+<tt class="descname">create_readers</tt><span class="sig-paren">(</span><em>wralea_files</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.create_readers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.create_readers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.create_user_package">
+<tt class="descname">create_user_package</tt><span class="sig-paren">(</span><em>name</em>, <em>metainfo</em>, <em>path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.create_user_package"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.create_user_package" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new package in the user space and register it
+Return the created package
+:param path : the directory where to create the package</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.dependencies">
+<tt class="descname">dependencies</tt><span class="sig-paren">(</span><em>package_or_factory=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.dependencies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.dependencies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all the dependencies of a package or a factory.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.emit_update">
+<tt class="descname">emit_update</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.emit_update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.emit_update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.find_all_wralea">
+<tt class="descname">find_all_wralea</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.find_all_wralea"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.find_all_wralea" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find on the system all wralea.py files</p>
+<p>:return : a list of file paths</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.find_and_register_packages">
+<tt class="descname">find_and_register_packages</tt><span class="sig-paren">(</span><em>no_cache=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.find_and_register_packages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.find_and_register_packages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find all wralea on the system and register them
+If no_cache is True, ignore cache file</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.find_vlab_dir">
+<tt class="descname">find_vlab_dir</tt><span class="sig-paren">(</span><em>directory</em>, <em>recursive=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.find_vlab_dir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.find_vlab_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find in a directory vlab specification file.</p>
+<p>Search recursivly is recursive is True</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a list of pkgreader instances</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.find_wralea_dir">
+<tt class="descname">find_wralea_dir</tt><span class="sig-paren">(</span><em>directory</em>, <em>recursive=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.find_wralea_dir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.find_wralea_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find in a directory wralea files,
+Search recursivly is recursive is True</p>
+<p>:return : a list of pkgreader instances</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.find_wralea_files">
+<tt class="descname">find_wralea_files</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.find_wralea_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.find_wralea_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find on the system all wralea.py files</p>
+<p>:return : a list of pkgreader instances</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.get">
+<tt class="descname">get</tt><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.get_composite_nodes">
+<tt class="descname">get_composite_nodes</tt><span class="sig-paren">(</span><em>pkg_name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.get_composite_nodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.get_composite_nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.get_data">
+<tt class="descname">get_data</tt><span class="sig-paren">(</span><em>pattern='*.*'</em>, <em>pkg_name=None</em>, <em>as_paths=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.get_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.get_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all data that match the pattern.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.get_factory_from_url">
+<tt class="descname">get_factory_from_url</tt><span class="sig-paren">(</span><em>url</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.get_factory_from_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.get_factory_from_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a node instance from the given url.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>url - is either a string or a urlparse.ParseResult instance.</li>
+</ul>
+<p>It is encoded this way: oa://<em>domain</em>/<em>packageName</em>?fac=*factoryName*&amp;ft=*factoryType* .
+&#8220;oa&#8221; means that it is meant to be used by openalea.
+&#8220;domain&#8221; MUST BE &#8220;local&#8221; for now.
+&#8220;packageName&#8221; is the name of the package
+&#8220;factoryName&#8221; is the of factory
+&#8220;factoryType&#8221; is one of {&#8220;CompositeNodeFactory&#8221;, &#8220;NodeFactory&#8221;, &#8220;DataFactory&#8221;}</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.get_node">
+<tt class="descname">get_node</tt><span class="sig-paren">(</span><em>pkg_id</em>, <em>factory_id</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.get_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.get_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a node instance giving a pkg_id and a factory_id</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.get_node_from_url">
+<tt class="descname">get_node_from_url</tt><span class="sig-paren">(</span><em>url</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.get_node_from_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.get_node_from_url" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.get_nodes">
+<tt class="descname">get_nodes</tt><span class="sig-paren">(</span><em>pkg_name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.get_nodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.get_nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.get_package_from_url">
+<tt class="descname">get_package_from_url</tt><span class="sig-paren">(</span><em>url</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.get_package_from_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.get_package_from_url" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.get_packages">
+<tt class="descname">get_packages</tt><span class="sig-paren">(</span><em>pkg_name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.get_packages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.get_packages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all public packages.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.get_pkgreader">
+<tt class="descname">get_pkgreader</tt><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.get_pkgreader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.get_pkgreader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the pkg reader corresponding to the filename</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.get_pseudo_cat">
+<tt class="descname">get_pseudo_cat</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.get_pseudo_cat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.get_pseudo_cat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a pseudo category structure</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.get_pseudo_pkg">
+<tt class="descname">get_pseudo_pkg</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.get_pseudo_pkg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.get_pseudo_pkg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a pseudopackage structure</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.get_user_packages">
+<tt class="descname">get_user_packages</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.get_user_packages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.get_user_packages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the list of user packages</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.get_wralea_path">
+<tt class="descname">get_wralea_path</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.get_wralea_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.get_wralea_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the list of wralea path (union of user and system)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.has_key">
+<tt class="descname">has_key</tt><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.has_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.has_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.init">
+<tt class="descname">init</tt><span class="sig-paren">(</span><em>dirname=None</em>, <em>verbose=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize package manager</p>
+<p>If dirname is None, find wralea files on the system
+else load directory
+If verbose is False, don&#8217;t print any output</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openalea.core.pkgmanager.PackageManager.instance">
+<tt class="descname">instance</tt><em class="property"> = None</em><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.instance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.items">
+<tt class="descname">items</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.items" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.iteritems">
+<tt class="descname">iteritems</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.iteritems"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.iteritems" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.iterkeys">
+<tt class="descname">iterkeys</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.iterkeys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.iterkeys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.itervalues">
+<tt class="descname">itervalues</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.itervalues"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.itervalues" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.keys">
+<tt class="descname">keys</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.keys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.load_directory">
+<tt class="descname">load_directory</tt><span class="sig-paren">(</span><em>dirname</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.load_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.load_directory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a directory containing wraleas</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.missing_dependencies">
+<tt class="descname">missing_dependencies</tt><span class="sig-paren">(</span><em>package_or_factory=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.missing_dependencies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.missing_dependencies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all the dependencies of a package or a factory.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.rebuild_category">
+<tt class="descname">rebuild_category</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.rebuild_category"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.rebuild_category" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rebuild all the category</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.recover_syspath">
+<tt class="descname">recover_syspath</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.recover_syspath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.recover_syspath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Restore the initial sys path</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.reload">
+<tt class="descname">reload</tt><span class="sig-paren">(</span><em>pkg=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.reload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reload all packages if pkg is None
+else reload only pkg</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.rename_package">
+<tt class="descname">rename_package</tt><span class="sig-paren">(</span><em>old_name</em>, <em>new_name</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.rename_package"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.rename_package" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rename package &#8216;old_name&#8217; to &#8216;new_name&#8217;</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.search_node">
+<tt class="descname">search_node</tt><span class="sig-paren">(</span><em>search_str</em>, <em>nb_inputs=-1</em>, <em>nb_outputs=-1</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.search_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.search_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of Factory corresponding to search_str
+If nb_inputs or nb_outputs is specified,
+return only node with the same number of (in/out) ports</p>
+<dl class="docutils">
+<dt>The results are sorted in the following way:</dt>
+<dd><dl class="first docutils">
+<dt>1 - Highest Priority <span class="classifier-delimiter">:</span> <span class="classifier">presence of search_str in factory name</span></dt>
+<dd>and position in the name (closer to the
+begining = higher score)</dd>
+<dt>2 - Then <span class="classifier-delimiter">:</span> <span class="classifier">Number of occurences of search_str in the factory</span></dt>
+<dd>description.</dd>
+</dl>
+<p>3 - Then : Number of occurences of search_str in the category name
+4 - Finally : presence of search_str in package name and position</p>
+<blockquote class="last">
+<div>in the name (close to the begining = higher score)</div></blockquote>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.set_sys_wralea_path">
+<tt class="descname">set_sys_wralea_path</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.set_sys_wralea_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.set_sys_wralea_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define the default wralea search path
+For that, we look for &#8220;wralea&#8221; entry points
+and deprecated_wralea entry point
+if a package is declared as deprecated_wralea,
+the module is not load</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.set_user_wralea_path">
+<tt class="descname">set_user_wralea_path</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.set_user_wralea_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.set_user_wralea_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read user config</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.update_category">
+<tt class="descname">update_category</tt><span class="sig-paren">(</span><em>package</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.update_category"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.update_category" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the category dictionary with package contents</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.values">
+<tt class="descname">values</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.values" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.who_use">
+<tt class="descname">who_use</tt><span class="sig-paren">(</span><em>factory_name</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.who_use"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.who_use" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search who use a package or a factory</p>
+<p>return a list of factory.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PackageManager.write_config">
+<tt class="descname">write_config</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PackageManager.write_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PackageManager.write_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write user config</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openalea.core.pkgmanager.PseudoGroup">
+<em class="property">class </em><tt class="descclassname">openalea.core.pkgmanager.</tt><tt class="descname">PseudoGroup</tt><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PseudoGroup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PseudoGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Data structure used to separate dotted naming (packages, category)</p>
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PseudoGroup.add_name">
+<tt class="descname">add_name</tt><span class="sig-paren">(</span><em>name</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PseudoGroup.add_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PseudoGroup.add_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a value in the structure with the key name_tuple</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PseudoGroup.get_id">
+<tt class="descname">get_id</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PseudoGroup.get_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PseudoGroup.get_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>todo</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PseudoGroup.get_tip">
+<tt class="descname">get_tip</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PseudoGroup.get_tip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PseudoGroup.get_tip" title="Permalink to this definition">¶</a></dt>
+<dd><p>todo</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openalea.core.pkgmanager.PseudoGroup.mimetype">
+<tt class="descname">mimetype</tt><em class="property"> = 'openalea/package'</em><a class="headerlink" href="#openalea.core.pkgmanager.PseudoGroup.mimetype" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PseudoGroup.new">
+<tt class="descname">new</tt><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PseudoGroup.new"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PseudoGroup.new" title="Permalink to this definition">¶</a></dt>
+<dd><p>todo</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openalea.core.pkgmanager.PseudoGroup.sep">
+<tt class="descname">sep</tt><em class="property"> = '.'</em><a class="headerlink" href="#openalea.core.pkgmanager.PseudoGroup.sep" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openalea.core.pkgmanager.PseudoPackage">
+<em class="property">class </em><tt class="descclassname">openalea.core.pkgmanager.</tt><tt class="descname">PseudoPackage</tt><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PseudoPackage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PseudoPackage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Package structure used to separate dotted naming (packages, category)</p>
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PseudoPackage.get_metainfo">
+<tt class="descname">get_metainfo</tt><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PseudoPackage.get_metainfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PseudoPackage.get_metainfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>todo</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PseudoPackage.get_tip">
+<tt class="descname">get_tip</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PseudoPackage.get_tip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PseudoPackage.get_tip" title="Permalink to this definition">¶</a></dt>
+<dd><p>todo</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PseudoPackage.is_real_package">
+<tt class="descname">is_real_package</tt><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PseudoPackage.is_real_package"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PseudoPackage.is_real_package" title="Permalink to this definition">¶</a></dt>
+<dd><p>todo</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openalea.core.pkgmanager.PseudoPackage.new">
+<tt class="descname">new</tt><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#PseudoPackage.new"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.PseudoPackage.new" title="Permalink to this definition">¶</a></dt>
+<dd><p>todo</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="openalea.core.pkgmanager.UnknowFileType">
+<em class="property">exception </em><tt class="descclassname">openalea.core.pkgmanager.</tt><tt class="descname">UnknowFileType</tt><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#UnknowFileType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.UnknowFileType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="exception">
+<dt id="openalea.core.pkgmanager.UnknownPackageError">
+<em class="property">exception </em><tt class="descclassname">openalea.core.pkgmanager.</tt><tt class="descname">UnknownPackageError</tt><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#UnknownPackageError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.UnknownPackageError" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="openalea.core.pkgmanager.cmp_name">
+<tt class="descclassname">openalea.core.pkgmanager.</tt><tt class="descname">cmp_name</tt><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/openalea/core/pkgmanager.html#cmp_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openalea.core.pkgmanager.cmp_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Comparison function</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">OpenAlea core&#8217;s API</a><ul>
+<li><a class="reference internal" href="#module-openalea.core.package">openalea.core.package</a></li>
+<li><a class="reference internal" href="#module-openalea.core.pkgmanager">openalea.core.pkgmanager</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/contribute/dev/archi/api_openalea_core.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">OpenAleaLab 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Guillaume Baty.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3a0.
+    </div>
+  </body>
+</html>

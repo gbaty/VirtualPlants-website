@@ -1,0 +1,965 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>openalea.visualea.mainwindow &mdash; OpenAleaLab 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/virtualplants.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="OpenAleaLab 1.0 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">OpenAleaLab 1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for openalea.visualea.mainwindow</h1><div class="highlight"><pre>
+<span class="c"># -*- python -*-</span>
+<span class="c">#</span>
+<span class="c">#       OpenAlea.Visualea: OpenAlea graphical user interface</span>
+<span class="c">#</span>
+<span class="c">#       Copyright 2006-2009 INRIA - CIRAD - INRA</span>
+<span class="c">#</span>
+<span class="c">#       File author(s): Samuel Dufour-Kowalski &lt;samuel.dufour@sophia.inria.fr&gt;</span>
+<span class="c">#                       Christophe Pradal &lt;christophe.prada@cirad.fr&gt;</span>
+<span class="c">#</span>
+<span class="c">#       Distributed under the CeCILL v2 License.</span>
+<span class="c">#       See accompanying file LICENSE.txt or copy at</span>
+<span class="c">#           http://www.cecill.info/licences/Licence_CeCILL_V2-en.html</span>
+<span class="c">#</span>
+<span class="c">#       OpenAlea WebSite : http://openalea.gforge.inria.fr</span>
+<span class="c">#</span>
+<span class="c">################################################################################</span>
+<span class="sd">&quot;&quot;&quot;QT4 Main window&quot;&quot;&quot;</span>
+
+<span class="n">__license__</span> <span class="o">=</span> <span class="s">&quot;CeCILL v2&quot;</span>
+<span class="n">__revision__</span> <span class="o">=</span> <span class="s">&quot; $Id: mainwindow.py 3782 2013-04-16 09:35:59Z jcoste $ &quot;</span>
+
+<span class="kn">from</span> <span class="nn">openalea.vpltk.qt</span> <span class="kn">import</span> <span class="n">qt</span>
+
+<span class="kn">import</span> <span class="nn">ui_mainwindow</span>
+<span class="kn">from</span> <span class="nn">openalea.vpltk.shell.shell</span> <span class="kn">import</span> <span class="n">get_shell_class</span><span class="p">,</span> <span class="n">get_interpreter_class</span>
+
+<span class="kn">from</span> <span class="nn">openalea.core</span> <span class="kn">import</span> <span class="n">cli</span><span class="p">,</span> <span class="n">logger</span>
+<span class="kn">from</span> <span class="nn">openalea.core.pkgmanager</span> <span class="kn">import</span> <span class="n">PackageManager</span>
+<span class="kn">from</span> <span class="nn">openalea.core.settings</span> <span class="kn">import</span> <span class="n">Settings</span><span class="p">,</span><span class="n">NoSectionError</span><span class="p">,</span><span class="n">NoOptionError</span>
+<span class="kn">from</span> <span class="nn">openalea.core.node</span> <span class="kn">import</span> <span class="n">NodeFactory</span>
+<span class="kn">from</span> <span class="nn">openalea.core.compositenode</span> <span class="kn">import</span> <span class="n">CompositeNodeFactory</span>
+
+<span class="kn">from</span> <span class="nn">openalea.visualea.node_treeview</span> <span class="kn">import</span> <span class="n">NodeFactoryView</span><span class="p">,</span> <span class="n">NodeFactoryTreeView</span><span class="p">,</span> <span class="n">PkgModel</span><span class="p">,</span> <span class="n">CategoryModel</span>
+<span class="kn">from</span> <span class="nn">openalea.visualea.node_treeview</span> <span class="kn">import</span> <span class="n">DataPoolListView</span><span class="p">,</span> <span class="n">DataPoolModel</span>
+<span class="kn">from</span> <span class="nn">openalea.visualea.node_treeview</span> <span class="kn">import</span> <span class="n">SearchListView</span><span class="p">,</span> <span class="n">SearchModel</span>
+<span class="kn">from</span> <span class="nn">openalea.visualea.node_widget</span> <span class="kn">import</span> <span class="n">SignalSlotListener</span>
+<span class="kn">import</span> <span class="nn">metainfo</span>
+
+<span class="kn">from</span> <span class="nn">openalea.visualea</span> <span class="kn">import</span> <span class="n">helpwidget</span>
+<span class="kn">from</span> <span class="nn">openalea</span> <span class="kn">import</span> <span class="n">misc</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span> <span class="k">as</span> <span class="n">pj</span>
+
+
+<span class="kn">from</span> <span class="nn">openalea.visualea.dialogs</span> <span class="kn">import</span> <span class="n">NewGraph</span><span class="p">,</span> <span class="n">NewPackage</span>
+<span class="kn">from</span> <span class="nn">openalea.visualea.dialogs</span> <span class="kn">import</span> <span class="n">PreferencesDialog</span><span class="p">,</span> <span class="n">NewData</span>
+
+<span class="kn">from</span> <span class="nn">openalea.visualea</span> <span class="kn">import</span> <span class="n">dataflowview</span>
+<span class="kn">from</span> <span class="nn">openalea.visualea.logger</span> <span class="kn">import</span> <span class="n">LoggerView</span>
+<span class="kn">from</span> <span class="nn">graph_operator</span> <span class="kn">import</span> <span class="n">GraphOperator</span>
+<span class="kn">from</span> <span class="nn">graph_operator.vertex</span> <span class="kn">import</span> <span class="n">VertexOperators</span>
+
+<span class="kn">import</span> <span class="nn">traceback</span>
+
+<div class="viewcode-block" id="MainWindow"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow">[docs]</a><span class="k">class</span> <span class="nc">MainWindow</span><span class="p">(</span><span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QMainWindow</span><span class="p">,</span>
+                 <span class="n">ui_mainwindow</span><span class="o">.</span><span class="n">Ui_MainWindow</span><span class="p">,</span>
+                 <span class="n">SignalSlotListener</span><span class="p">)</span> <span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        @param session : user session</span>
+<span class="sd">        @param parent : parent window</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QMainWindow</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+        <span class="n">SignalSlotListener</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">ui_mainwindow</span><span class="o">.</span><span class="n">Ui_MainWindow</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setupUi</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setAcceptDrops</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setAttribute</span><span class="p">(</span><span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">WA_QuitOnClose</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tabWorkspace</span><span class="o">.</span><span class="n">removeTab</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tabWorkspace</span><span class="o">.</span><span class="n">setTabsClosable</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ws_cpt</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c">#last opened nodes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_opened</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c">#lower tab pane : python shell, logger...</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lowerpane</span> <span class="o">=</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QTabWidget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">splitter</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lowerpane</span><span class="p">)</span>
+
+        <span class="c"># python interpreter</span>
+        <span class="n">InterpreterClass</span> <span class="o">=</span> <span class="n">get_interpreter_class</span><span class="p">()</span>
+        <span class="n">interpreter</span> <span class="o">=</span> <span class="n">InterpreterClass</span><span class="p">()</span>
+                    
+        <span class="c"># interpreter init defered after session init</span>
+        <span class="n">shellclass</span> <span class="o">=</span> <span class="n">get_shell_class</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interpreterWidget</span> <span class="o">=</span> <span class="n">shellclass</span><span class="p">(</span><span class="n">interpreter</span><span class="p">,</span>
+                                            <span class="n">cli</span><span class="o">.</span><span class="n">get_welcome_msg</span><span class="p">())</span>
+
+        <span class="n">GraphOperator</span><span class="o">.</span><span class="n">globalInterpreter</span> <span class="o">=</span> <span class="n">interpreter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lowerpane</span><span class="o">.</span><span class="n">addTab</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">interpreterWidget</span><span class="p">,</span> <span class="s">&quot;Python Shell&quot;</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">logger</span><span class="o">.</span><span class="n">QT_LOGGING_MODEL_AVAILABLE</span><span class="p">:</span>
+            <span class="c"># openalea logger</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">LoggerOffice</span><span class="p">()</span><span class="o">.</span><span class="n">get_handler</span><span class="p">(</span><span class="s">&quot;qt&quot;</span><span class="p">)</span>
+            <span class="n">view</span> <span class="o">=</span> <span class="n">LoggerView</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lowerpane</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lowerpane</span><span class="o">.</span><span class="n">addTab</span><span class="p">(</span><span class="n">view</span><span class="p">,</span> <span class="s">&quot;Logging&quot;</span><span class="p">)</span>
+
+        <span class="c"># search list view</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">search_model</span> <span class="o">=</span> <span class="n">SearchModel</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">searchListView</span> <span class="o">=</span> \
+            <span class="n">SearchListView</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">searchview</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">searchListView</span><span class="o">.</span><span class="n">setModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">search_model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vboxlayout3</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">searchListView</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">searchListView</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_package_manager_focus_change</span><span class="p">)</span>
+
+        <span class="c"># help widget</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">helpWidget</span> <span class="o">=</span> <span class="n">helpwidget</span><span class="o">.</span><span class="n">HelpWidget</span><span class="p">()</span>
+        <span class="n">css</span> <span class="o">=</span> <span class="n">pj</span><span class="p">(</span><span class="n">misc</span><span class="o">.</span><span class="n">__path__</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s">&quot;..&quot;</span><span class="p">,</span> <span class="s">&quot;..&quot;</span><span class="p">,</span> <span class="s">&quot;..&quot;</span><span class="p">,</span>
+                 <span class="s">&quot;share&quot;</span><span class="p">,</span> <span class="s">&quot;_static&quot;</span><span class="p">,</span> <span class="s">&quot;openalea.css&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">helpWidget</span><span class="o">.</span><span class="n">set_stylesheet_file</span><span class="p">(</span><span class="n">css</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">poolTabWidget</span><span class="o">.</span><span class="n">addTab</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">helpWidget</span><span class="p">,</span> <span class="s">&quot;Help&quot;</span><span class="p">)</span>
+
+
+        <span class="c"># Widgets</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tabWorkspace</span><span class="p">,</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;contextMenuEvent(QContextMenuEvent)&quot;</span><span class="p">),</span>
+                     <span class="bp">self</span><span class="o">.</span><span class="n">contextMenuEvent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tabWorkspace</span><span class="o">.</span><span class="n">currentChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">ws_changed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">search_lineEdit</span><span class="o">.</span><span class="n">editingFinished</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_node</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tabWorkspace</span><span class="o">.</span><span class="n">tabCloseRequested</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">close_tab_workspace</span><span class="p">)</span>
+
+
+        <span class="c"># Help Menu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_About</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">about</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionOpenAlea_Web</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">web</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_Help</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">help</span><span class="p">)</span>
+
+        <span class="c"># File Menu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_New_Session</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_session</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_Open_Session</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_session</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_Save_Session</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_session</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionSave_as</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_as</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_Quit</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">quit</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_Image</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">export_image</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_Svg</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">export_image_svg</span><span class="p">)</span>
+
+        <span class="c"># Package Manager Menu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_Auto_Search</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">reload_all</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_Add_File</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_pkgdir</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionFind_Node</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_node</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_New_Network</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_graph</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionNew_Python_Node</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_python_node</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionNew_Package</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_package</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_Data_File</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_data</span><span class="p">)</span>
+
+        <span class="c"># DataPool Menu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionClear_Data_Pool</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">clear_data_pool</span><span class="p">)</span>
+
+        <span class="c"># Python Menu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_Execute_script</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+                     <span class="bp">self</span><span class="o">.</span><span class="n">exec_python_script</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionOpen_Console</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+                     <span class="bp">self</span><span class="o">.</span><span class="n">open_python_console</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionClea_r_Console</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+                     <span class="bp">self</span><span class="o">.</span><span class="n">clear_python_console</span><span class="p">)</span>
+
+        <span class="c"># WorkspaceMenu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__operatorAction</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">([(</span><span class="bp">self</span><span class="o">.</span><span class="n">action_Run</span><span class="p">,</span> <span class="s">&quot;graph_run&quot;</span><span class="p">),</span>
+                                      <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">actionInvalidate</span><span class="p">,</span> <span class="s">&quot;graph_invalidate&quot;</span><span class="p">),</span>
+                                      <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">actionReset</span><span class="p">,</span> <span class="s">&quot;graph_reset&quot;</span><span class="p">),</span>
+                                      <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">actionConfigure_I_O</span><span class="p">,</span> <span class="s">&quot;graph_configure_io&quot;</span><span class="p">),</span>
+                                      <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">actionGroup_Selection</span><span class="p">,</span> <span class="s">&quot;graph_group_selection&quot;</span><span class="p">),</span>
+                                      <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">action_Copy</span><span class="p">,</span> <span class="s">&quot;graph_copy&quot;</span><span class="p">),</span>
+                                      <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">action_Paste</span><span class="p">,</span> <span class="s">&quot;graph_paste&quot;</span><span class="p">),</span>
+                                      <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">action_Cut</span><span class="p">,</span> <span class="s">&quot;graph_cut&quot;</span><span class="p">),</span>
+                                      <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">action_Delete_2</span><span class="p">,</span> <span class="s">&quot;graph_remove_selection&quot;</span><span class="p">),</span>
+                                      <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">action_Close_current_workspace</span><span class="p">,</span> <span class="s">&quot;graph_close&quot;</span><span class="p">),</span>
+                                      <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">action_Export_to_Factory</span><span class="p">,</span> <span class="s">&quot;graph_export_to_factory&quot;</span><span class="p">),</span>
+                                      <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">actionReload_from_Model</span><span class="p">,</span> <span class="s">&quot;graph_reload_from_factory&quot;</span><span class="p">),</span>
+                                      <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">actionExport_to_Application</span><span class="p">,</span> <span class="s">&quot;graph_export_application&quot;</span><span class="p">),</span>
+                                      <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">actionPreview_Application</span><span class="p">,</span> <span class="s">&quot;graph_preview_application&quot;</span><span class="p">),</span>
+                                      <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">actionAlignHorizontally</span><span class="p">,</span> <span class="s">&quot;graph_align_selection_horizontal&quot;</span><span class="p">),</span>
+                                      <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">actionAlignLeft</span><span class="p">,</span> <span class="s">&quot;graph_align_selection_left&quot;</span><span class="p">),</span>
+                                      <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">actionAlignRight</span><span class="p">,</span> <span class="s">&quot;graph_align_selection_right&quot;</span><span class="p">),</span>
+                                      <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">actionAlignMean</span><span class="p">,</span> <span class="s">&quot;graph_align_selection_mean&quot;</span><span class="p">),</span>
+                                      <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">actionDistributeHorizontally</span><span class="p">,</span> <span class="s">&quot;graph_distribute_selection_horizontally&quot;</span><span class="p">),</span>
+                                      <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">actionDistributeVertically</span><span class="p">,</span> <span class="s">&quot;graph_distribute_selection_vertically&quot;</span><span class="p">),</span>
+                                      <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">actionSetCustomColor</span><span class="p">,</span> <span class="s">&quot;graph_set_selection_color&quot;</span><span class="p">),</span>
+                                      <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">actionUseCustomColor</span><span class="p">,</span> <span class="s">&quot;graph_use_user_color&quot;</span><span class="p">)])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_open_action_group</span> <span class="o">=</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QActionGroup</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_last_open_action_group</span><span class="p">,</span>
+                     <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;triggered(QAction*)&quot;</span><span class="p">),</span>
+                     <span class="bp">self</span><span class="o">.</span><span class="n">reopen_last</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_New_Empty_Workspace</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">new_workspace</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_Workspace</span><span class="o">.</span><span class="n">aboutToShow</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__wsMenuShow</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_Workspace</span><span class="o">.</span><span class="n">aboutToShow</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__wsMenuHide</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">ac</span><span class="p">,</span> <span class="n">fname</span> <span class="ow">in</span>  <span class="bp">self</span><span class="o">.</span><span class="n">__operatorAction</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__make_operator_action_connector</span><span class="p">(</span><span class="n">ac</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
+            <span class="n">ac</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionTo_script</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">to_python_script</span><span class="p">)</span>
+
+        <span class="c"># Window Mneu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionPreferences</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">open_preferences</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionDisplay_Package_Manager</span><span class="o">.</span><span class="n">toggled</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">display_leftpanel</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionDisplay_Workspaces</span><span class="o">.</span><span class="n">toggled</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">display_rightpanel</span><span class="p">)</span>
+
+        <span class="c">#load personnal GUI settings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">read_settings</span><span class="p">()</span>
+
+<div class="viewcode-block" id="MainWindow.on_session_started"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.on_session_started">[docs]</a>    <span class="k">def</span> <span class="nf">on_session_started</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initialise</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">session</span>
+
+        <span class="c"># -- configure the interpreter --</span>
+        <span class="n">cli</span><span class="o">.</span><span class="n">init_interpreter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">interpreterWidget</span><span class="o">.</span><span class="n">interpreter</span><span class="p">,</span>
+                             <span class="n">session</span><span class="p">,</span>
+                             <span class="p">{</span><span class="s">&quot;tabs&quot;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">tabWorkspace</span><span class="p">})</span>
+
+
+        <span class="c"># -- now, many package manager related views --</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pkgmanager</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">pkgmanager</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionShow_log</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">pkgmanager</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">print_log</span><span class="p">)</span>
+
+        <span class="c"># package tree view</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pkg_model</span> <span class="o">=</span> <span class="n">PkgModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pkgmanager</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">packageTreeView</span> <span class="o">=</span> \
+            <span class="n">NodeFactoryTreeView</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">packageview</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">packageTreeView</span><span class="o">.</span><span class="n">setModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pkg_model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vboxlayout1</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">packageTreeView</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">packageTreeView</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_package_manager_focus_change</span><span class="p">)</span>
+
+        <span class="c"># category tree view</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cat_model</span> <span class="o">=</span> <span class="n">CategoryModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pkgmanager</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">categoryTreeView</span> <span class="o">=</span> \
+            <span class="n">NodeFactoryTreeView</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">categoryview</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">categoryTreeView</span><span class="o">.</span><span class="n">setModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cat_model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vboxlayout2</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">categoryTreeView</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">categoryTreeView</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_package_manager_focus_change</span><span class="p">)</span>
+
+        <span class="c"># data pool list view</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datapool_model</span> <span class="o">=</span> <span class="n">DataPoolModel</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">datapool</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datapoolListView</span> <span class="o">=</span> \
+            <span class="n">DataPoolListView</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="o">.</span><span class="n">datapool</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pooltab</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datapoolListView</span><span class="o">.</span><span class="n">setModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datapool_model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vboxlayout4</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datapoolListView</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">simulate_workspace_addition</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="MainWindow.debug"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.debug">[docs]</a>    <span class="k">def</span> <span class="nf">debug</span> <span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">packageTreeView</span>
+        <span class="k">print</span> <span class="s">&quot;items&quot;</span><span class="p">,</span><span class="n">v</span><span class="o">.</span><span class="n">expanded_items</span>
+        <span class="k">print</span> <span class="s">&quot;model&quot;</span><span class="p">,</span><span class="n">v</span><span class="o">.</span><span class="n">model</span><span class="p">()</span>
+        <span class="k">print</span> <span class="s">&quot;map&quot;</span><span class="p">,</span><span class="n">v</span><span class="o">.</span><span class="n">model</span><span class="p">()</span><span class="o">.</span><span class="n">index_map</span>
+</div>
+<div class="viewcode-block" id="MainWindow.write_settings"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.write_settings">[docs]</a>    <span class="k">def</span> <span class="nf">write_settings</span> <span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Save application settings.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">settings</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">()</span>
+
+        <span class="c">#main window</span>
+        <span class="n">settings</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span><span class="s">&quot;size&quot;</span><span class="p">,</span><span class="s">&quot;(</span><span class="si">%d</span><span class="s">,</span><span class="si">%d</span><span class="s">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">(),</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">settings</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span><span class="s">&quot;pos&quot;</span><span class="p">,</span><span class="s">&quot;(</span><span class="si">%d</span><span class="s">,</span><span class="si">%d</span><span class="s">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">(),</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+
+        <span class="n">sizes</span> <span class="o">=</span> <span class="s">&quot;[</span><span class="si">%s</span><span class="s">]&quot;</span> <span class="o">%</span> <span class="s">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">val</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">splitter_2</span><span class="o">.</span><span class="n">sizes</span><span class="p">()</span> <span class="p">)</span>
+        <span class="n">settings</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span><span class="s">&quot;splitter_2&quot;</span><span class="p">,</span><span class="n">sizes</span><span class="p">)</span>
+        <span class="n">sizes</span> <span class="o">=</span> <span class="s">&quot;[</span><span class="si">%s</span><span class="s">]&quot;</span> <span class="o">%</span> <span class="s">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">val</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">splitter_3</span><span class="o">.</span><span class="n">sizes</span><span class="p">()</span> <span class="p">)</span>
+        <span class="n">settings</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span><span class="s">&quot;splitter_3&quot;</span><span class="p">,</span><span class="n">sizes</span><span class="p">)</span>
+
+        <span class="c">#tree view</span>
+        <span class="n">settings</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;TreeView&quot;</span><span class="p">,</span><span class="s">&quot;open&quot;</span><span class="p">,</span><span class="s">&quot;[]&quot;</span><span class="p">)</span>
+
+        <span class="c">#workspace</span>
+        <span class="n">last_open</span> <span class="o">=</span> <span class="s">&quot;[</span><span class="si">%s</span><span class="s">]&quot;</span> <span class="o">%</span> <span class="s">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&quot;&#39;</span><span class="si">%s</span><span class="s">&#39;&quot;</span> <span class="o">%</span> <span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_opened</span><span class="p">)</span>
+        <span class="n">settings</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;WorkSpace&quot;</span><span class="p">,</span><span class="s">&quot;last&quot;</span><span class="p">,</span><span class="n">last_open</span><span class="p">)</span>
+
+        <span class="n">settings</span><span class="o">.</span><span class="n">write</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="MainWindow.read_settings"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.read_settings">[docs]</a>    <span class="k">def</span> <span class="nf">read_settings</span> <span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Read application settings.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">settings</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">()</span>
+
+        <span class="c">#main window</span>
+        <span class="k">try</span> <span class="p">:</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span><span class="s">&quot;size&quot;</span><span class="p">)</span> <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QSize</span><span class="p">(</span><span class="o">*</span><span class="n">size</span><span class="p">)</span> <span class="p">)</span>
+        <span class="k">except</span> <span class="n">NoSectionError</span> <span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">except</span> <span class="n">NoOptionError</span> <span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">try</span> <span class="p">:</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span><span class="s">&quot;pos&quot;</span><span class="p">)</span> <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QPoint</span><span class="p">(</span><span class="o">*</span><span class="n">pos</span><span class="p">)</span> <span class="p">)</span>
+        <span class="k">except</span> <span class="n">NoSectionError</span> <span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">except</span> <span class="n">NoOptionError</span> <span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">try</span> <span class="p">:</span>
+            <span class="n">sizes</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span><span class="s">&quot;splitter_2&quot;</span><span class="p">)</span> <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">splitter_2</span><span class="o">.</span><span class="n">setSizes</span><span class="p">(</span><span class="n">sizes</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">NoSectionError</span> <span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">except</span> <span class="n">NoOptionError</span> <span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">try</span> <span class="p">:</span>
+            <span class="n">sizes</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;MainWindow&quot;</span><span class="p">,</span><span class="s">&quot;splitter_3&quot;</span><span class="p">)</span> <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">splitter_3</span><span class="o">.</span><span class="n">setSizes</span><span class="p">(</span><span class="n">sizes</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">NoSectionError</span> <span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">except</span> <span class="n">NoOptionError</span> <span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="c">#workspace</span>
+        <span class="k">try</span> <span class="p">:</span>
+            <span class="n">last_open</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;WorkSpace&quot;</span><span class="p">,</span><span class="s">&quot;last&quot;</span><span class="p">)</span> <span class="p">)</span>
+            <span class="n">last_open</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">last_open</span> <span class="p">:</span>
+                <span class="n">gr</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">)</span>
+                <span class="n">pkgid</span> <span class="o">=</span> <span class="s">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">gr</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">gr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_last_open</span><span class="p">(</span><span class="n">pkgid</span><span class="p">,</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">NoSectionError</span> <span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">except</span> <span class="n">NoOptionError</span> <span class="p">:</span>
+            <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="MainWindow.redo_last_open_menu"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.redo_last_open_menu">[docs]</a>    <span class="k">def</span> <span class="nf">redo_last_open_menu</span> <span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Create entries for last opened nodes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menuLast_open</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">action</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_open_action_group</span><span class="o">.</span><span class="n">actions</span><span class="p">()</span> <span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_last_open_action_group</span><span class="o">.</span><span class="n">removeAction</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">node_descr</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_last_opened</span><span class="p">)</span> <span class="p">:</span>
+            <span class="n">action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">menuLast_open</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">node_descr</span><span class="p">)</span>
+            <span class="n">action</span><span class="o">.</span><span class="n">setShortcut</span><span class="p">(</span><span class="s">&quot;Ctrl+</span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_last_open_action_group</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">menuLast_open</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_last_opened</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MainWindow.reopen_last"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.reopen_last">[docs]</a>    <span class="k">def</span> <span class="nf">reopen_last</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span> <span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Reopen a last open node.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">gr</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">action</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">)</span>
+        <span class="n">pkgid</span> <span class="o">=</span> <span class="s">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">gr</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">gr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">manager</span> <span class="o">=</span> <span class="n">PackageManager</span><span class="p">()</span>
+        <span class="n">factory</span> <span class="o">=</span> <span class="n">manager</span><span class="p">[</span><span class="n">pkgid</span><span class="p">][</span><span class="n">name</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">open_compositenode</span><span class="p">(</span><span class="n">factory</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MainWindow.add_last_open"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.add_last_open">[docs]</a>    <span class="k">def</span> <span class="nf">add_last_open</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pkgid</span><span class="p">,</span> <span class="n">factory_name</span><span class="p">)</span> <span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Register a new lest opened node.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="s">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">pkgid</span><span class="p">,</span><span class="n">factory_name</span><span class="p">])</span>
+        <span class="k">try</span> <span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_last_opened</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span> <span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_opened</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_last_opened</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">4</span> <span class="p">:</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_opened</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">redo_last_open_menu</span><span class="p">()</span>
+</div>
+    <span class="k">def</span> <span class="nf">__wsMenuShow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">abool</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="n">graphview</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabWorkspace</span><span class="o">.</span><span class="n">currentWidget</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">graphview</span><span class="p">,</span> <span class="n">dataflowview</span><span class="o">.</span><span class="n">DataflowView</span><span class="p">):</span>
+            <span class="k">return</span>
+
+        <span class="n">items</span> <span class="o">=</span> <span class="n">graphview</span><span class="o">.</span><span class="n">scene</span><span class="p">()</span><span class="o">.</span><span class="n">get_selected_items</span><span class="p">(</span><span class="n">dataflowview</span><span class="o">.</span><span class="n">vertex</span><span class="o">.</span><span class="n">GraphicalVertex</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actionUseCustomColor</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">vertex</span><span class="p">()</span><span class="o">.</span><span class="n">get_ad_hoc_dict</span><span class="p">()</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s">&quot;useUserColor&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">actionUseCustomColor</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+                <span class="k">break</span>
+
+    <span class="k">def</span> <span class="nf">__make_operator_action_connector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">connector</span><span class="p">(</span><span class="n">aBool</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+            <span class="n">graphview</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabWorkspace</span><span class="o">.</span><span class="n">currentWidget</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">graphview</span><span class="p">,</span> <span class="n">dataflowview</span><span class="o">.</span><span class="n">DataflowView</span><span class="p">):</span>
+                <span class="k">return</span>
+
+            <span class="c"># daniel was here: now the menu is built using the graph operator.</span>
+            <span class="n">operator</span> <span class="o">=</span> <span class="n">GraphOperator</span><span class="p">(</span><span class="n">graph</span>      <span class="o">=</span> <span class="n">graphview</span><span class="o">.</span><span class="n">scene</span><span class="p">()</span><span class="o">.</span><span class="n">get_graph</span><span class="p">(),</span>
+                                     <span class="n">graphScene</span> <span class="o">=</span> <span class="n">graphview</span><span class="o">.</span><span class="n">scene</span><span class="p">(),</span>
+                                     <span class="n">clipboard</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">clipboard</span><span class="p">,</span>
+                                     <span class="n">siblings</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">workspaces</span><span class="p">)</span>
+            <span class="n">operator</span><span class="o">.</span><span class="n">register_listener</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="n">operator</span><span class="p">(</span><span class="n">fName</span><span class="o">=</span><span class="n">name</span><span class="p">)()</span>
+
+        <span class="k">return</span> <span class="n">connector</span>
+
+    <span class="k">def</span> <span class="nf">__wsMenuHide</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="MainWindow.open_compositenode"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.open_compositenode">[docs]</a>    <span class="k">def</span> <span class="nf">open_compositenode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factory</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; open a  composite node editor &quot;&quot;&quot;</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="n">instantiate</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add_workspace</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">notify</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">open_widget_tab</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">factory</span><span class="o">=</span><span class="n">factory</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_last_open</span><span class="p">(</span><span class="n">factory</span><span class="o">.</span><span class="n">__pkg_id__</span><span class="p">,</span><span class="n">factory</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="MainWindow.about"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.about">[docs]</a>    <span class="k">def</span> <span class="nf">about</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Display About Dialog &quot;&quot;&quot;</span>
+
+        <span class="n">mess</span> <span class="o">=</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">about</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;About Visualea&quot;</span><span class="p">,</span>
+                                       <span class="s">&quot;Version </span><span class="si">%s</span><span class="se">\n\n</span><span class="s">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">metainfo</span><span class="o">.</span><span class="n">get_version</span><span class="p">())</span> <span class="o">+</span>
+                                       <span class="s">&quot;VisuAlea is part of the OpenAlea framework.</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">+</span>
+                                       <span class="n">metainfo</span><span class="o">.</span><span class="n">get_copyright</span><span class="p">()</span><span class="o">+</span>
+                                       <span class="s">&quot;This Software is distributed under the Cecill-V2 License.</span><span class="se">\n\n</span><span class="s">&quot;</span><span class="o">+</span>
+                                       <span class="s">&quot;Visit &quot;</span> <span class="o">+</span> <span class="n">metainfo</span><span class="o">.</span><span class="n">url</span> <span class="o">+</span><span class="s">&quot;</span><span class="se">\n\n</span><span class="s">&quot;</span>
+                                       <span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MainWindow.help"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.help">[docs]</a>    <span class="k">def</span> <span class="nf">help</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Display help &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">web</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="MainWindow.web"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.web">[docs]</a>    <span class="k">def</span> <span class="nf">web</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Open OpenAlea website &quot;&quot;&quot;</span>
+        <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QDesktopServices</span><span class="o">.</span><span class="n">openUrl</span><span class="p">(</span><span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QUrl</span><span class="p">(</span><span class="n">metainfo</span><span class="o">.</span><span class="n">url</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="MainWindow.quit"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.quit">[docs]</a>    <span class="k">def</span> <span class="nf">quit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Quit Application &quot;&quot;&quot;</span>
+        <span class="k">if</span><span class="p">(</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">question</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;Quit?&quot;</span><span class="p">,</span> <span class="s">&quot;Are you sure you want to quit?&quot;</span><span class="p">,</span>
+                                       <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span><span class="o">|</span><span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Cancel</span><span class="p">)</span> <span class="o">==</span>
+                        <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span><span class="p">):</span>
+            <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QApplication</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MainWindow.notify"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.notify">[docs]</a>    <span class="k">def</span> <span class="nf">notify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sender</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Notification from observed &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">event</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="n">GraphOperator</span><span class="p">)</span> <span class="p">:</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tabWorkspace</span><span class="o">.</span><span class="n">count</span><span class="p">()):</span>
+                <span class="n">wid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabWorkspace</span><span class="o">.</span><span class="n">widget</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">wid</span><span class="p">,</span> <span class="n">dataflowview</span><span class="o">.</span><span class="n">DataflowView</span><span class="p">)</span> <span class="ow">and</span> <span class="n">wid</span><span class="o">.</span><span class="n">scene</span><span class="p">()</span> <span class="o">==</span> <span class="n">event</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                    <span class="n">index</span> <span class="o">=</span> <span class="n">i</span>
+            <span class="k">if</span> <span class="n">index</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span> <span class="k">return</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">event</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;graphoperator_graphsaved&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">reinit_treeview</span><span class="p">()</span>
+                <span class="n">caption</span> <span class="o">=</span> <span class="s">&quot;Workspace </span><span class="si">%i</span><span class="s"> - </span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">event</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tabWorkspace</span><span class="o">.</span><span class="n">setTabText</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">caption</span><span class="p">)</span>
+            <span class="k">elif</span><span class="p">(</span><span class="n">event</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;graphoperator_graphclosed&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">close_tab_workspace</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+            <span class="k">elif</span><span class="p">(</span><span class="n">event</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;graphoperator_graphreloaded&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">workspaces</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">sender</span><span class="p">)</span> <span class="o">==</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">)):</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">event</span> <span class="ow">and</span> <span class="n">event</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">==</span><span class="s">&quot;workspace_added&quot;</span><span class="p">):</span>
+                <span class="n">graph</span><span class="o">=</span><span class="n">event</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">open_widget_tab</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">factory</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">update_tabwidget</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">reinit_treeview</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="MainWindow.closeEvent"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.closeEvent">[docs]</a>    <span class="k">def</span> <span class="nf">closeEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Close All subwindows &quot;&quot;&quot;</span>
+
+        <span class="c">#Save personnal settings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_settings</span><span class="p">()</span>
+
+        <span class="c">#close windows</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tabWorkspace</span><span class="o">.</span><span class="n">count</span><span class="p">()):</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabWorkspace</span><span class="o">.</span><span class="n">widget</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">w</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="n">event</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="MainWindow.reinit_treeview"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.reinit_treeview">[docs]</a>    <span class="k">def</span> <span class="nf">reinit_treeview</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Reinitialise package and category views &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cat_model</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pkg_model</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datapool_model</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">search_model</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="MainWindow.close_tab_workspace"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.close_tab_workspace">[docs]</a>    <span class="k">def</span> <span class="nf">close_tab_workspace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cindex</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Close workspace indexed by cindex cindex is Node&quot;&quot;&quot;</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabWorkspace</span><span class="o">.</span><span class="n">widget</span><span class="p">(</span><span class="n">cindex</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tabWorkspace</span><span class="o">.</span><span class="n">removeTab</span><span class="p">(</span><span class="n">cindex</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">close_workspace</span><span class="p">(</span><span class="n">cindex</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">scene</span><span class="p">()</span><span class="o">.</span><span class="n">get_graph</span><span class="p">()</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="c">#finally we close the dataflowview.</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">del</span> <span class="n">w</span>
+</div>
+<div class="viewcode-block" id="MainWindow.current_view"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.current_view">[docs]</a>    <span class="k">def</span> <span class="nf">current_view</span> <span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Return the active widget &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabWorkspace</span><span class="o">.</span><span class="n">currentWidget</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="MainWindow.update_tabwidget"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.update_tabwidget">[docs]</a>    <span class="k">def</span> <span class="nf">update_tabwidget</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; open tab widget &quot;&quot;&quot;</span>
+        <span class="c"># open tab widgets</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">workspaces</span><span class="p">):</span>
+
+            <span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabWorkspace</span><span class="o">.</span><span class="n">count</span><span class="p">()):</span>
+                <span class="n">widget</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabWorkspace</span><span class="o">.</span><span class="n">widget</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">node</span> <span class="o">!=</span> <span class="n">widget</span><span class="o">.</span><span class="n">scene</span><span class="p">()</span><span class="o">.</span><span class="n">get_graph</span><span class="p">()):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">close_tab_workspace</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">open_widget_tab</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">factory</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">factory</span><span class="p">,</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">i</span><span class="p">)</span>
+
+        <span class="c"># close last tabs</span>
+        <span class="n">removelist</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">workspaces</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabWorkspace</span><span class="o">.</span><span class="n">count</span><span class="p">())</span>
+        <span class="n">removelist</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">removelist</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">close_tab_workspace</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MainWindow.open_widget_tab"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.open_widget_tab">[docs]</a>    <span class="k">def</span> <span class="nf">open_widget_tab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">factory</span><span class="p">,</span> <span class="n">caption</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">pos</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Open a widget in a tab giving an instance and its widget</span>
+<span class="sd">        caption is append to the tab title</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">gwidget</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c"># Since dataflowview.GraphicalGraph.__adapterType__ is dataflowview.adapter.GraphAdapter</span>
+            <span class="c"># graph will automatically be wrapped by that class and gwidget will exclusevily </span>
+            <span class="c"># talk to the adapter instead of the original graph. This thing is twisted but works well.</span>
+            <span class="n">gwidget</span> <span class="o">=</span> <span class="n">dataflowview</span><span class="o">.</span><span class="n">GraphicalGraph</span><span class="o">.</span><span class="n">create_view</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+            <span class="n">gwidget</span><span class="o">.</span><span class="n">set_clipboard</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">clipboard</span><span class="p">)</span>
+            <span class="n">gwidget</span><span class="o">.</span><span class="n">set_siblings</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">workspaces</span><span class="p">)</span>
+            <span class="n">gwidget</span><span class="o">.</span><span class="n">scene</span><span class="p">()</span><span class="o">.</span><span class="n">focusedItemChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_scene_focus_change</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add_graph_view</span><span class="p">(</span><span class="n">gwidget</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&quot;open_widget_tab&quot;</span><span class="p">,</span> <span class="n">e</span>
+            <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">()</span>
+            <span class="k">return</span>
+
+
+        <span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="n">caption</span><span class="p">)</span> <span class="p">:</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">workspaces</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+            <span class="n">caption</span> <span class="o">=</span> <span class="s">&quot;Workspace </span><span class="si">%i</span><span class="s"> - </span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">get_caption</span><span class="p">())</span>
+
+        <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabWorkspace</span><span class="o">.</span><span class="n">insertTab</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">gwidget</span><span class="p">,</span> <span class="n">caption</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tabWorkspace</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="c">#there is a bug in QGraphicsScene+QTabWidget that makes</span>
+        <span class="c">#secondary tabs inactive, so we force them to be active</span>
+        <span class="c">#by sending new views the QEvent.WindowActivate event.</span>
+        <span class="c">#The bug is present until Qt4.6.2 at least. Bugreport:</span>
+        <span class="c">#http://bugreports.qt.nokia.com/browse/QTBUG-11148</span>
+        <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QCoreApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="n">gwidget</span><span class="p">,</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QEvent</span><span class="p">(</span><span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QEvent</span><span class="o">.</span><span class="n">WindowActivate</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">gwidget</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="p">:</span>
+            <span class="n">gwidget</span><span class="o">.</span><span class="n">show_entire_scene</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">index</span>
+
+</div>
+<div class="viewcode-block" id="MainWindow.add_pkgdir"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.add_pkgdir">[docs]</a>    <span class="k">def</span> <span class="nf">add_pkgdir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">dirname</span> <span class="o">=</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">getExistingDirectory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;Select Package/Directory&quot;</span><span class="p">)</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">dirname</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pkgmanager</span><span class="o">.</span><span class="n">load_directory</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">dirname</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reinit_treeview</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="MainWindow.reload_all"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.reload_all">[docs]</a>    <span class="k">def</span> <span class="nf">reload_all</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="c"># Reload package manager</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pkgmanager</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reinit_treeview</span><span class="p">()</span>
+
+        <span class="c"># Reload workspace</span>
+        <span class="k">print</span> <span class="s">&quot;WARNING TODO RELOAD EACH TAB&quot;</span>
+        <span class="c">#for index in range(len(self.index_nodewidget)):</span>
+        <span class="c">#    self.reload_from_factory(index)</span>
+</div>
+<div class="viewcode-block" id="MainWindow.ws_changed"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.ws_changed">[docs]</a>    <span class="k">def</span> <span class="nf">ws_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Current workspace has changed &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">cworkspace</span> <span class="o">=</span> <span class="n">index</span>
+
+</div>
+<div class="viewcode-block" id="MainWindow.contextMenuEvent"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.contextMenuEvent">[docs]</a>    <span class="k">def</span> <span class="nf">contextMenuEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Context menu event : Display the menu&quot;&quot;&quot;</span>
+
+        <span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabWorkspace</span><span class="o">.</span><span class="n">mapFromGlobal</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">globalPos</span><span class="p">())</span>
+
+        <span class="n">tabBar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabWorkspace</span><span class="o">.</span><span class="n">tabBar</span><span class="p">()</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="n">tabBar</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+
+        <span class="n">index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">count</span><span class="p">):</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">tabBar</span><span class="o">.</span><span class="n">tabRect</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">pos</span><span class="p">)):</span>
+                <span class="n">index</span> <span class="o">=</span> <span class="n">i</span>
+                <span class="k">break</span>
+
+        <span class="c"># if no bar was hit, return</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">index</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">):</span>
+            <span class="k">return</span>
+
+        <span class="c"># set hit bar to front</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tabWorkspace</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">close_current_ws</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">close_tab_workspace</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+
+        <span class="n">menu</span> <span class="o">=</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QMenu</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="n">action</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s">&quot;Close&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;triggered()&quot;</span><span class="p">),</span> <span class="n">close_current_ws</span><span class="p">)</span>
+
+<span class="c">#         action = menu.addAction(&quot;Run&quot;)</span>
+<span class="c">#         self.connect(action, qt.QtCore.SIGNAL(&quot;triggered()&quot;), self.run)</span>
+
+<span class="c">#         action = menu.addAction(&quot;Export to Model&quot;)</span>
+<span class="c">#         self.connect(action, qt.QtCore.SIGNAL(&quot;triggered()&quot;), self.export_to_factory)</span>
+
+        <span class="n">menu</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">globalPos</span><span class="p">())</span>
+        <span class="n">menu</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="MainWindow.new_workspace"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.new_workspace">[docs]</a>    <span class="k">def</span> <span class="nf">new_workspace</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Create an empty workspace &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add_workspace</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="MainWindow.new_graph"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.new_graph">[docs]</a>    <span class="k">def</span> <span class="nf">new_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Create a new graph &quot;&quot;&quot;</span>
+
+        <span class="n">dialog</span> <span class="o">=</span> <span class="n">NewGraph</span><span class="p">(</span><span class="s">&quot;New Composite Node&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pkgmanager</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">ret</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">):</span>
+            <span class="n">newfactory</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">create_cnfactory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pkgmanager</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reinit_treeview</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">open_compositenode</span><span class="p">(</span><span class="n">newfactory</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MainWindow.new_python_node"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.new_python_node">[docs]</a>    <span class="k">def</span> <span class="nf">new_python_node</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Create a new node &quot;&quot;&quot;</span>
+
+        <span class="n">dialog</span> <span class="o">=</span> <span class="n">NewGraph</span><span class="p">(</span><span class="s">&quot;New Python Node&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pkgmanager</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">ret</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">):</span>
+            <span class="n">dialog</span><span class="o">.</span><span class="n">create_nodefactory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pkgmanager</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reinit_treeview</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="MainWindow.new_data"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.new_data">[docs]</a>    <span class="k">def</span> <span class="nf">new_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Import file &quot;&quot;&quot;</span>
+
+        <span class="n">dialog</span> <span class="o">=</span> <span class="n">NewData</span><span class="p">(</span><span class="s">&quot;Import data file&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pkgmanager</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">ret</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">):</span>
+            <span class="n">dialog</span><span class="o">.</span><span class="n">create_datafactory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pkgmanager</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reinit_treeview</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="MainWindow.new_package"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.new_package">[docs]</a>    <span class="k">def</span> <span class="nf">new_package</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Create a new user package &quot;&quot;&quot;</span>
+
+        <span class="n">dialog</span> <span class="o">=</span> <span class="n">NewPackage</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pkgmanager</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">ret</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">):</span>
+            <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">metainfo</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">pkgmanager</span><span class="o">.</span><span class="n">create_user_package</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">metainfo</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reinit_treeview</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="MainWindow.exec_python_script"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.exec_python_script">[docs]</a>    <span class="k">def</span> <span class="nf">exec_python_script</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Choose a python source and execute it &quot;&quot;&quot;</span>
+
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">getOpenFileName</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="s">&quot;Python Script&quot;</span><span class="p">,</span> <span class="s">&quot;Python script (*.py)&quot;</span><span class="p">)</span>
+            
+        <span class="n">filename</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="n">filename</span><span class="p">)</span> <span class="p">:</span> <span class="k">return</span>
+
+        
+
+        <span class="c"># Try if IPython    </span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="nb">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span>
+            <span class="n">src</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+            <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">file</span><span class="p">:</span>
+                <span class="n">src</span> <span class="o">+=</span> <span class="n">f</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">interpreterWidget</span><span class="o">.</span><span class="n">get_interpreter</span><span class="p">()</span><span class="o">.</span><span class="n">runcode</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">hidden</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+            <span class="nb">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            
+        <span class="k">except</span><span class="p">:</span>
+            <span class="nb">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span>
+            <span class="n">sources</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+            <span class="n">compiled</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="kn">import</span> <span class="nn">code</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">file</span><span class="p">:</span>
+                <span class="n">sources</span> <span class="o">+=</span> <span class="n">line</span>
+                <span class="n">compiled</span> <span class="o">=</span> <span class="n">code</span><span class="o">.</span><span class="n">compile_command</span><span class="p">(</span><span class="n">sources</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">compiled</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">interpreterWidget</span><span class="o">.</span><span class="n">get_interpreter</span><span class="p">()</span><span class="o">.</span><span class="n">runcode</span><span class="p">(</span><span class="n">compiled</span><span class="p">)</span>
+                    <span class="n">sources</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+            <span class="nb">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>        
+        
+        <span class="n">sources</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+</div>
+<div class="viewcode-block" id="MainWindow.open_python_console"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.open_python_console">[docs]</a>    <span class="k">def</span> <span class="nf">open_python_console</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Set focus on the python shell &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">interpreterWidget</span><span class="o">.</span><span class="n">setFocus</span><span class="p">(</span><span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ShortcutFocusReason</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="MainWindow.clear_python_console"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.clear_python_console">[docs]</a>    <span class="k">def</span> <span class="nf">clear_python_console</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Clear python shell &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interpreterWidget</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="MainWindow.new_session"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.new_session">[docs]</a>    <span class="k">def</span> <span class="nf">new_session</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="MainWindow.open_session"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.open_session">[docs]</a>    <span class="k">def</span> <span class="nf">open_session</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">getOpenFileName</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="s">&quot;OpenAlea Session&quot;</span><span class="p">,</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QDir</span><span class="o">.</span><span class="n">homePath</span><span class="p">(),</span> <span class="s">&quot;Session file (*.oas)&quot;</span><span class="p">)</span>
+
+        <span class="n">filename</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="n">filename</span><span class="p">)</span> <span class="p">:</span> <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MainWindow.save_session"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.save_session">[docs]</a>    <span class="k">def</span> <span class="nf">save_session</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Save menu entry &quot;&quot;&quot;</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">session_filename</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save_as</span><span class="p">()</span>
+        <span class="k">else</span> <span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">session_filename</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MainWindow.save_as"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.save_as">[docs]</a>    <span class="k">def</span> <span class="nf">save_as</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Save as menu entry &quot;&quot;&quot;</span>
+
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">getSaveFileName</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="s">&quot;OpenAlea Session&quot;</span><span class="p">,</span>  <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QDir</span><span class="o">.</span><span class="n">homePath</span><span class="p">(),</span> <span class="s">&quot;Session file (*.oas)&quot;</span><span class="p">)</span>
+
+        <span class="n">filename</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="n">filename</span><span class="p">)</span> <span class="p">:</span> <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MainWindow.clear_data_pool"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.clear_data_pool">[docs]</a>    <span class="k">def</span> <span class="nf">clear_data_pool</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Clear the data pool &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">datapool</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="MainWindow.search_node"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.search_node">[docs]</a>    <span class="k">def</span> <span class="nf">search_node</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Activated when search line edit is validated &quot;&quot;&quot;</span>
+
+        <span class="n">text</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">search_lineEdit</span><span class="o">.</span><span class="n">text</span><span class="p">())</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;latin1&#39;</span><span class="p">))</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pkgmanager</span><span class="o">.</span><span class="n">search_node</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">search_model</span><span class="o">.</span><span class="n">set_results</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MainWindow.find_node"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.find_node">[docs]</a>    <span class="k">def</span> <span class="nf">find_node</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Find node Command &quot;&quot;&quot;</span>
+
+        <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabPackager</span><span class="o">.</span><span class="n">indexOf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">searchview</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tabPackager</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">search_lineEdit</span><span class="o">.</span><span class="n">setFocus</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="MainWindow.open_preferences"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.open_preferences">[docs]</a>    <span class="k">def</span> <span class="nf">open_preferences</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Open Preference dialog &quot;&quot;&quot;</span>
+        <span class="n">dialog</span> <span class="o">=</span> <span class="n">PreferencesDialog</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">dialog</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+
+        <span class="c"># ! does not return anythin and do not use ret ?</span>
+
+    <span class="c"># Drag and drop support</span></div>
+<div class="viewcode-block" id="MainWindow.dragEnterEvent"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.dragEnterEvent">[docs]</a>    <span class="k">def</span> <span class="nf">dragEnterEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;todo&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">mimeData</span><span class="p">()</span><span class="o">.</span><span class="n">hasUrls</span><span class="p">():</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">ignore</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="MainWindow.dropEvent"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.dropEvent">[docs]</a>    <span class="k">def</span> <span class="nf">dropEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;todo&quot;&quot;&quot;</span>
+        <span class="n">urls</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">mimeData</span><span class="p">()</span><span class="o">.</span><span class="n">urls</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="nb">file</span> <span class="o">=</span> <span class="n">urls</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">file</span><span class="o">.</span><span class="n">path</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">print</span> <span class="n">e</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">ignore</span><span class="p">()</span>
+
+
+    <span class="c">############################</span>
+    <span class="c"># Handling the Help widget #</span>
+    <span class="c">############################</span></div>
+<div class="viewcode-block" id="MainWindow.on_scene_focus_change"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.on_scene_focus_change">[docs]</a>    <span class="k">def</span> <span class="nf">on_scene_focus_change</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scene</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">dataflowview</span><span class="o">.</span><span class="n">vertex</span><span class="o">.</span><span class="n">GraphicalVertex</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">helpWidget</span><span class="o">.</span><span class="n">set_rst</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">vertex</span><span class="p">()</span><span class="o">.</span><span class="n">get_tip</span><span class="p">())</span>
+</div>
+<div class="viewcode-block" id="MainWindow.on_package_manager_focus_change"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.on_package_manager_focus_change">[docs]</a>    <span class="k">def</span> <span class="nf">on_package_manager_focus_change</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="n">pkg_id</span><span class="p">,</span> <span class="n">factory_id</span><span class="p">,</span> <span class="n">mimetype</span> <span class="o">=</span> <span class="n">NodeFactoryView</span><span class="o">.</span><span class="n">get_item_info</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pkg_id</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">factory_id</span><span class="p">)</span> <span class="ow">and</span> <span class="n">mimetype</span> <span class="ow">in</span> <span class="p">[</span><span class="n">NodeFactory</span><span class="o">.</span><span class="n">mimetype</span><span class="p">,</span>
+                                                            <span class="n">CompositeNodeFactory</span><span class="o">.</span><span class="n">mimetype</span><span class="p">]:</span>
+            <span class="n">factory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pkgmanager</span><span class="p">[</span><span class="n">pkg_id</span><span class="p">][</span><span class="n">factory_id</span><span class="p">]</span>
+            <span class="n">factoryDoc</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="n">get_documentation</span><span class="p">()</span>
+            <span class="n">txt</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="n">get_tip</span><span class="p">(</span><span class="n">asRst</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n\n</span><span class="s">&quot;</span>
+            <span class="k">if</span> <span class="n">factoryDoc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">txt</span> <span class="o">+=</span> <span class="s">&quot;**Docstring:**</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">+</span> <span class="n">factoryDoc</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">helpWidget</span><span class="o">.</span><span class="n">set_rst</span><span class="p">(</span><span class="n">txt</span><span class="p">)</span>
+
+    <span class="c"># Window support</span></div>
+<div class="viewcode-block" id="MainWindow.display_leftpanel"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.display_leftpanel">[docs]</a>    <span class="k">def</span> <span class="nf">display_leftpanel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">toggled</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">splitter_2</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="n">toggled</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="MainWindow.display_rightpanel"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.display_rightpanel">[docs]</a>    <span class="k">def</span> <span class="nf">display_rightpanel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">toggled</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">splitter</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="n">toggled</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MainWindow.to_python_script"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.to_python_script">[docs]</a>    <span class="k">def</span> <span class="nf">to_python_script</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Translate the active workspace into a python script&quot;&quot;&quot;</span>
+
+        <span class="n">widget</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabWorkspace</span><span class="o">.</span><span class="n">currentWidget</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">widget</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">composite_node</span> <span class="o">=</span> <span class="n">widget</span><span class="o">.</span><span class="n">scene</span><span class="p">()</span><span class="o">.</span><span class="n">get_graph</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">composite_node</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="p">:</span>
+            <span class="k">print</span> <span class="s">&quot;BEGIN script&quot;</span>
+            <span class="k">print</span> <span class="n">composite_node</span><span class="o">.</span><span class="n">to_script</span><span class="p">(),</span><span class="s">&quot;END script&quot;</span>
+</div>
+<div class="viewcode-block" id="MainWindow.export_image"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.export_image">[docs]</a>    <span class="k">def</span> <span class="nf">export_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Export current workspace to an image &quot;&quot;&quot;</span>
+
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">getSaveFileName</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="s">&quot;Export image&quot;</span><span class="p">,</span>  <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QDir</span><span class="o">.</span><span class="n">homePath</span><span class="p">(),</span> <span class="s">&quot;PNG Image (*.png)&quot;</span><span class="p">)</span>
+
+        <span class="n">filename</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">filename</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">elif</span> <span class="s">&#39;.&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+            <span class="n">filename</span> <span class="o">+=</span> <span class="s">&#39;.png&#39;</span>
+
+        <span class="c"># Get current workspace</span>
+        <span class="n">view</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabWorkspace</span><span class="o">.</span><span class="n">currentWidget</span><span class="p">()</span>
+        <span class="c"># Retreive the user layout</span>
+        <span class="n">rect</span> <span class="o">=</span> <span class="n">view</span><span class="o">.</span><span class="n">scene</span><span class="p">()</span><span class="o">.</span><span class="n">sceneRect</span><span class="p">()</span>
+        <span class="n">matrix</span> <span class="o">=</span> <span class="n">view</span><span class="o">.</span><span class="n">matrix</span><span class="p">()</span>
+        <span class="n">rect</span> <span class="o">=</span> <span class="n">matrix</span><span class="o">.</span><span class="n">mapRect</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
+
+        <span class="n">pixmap</span> <span class="o">=</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QPixmap</span><span class="p">(</span><span class="n">rect</span><span class="o">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">rect</span><span class="o">.</span><span class="n">height</span><span class="p">())</span>
+        <span class="n">pixmap</span><span class="o">.</span><span class="n">fill</span><span class="p">()</span>
+        <span class="n">painter</span> <span class="o">=</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QPainter</span><span class="p">(</span><span class="n">pixmap</span><span class="p">)</span>
+        <span class="n">painter</span><span class="o">.</span><span class="n">setRenderHint</span><span class="p">(</span><span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QPainter</span><span class="o">.</span><span class="n">Antialiasing</span><span class="p">)</span>
+        <span class="n">view</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+        <span class="n">view</span><span class="o">.</span><span class="n">scene</span><span class="p">()</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">painter</span><span class="p">)</span>
+        <span class="n">painter</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+        <span class="n">pixmap</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MainWindow.export_image_svg"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_visualea.html#openalea.visualea.mainwindow.MainWindow.export_image_svg">[docs]</a>    <span class="k">def</span> <span class="nf">export_image_svg</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Export current workspace to an image &quot;&quot;&quot;</span>
+
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">getSaveFileName</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="s">&quot;Export svg image&quot;</span><span class="p">,</span>  <span class="n">qt</span><span class="o">.</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QDir</span><span class="o">.</span><span class="n">homePath</span><span class="p">(),</span> <span class="s">&quot;SVG Image (*.svg)&quot;</span><span class="p">)</span>
+
+        <span class="n">filename</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">filename</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">elif</span> <span class="s">&#39;.&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+            <span class="n">filename</span> <span class="o">+=</span> <span class="s">&#39;.png&#39;</span>
+
+        <span class="c"># Get current workspace</span>
+        <span class="n">view</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabWorkspace</span><span class="o">.</span><span class="n">currentWidget</span><span class="p">()</span>
+
+        <span class="c"># Retreive the user layout</span>
+        <span class="n">rect</span> <span class="o">=</span> <span class="n">view</span><span class="o">.</span><span class="n">scene</span><span class="p">()</span><span class="o">.</span><span class="n">sceneRect</span><span class="p">()</span>
+        <span class="n">matrix</span> <span class="o">=</span> <span class="n">view</span><span class="o">.</span><span class="n">matrix</span><span class="p">()</span>
+        <span class="n">rect</span> <span class="o">=</span> <span class="n">matrix</span><span class="o">.</span><span class="n">mapRect</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
+
+        <span class="n">svg_gen</span> <span class="o">=</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtSvg</span><span class="o">.</span><span class="n">QSvgGenerator</span><span class="p">()</span>
+        <span class="n">svg_gen</span><span class="o">.</span><span class="n">setFileName</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">svg_gen</span><span class="o">.</span><span class="n">setSize</span><span class="p">(</span><span class="n">rect</span><span class="o">.</span><span class="n">toRect</span><span class="p">()</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
+
+        <span class="n">painter</span> <span class="o">=</span> <span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QPainter</span><span class="p">(</span><span class="n">svg_gen</span><span class="p">)</span>
+        <span class="n">painter</span><span class="o">.</span><span class="n">setRenderHint</span><span class="p">(</span><span class="n">qt</span><span class="o">.</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QPainter</span><span class="o">.</span><span class="n">Antialiasing</span><span class="p">)</span>
+        <span class="n">view</span><span class="o">.</span><span class="n">scene</span><span class="p">()</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">painter</span><span class="p">,</span> <span class="p">)</span>
+        <span class="n">painter</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+</pre></div></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">OpenAleaLab 1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Guillaume Baty.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3a0.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,399 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>openalea.grapheditor.interfaces &mdash; OpenAleaLab 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/virtualplants.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="OpenAleaLab 1.0 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">OpenAleaLab 1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for openalea.grapheditor.interfaces</h1><div class="highlight"><pre>
+<span class="c"># -*- python -*-</span>
+<span class="c">#</span>
+<span class="c">#       OpenAlea.GraphEditor: OpenAlea graphical user interface</span>
+<span class="c">#</span>
+<span class="c">#       Copyright 2006-2009 INRIA - CIRAD - INRA</span>
+<span class="c">#</span>
+<span class="c">#       File author(s): Daniel Barbeau &lt;daniel.barbeau@sophia.inria.fr&gt;</span>
+<span class="c">#</span>
+<span class="c">#       Distributed under the Cecill-C License.</span>
+<span class="c">#       See accompanying file LICENSE.txt or copy at</span>
+<span class="c">#           http://www.cecill.info/licences/Licence_CeCILL-C_V1-en.html</span>
+<span class="c">#</span>
+<span class="c">#       OpenAlea WebSite : http://openalea.gforge.inria.fr</span>
+<span class="c">#</span>
+<span class="c">###############################################################################</span>
+<span class="sd">&quot;&quot;&quot;Interfaces for the generic graph view module. The graph view widget</span>
+<span class="sd">won&#39;t check for inheritance of the object&#39;s it is passed. Instead, it</span>
+<span class="sd">will check the interfaces match more or less.&quot;&quot;&quot;</span>
+
+<span class="n">__license__</span> <span class="o">=</span> <span class="s">&quot;Cecill-C&quot;</span>
+<span class="n">__revision__</span> <span class="o">=</span> <span class="s">&quot; $Id: interfaces.py 2561 2010-06-24 13:26:23Z dbarbeau $ &quot;</span>
+
+<div class="viewcode-block" id="IInterfaceMetaClass"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IInterfaceMetaClass">[docs]</a><span class="k">class</span> <span class="nc">IInterfaceMetaClass</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Adds a method to the interface class that checks</span>
+<span class="sd">    that the given object implements the class&#39; interface.</span>
+<span class="sd">    Allows some sort of safe-ducktyping&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="n">newCls</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+
+        <span class="c">###--CONTRACT CHECKING INFRASTRUCTURE---</span>
+        <span class="n">newCls</span><span class="o">.</span><span class="n">__interface_decl__</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
+        <span class="k">for</span> <span class="n">base</span> <span class="ow">in</span> <span class="n">bases</span><span class="p">:</span>
+            <span class="k">if</span><span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="s">&quot;__interface_decl__&quot;</span><span class="p">)):</span>
+                   <span class="n">newCls</span><span class="o">.</span><span class="n">__interface_decl__</span> <span class="o">+=</span> <span class="n">base</span><span class="o">.</span><span class="n">__interface_decl__</span>
+
+        <span class="c">#removing some objects that aren&#39;t part of the interface</span>
+        <span class="k">if</span><span class="p">(</span><span class="s">&quot;__metaclass__&quot;</span> <span class="ow">in</span> <span class="n">newCls</span><span class="o">.</span><span class="n">__interface_decl__</span><span class="p">):</span>
+            <span class="n">newCls</span><span class="o">.</span><span class="n">__interface_decl__</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s">&quot;__metaclass__&quot;</span><span class="p">)</span>
+        <span class="k">if</span><span class="p">(</span><span class="s">&quot;__module__&quot;</span> <span class="ow">in</span> <span class="n">newCls</span><span class="o">.</span><span class="n">__interface_decl__</span><span class="p">):</span>
+            <span class="n">newCls</span><span class="o">.</span><span class="n">__interface_decl__</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s">&quot;__module__&quot;</span><span class="p">)</span>
+        <span class="k">if</span><span class="p">(</span><span class="s">&quot;__doc__&quot;</span> <span class="ow">in</span> <span class="n">newCls</span><span class="o">.</span><span class="n">__interface_decl__</span><span class="p">):</span>
+            <span class="n">newCls</span><span class="o">.</span><span class="n">__interface_decl__</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s">&quot;__doc__&quot;</span><span class="p">)</span>
+        <span class="k">if</span><span class="p">(</span><span class="s">&quot;check&quot;</span> <span class="ow">in</span> <span class="n">newCls</span><span class="o">.</span><span class="n">__interface_decl__</span><span class="p">):</span>
+            <span class="n">newCls</span><span class="o">.</span><span class="n">__interface_decl__</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s">&quot;check&quot;</span><span class="p">)</span>
+        <span class="c">###--!!CONTRACT CHECKING INFRASTRUCTURE---</span>
+        <span class="k">return</span> <span class="n">newCls</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">dic</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">IInterfaceMetaClass</span><span class="p">,</span> <span class="n">cls</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">dic</span><span class="p">)</span>
+
+<div class="viewcode-block" id="IInterfaceMetaClass.check"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IInterfaceMetaClass.check">[docs]</a>    <span class="k">def</span> <span class="nf">check</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Check if obj matches this interface. &quot;&quot;&quot;</span>
+        <span class="n">objMem</span> <span class="o">=</span> <span class="nb">dir</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="n">notImp</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">stop</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cls</span><span class="o">.</span><span class="n">__interface_decl__</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">objMem</span><span class="p">:</span>
+                <span class="n">notImp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                <span class="n">stop</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="k">else</span> <span class="p">:</span>
+                <span class="k">continue</span>
+
+        <span class="k">if</span> <span class="n">stop</span><span class="p">:</span>
+            <span class="c"># The check failed.</span>
+            <span class="n">stri</span> <span class="o">=</span> <span class="s">&quot;Unimplemented : </span><span class="se">\n</span><span class="s">&quot;</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">notImp</span><span class="p">:</span>
+                <span class="n">stri</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="se">\t</span><span class="s">&quot;</span><span class="o">+</span><span class="n">i</span><span class="o">+</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+            <span class="k">raise</span> <span class="ne">UserWarning</span><span class="p">(</span><span class="s">&#39;Object </span><span class="si">%s</span><span class="s"> does not belong to the Interface </span><span class="si">%s</span><span class="s"> </span><span class="se">\n</span><span class="si">%s</span><span class="s"> &#39;</span><span class="o">%</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">obj</span><span class="p">),</span><span class="n">cls</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span><span class="n">stri</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="ow">not</span> <span class="n">stop</span>
+
+</div></div>
+<div class="viewcode-block" id="IGraphViewStrategies"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphViewStrategies">[docs]</a><span class="k">class</span> <span class="nc">IGraphViewStrategies</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Define implementations of this trait</span>
+<span class="sd">    class to define the behaviour of the graph.</span>
+<span class="sd">    For example : DataFlowGraphViewTrait, TreeGraphViewTrait,</span>
+<span class="sd">    NetworkGraphViewTrait...&quot;&quot;&quot;</span>
+    <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">IInterfaceMetaClass</span>
+
+
+<div class="viewcode-block" id="IGraphViewStrategies.get_graph_model_type"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphViewStrategies.get_graph_model_type">[docs]</a>    <span class="k">def</span> <span class="nf">get_graph_model_type</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the classobj defining the graph type&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="IGraphViewStrategies.create_view"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphViewStrategies.create_view">[docs]</a>    <span class="k">def</span> <span class="nf">create_view</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Instanciates the view&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="IGraphViewStrategies.create_vertex_widget"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphViewStrategies.create_vertex_widget">[docs]</a>    <span class="k">def</span> <span class="nf">create_vertex_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vtype</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Instanciates a node matching vtype&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="IGraphViewStrategies.create_edge_widget"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphViewStrategies.create_edge_widget">[docs]</a>    <span class="k">def</span> <span class="nf">create_edge_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">etype</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Instanciates an edge matching etype&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="c"># def get_vertex_widget_types(cls):</span>
+    <span class="c">#     &quot;&quot;&quot;Return a dict mapping vertex type names (a str) to the</span>
+    <span class="c">#     graphical representation of it (a class)&quot;&quot;&quot;</span>
+    <span class="c">#     raise NotImplementedError</span>
+
+    <span class="c"># def get_edge_widget_types(cls):</span>
+    <span class="c">#     &quot;&quot;&quot;Return a dict mapping edge type names (a str) to the</span>
+    <span class="c">#     graphical representation of it (a class)&quot;&quot;&quot;</span>
+    <span class="c">#     raise NotImplementedError</span>
+
+
+    <span class="c"># def get_graph_or_adapter_type(cls):</span>
+    <span class="c">#     &quot;&quot;&quot;Return a classobj defining the type of widget</span>
+    <span class="c">#     that represents an annotation&quot;&quot;&quot;</span>
+    <span class="c">#     raise NotImplementedError</span>
+
+</div>
+<div class="viewcode-block" id="IGraphViewStrategies.get_connector_types"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphViewStrategies.get_connector_types">[docs]</a>    <span class="k">def</span> <span class="nf">get_connector_types</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+</div>
+<div class="viewcode-block" id="IGraphViewStrategies.initialise_graph_view"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphViewStrategies.initialise_graph_view">[docs]</a>    <span class="k">def</span> <span class="nf">initialise_graph_view</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">graphView</span><span class="p">,</span> <span class="n">graphModel</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;intialise graph view from model&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+
+<span class="c">#------*************************************************------#</span></div></div>
+<div class="viewcode-block" id="IGraphListener"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphListener">[docs]</a><span class="k">class</span> <span class="nc">IGraphListener</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">IInterfaceMetaClass</span>
+
+<div class="viewcode-block" id="IGraphListener.vertex_added"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphListener.vertex_added">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_added</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vtype</span><span class="p">,</span> <span class="n">vertexModel</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="IGraphListener.edge_added"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphListener.edge_added">[docs]</a>    <span class="k">def</span> <span class="nf">edge_added</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edgeModel</span><span class="p">,</span> <span class="n">srcPort</span><span class="p">,</span> <span class="n">dstPort</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="IGraphListener.vertex_removed"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphListener.vertex_removed">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_removed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vtype</span><span class="p">,</span>  <span class="n">vertexModel</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="IGraphListener.edge_removed"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphListener.edge_removed">[docs]</a>    <span class="k">def</span> <span class="nf">edge_removed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edgeModel</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+    <span class="k">def</span> <span class="nf">_new_edge_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">srcPt</span><span class="p">,</span> <span class="n">etype</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="k">def</span> <span class="nf">_new_edge_set_destination</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">dest</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="k">def</span> <span class="nf">_new_edge_end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+<div class="viewcode-block" id="IGraphListener.find_closest_connectable"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphListener.find_closest_connectable">[docs]</a>    <span class="k">def</span> <span class="nf">find_closest_connectable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="IGraphListener.post_addition"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphListener.post_addition">[docs]</a>    <span class="k">def</span> <span class="nf">post_addition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="IGraphListener.is_connectable"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphListener.is_connectable">[docs]</a>    <span class="k">def</span> <span class="nf">is_connectable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="IGraphListener.clear"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphListener.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="IGraphListener.initialise_from_model"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphListener.initialise_from_model">[docs]</a>    <span class="k">def</span> <span class="nf">initialise_from_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+
+
+<span class="c">#------*************************************************------#</span></div></div>
+<div class="viewcode-block" id="IGraphAdapter"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphAdapter">[docs]</a><span class="k">class</span> <span class="nc">IGraphAdapter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">IInterfaceMetaClass</span>
+
+<div class="viewcode-block" id="IGraphAdapter.add_vertex"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphAdapter.add_vertex">[docs]</a>    <span class="k">def</span> <span class="nf">add_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span><span class="p">):</span>
+        <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="IGraphAdapter.get_vertex"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphAdapter.get_vertex">[docs]</a>    <span class="k">def</span> <span class="nf">get_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="IGraphAdapter.remove_vertex"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphAdapter.remove_vertex">[docs]</a>    <span class="k">def</span> <span class="nf">remove_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="IGraphAdapter.remove_vertices"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphAdapter.remove_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">remove_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="IGraphAdapter.get_vertex_inputs"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphAdapter.get_vertex_inputs">[docs]</a>    <span class="k">def</span> <span class="nf">get_vertex_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="IGraphAdapter.get_vertex_outputs"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphAdapter.get_vertex_outputs">[docs]</a>    <span class="k">def</span> <span class="nf">get_vertex_outputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="IGraphAdapter.get_vertex_input"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphAdapter.get_vertex_input">[docs]</a>    <span class="k">def</span> <span class="nf">get_vertex_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="IGraphAdapter.get_vertex_output"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphAdapter.get_vertex_output">[docs]</a>    <span class="k">def</span> <span class="nf">get_vertex_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="IGraphAdapter.add_edge"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphAdapter.add_edge">[docs]</a>    <span class="k">def</span> <span class="nf">add_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="IGraphAdapter.remove_edge"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphAdapter.remove_edge">[docs]</a>    <span class="k">def</span> <span class="nf">remove_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="IGraphAdapter.is_input"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphAdapter.is_input">[docs]</a>    <span class="k">def</span> <span class="nf">is_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="IGraphAdapter.is_output"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphAdapter.is_output">[docs]</a>    <span class="k">def</span> <span class="nf">is_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="IGraphAdapter.get_vertex_types"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphAdapter.get_vertex_types">[docs]</a>    <span class="k">def</span> <span class="nf">get_vertex_types</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="IGraphAdapter.get_edge_types"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphAdapter.get_edge_types">[docs]</a>    <span class="k">def</span> <span class="nf">get_edge_types</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+<span class="c">#------*************************************************------#</span></div></div>
+<div class="viewcode-block" id="IGraphViewConnectable"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphViewConnectable">[docs]</a><span class="k">class</span> <span class="nc">IGraphViewConnectable</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Interface for connectable objects&quot;&quot;&quot;</span>
+    <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">IInterfaceMetaClass</span>
+
+<div class="viewcode-block" id="IGraphViewConnectable.set_highlighted"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphViewConnectable.set_highlighted">[docs]</a>    <span class="k">def</span> <span class="nf">set_highlighted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="IGraphViewConnectable.get_scene_center"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphViewConnectable.get_scene_center">[docs]</a>    <span class="k">def</span> <span class="nf">get_scene_center</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+<span class="c">#------*************************************************------#</span></div></div>
+<div class="viewcode-block" id="IGraphViewElement"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphViewElement">[docs]</a><span class="k">class</span> <span class="nc">IGraphViewElement</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class for elements in a GraphView&quot;&quot;&quot;</span>
+    <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">IInterfaceMetaClass</span>
+
+<div class="viewcode-block" id="IGraphViewElement.position_changed"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphViewElement.position_changed">[docs]</a>    <span class="k">def</span> <span class="nf">position_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Place the element&#39;s representation in</span>
+<span class="sd">        the view space&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="IGraphViewElement.add_to_view"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphViewElement.add_to_view">[docs]</a>    <span class="k">def</span> <span class="nf">add_to_view</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">view</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;add this element to the graphical view&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="IGraphViewElement.remove_from_view"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphViewElement.remove_from_view">[docs]</a>    <span class="k">def</span> <span class="nf">remove_from_view</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">view</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;remove this element from the graphical view&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="IGraphViewElement.notify"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphViewElement.notify">[docs]</a>    <span class="k">def</span> <span class="nf">notify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sender</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;called by the observed objects</span>
+<span class="sd">        Expected event = (\&quot;metadata_changed\&quot;, &quot;position&quot;, [x,x], list)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="IGraphViewElement.store_view_data"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphViewElement.store_view_data">[docs]</a>    <span class="k">def</span> <span class="nf">store_view_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="IGraphViewElement.get_view_data"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphViewElement.get_view_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_view_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="IGraphViewElement.initialise_from_model"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphViewElement.initialise_from_model">[docs]</a>    <span class="k">def</span> <span class="nf">initialise_from_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+<span class="c">#------*************************************************------#</span></div></div>
+<div class="viewcode-block" id="IGraphViewVertex"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphViewVertex">[docs]</a><span class="k">class</span> <span class="nc">IGraphViewVertex</span> <span class="p">(</span><span class="n">IGraphViewElement</span><span class="p">):</span>
+<div class="viewcode-block" id="IGraphViewVertex.lock_position"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphViewVertex.lock_position">[docs]</a>    <span class="k">def</span> <span class="nf">lock_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+<span class="c">#------*************************************************------#</span></div></div>
+<div class="viewcode-block" id="IGraphViewAnnotation"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphViewAnnotation">[docs]</a><span class="k">class</span> <span class="nc">IGraphViewAnnotation</span><span class="p">(</span><span class="n">IGraphViewElement</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Interface for Annotations&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="IGraphViewAnnotation.set_text"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphViewAnnotation.set_text">[docs]</a>    <span class="k">def</span> <span class="nf">set_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;to change the visible text&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="IGraphViewAnnotation.notify"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphViewAnnotation.notify">[docs]</a>    <span class="k">def</span> <span class="nf">notify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sender</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;(\&quot;metadata_changed\&quot;, \&quot;text\&quot;, \&quot;a string\&quot;, str)&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+<span class="c">#------*************************************************------#</span></div></div>
+<div class="viewcode-block" id="IGraphViewEdge"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphViewEdge">[docs]</a><span class="k">class</span> <span class="nc">IGraphViewEdge</span><span class="p">(</span><span class="n">IGraphViewElement</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Interface for edges between two vertexs.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="IGraphViewEdge.update_line_source"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphViewEdge.update_line_source">[docs]</a>    <span class="k">def</span> <span class="nf">update_line_source</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">pos</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;updates this edge&#39;s starting point. Called when</span>
+<span class="sd">        source point is moved&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="IGraphViewEdge.update_line_destination"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphViewEdge.update_line_destination">[docs]</a>    <span class="k">def</span> <span class="nf">update_line_destination</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">pos</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;updates this edge&#39;s ending point. Called when</span>
+<span class="sd">        dest point is moved&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="IGraphViewEdge.notify"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphViewEdge.notify">[docs]</a>    <span class="k">def</span> <span class="nf">notify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sender</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;(\&quot;metadata_changed\&quot;, \&quot;canvasPosition\&quot;, [x,x], list)&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+
+<span class="c">#------*************************************************------#</span></div></div>
+<div class="viewcode-block" id="IGraphViewFloatingEdge"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphViewFloatingEdge">[docs]</a><span class="k">class</span> <span class="nc">IGraphViewFloatingEdge</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Interface for edges to be drawn during</span>
+<span class="sd">    creation time, ie while the user drags.&quot;&quot;&quot;</span>
+    <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">IInterfaceMetaClass</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+<div class="viewcode-block" id="IGraphViewFloatingEdge.consolidate"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphViewFloatingEdge.consolidate">[docs]</a>    <span class="k">def</span> <span class="nf">consolidate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;returns whatever object is under the mouse</span>
+<span class="sd">        pointer at the time the button was released&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="IGraphViewFloatingEdge.get_connections"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_grapheditor.html#openalea.grapheditor.interfaces.IGraphViewFloatingEdge.get_connections">[docs]</a>    <span class="k">def</span> <span class="nf">get_connections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</pre></div></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">OpenAleaLab 1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Guillaume Baty.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3a0.
+    </div>
+  </body>
+</html>

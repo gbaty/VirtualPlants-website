@@ -1,0 +1,905 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>openalea.core.package &mdash; OpenAleaLab 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/virtualplants.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="OpenAleaLab 1.0 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">OpenAleaLab 1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for openalea.core.package</h1><div class="highlight"><pre>
+<span class="c"># -*- python -*-</span>
+<span class="c">#</span>
+<span class="c">#       OpenAlea.Core</span>
+<span class="c">#</span>
+<span class="c">#       Copyright 2006-2009 INRIA - CIRAD - INRA</span>
+<span class="c">#</span>
+<span class="c">#       File author(s): Samuel Dufour-Kowalski &lt;samuel.dufour@sophia.inria.fr&gt;</span>
+<span class="c">#                       Christophe Pradal &lt;christophe.prada@cirad.fr&gt;</span>
+<span class="c">#</span>
+<span class="c">#       Distributed under the Cecill-C License.</span>
+<span class="c">#       See accompanying file LICENSE.txt or copy at</span>
+<span class="c">#           http://www.cecill.info/licences/Licence_CeCILL-C_V1-en.html</span>
+<span class="c">#</span>
+<span class="c">#       OpenAlea WebSite : http://openalea.gforge.inria.fr</span>
+<span class="c">#</span>
+<span class="c">###############################################################################</span>
+<span class="sd">&quot;&quot;&quot; This module defines Package classes.</span>
+
+<span class="sd">A Package is a deplyment unit and contains a factories (Node generator)</span>
+<span class="sd">and meta informations (authors, license, doc...)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__license__</span> <span class="o">=</span> <span class="s">&quot;Cecill-C&quot;</span>
+<span class="n">__revision__</span> <span class="o">=</span> <span class="s">&quot; $Id: package.py 4000 2013-12-13 10:12:23Z diener $ &quot;</span>
+
+
+<span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">string</span>
+<span class="kn">import</span> <span class="nn">imp</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+
+<span class="kn">from</span> <span class="nn">openalea.core.pkgdict</span> <span class="kn">import</span> <span class="n">PackageDict</span><span class="p">,</span> <span class="n">protected</span>
+<span class="kn">from</span> <span class="nn">openalea.core.path</span> <span class="kn">import</span> <span class="n">path</span> <span class="k">as</span> <span class="n">_path</span>
+<span class="kn">from</span> <span class="nn">openalea.core.vlab</span> <span class="kn">import</span> <span class="n">vlab_object</span>
+<span class="kn">from</span> <span class="nn">openalea.core</span> <span class="kn">import</span> <span class="n">logger</span>
+
+<span class="c"># Exceptions</span>
+
+
+<div class="viewcode-block" id="UnknownNodeError"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.UnknownNodeError">[docs]</a><span class="k">class</span> <span class="nc">UnknownNodeError</span> <span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="ne">Exception</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="s">&quot;Cannot find node : </span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">message</span>
+
+</div>
+<div class="viewcode-block" id="FactoryExistsError"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.FactoryExistsError">[docs]</a><span class="k">class</span> <span class="nc">FactoryExistsError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+<span class="c">###############################################################################</span></div>
+<div class="viewcode-block" id="DynamicPackage"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.DynamicPackage">[docs]</a><span class="k">class</span> <span class="nc">DynamicPackage</span><span class="p">(</span><span class="n">PackageDict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Package for dynamical parsing of python file</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">metainfo</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metainfo</span> <span class="o">=</span> <span class="n">metainfo</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="n">PackageDict</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        
+        </div>
+<div class="viewcode-block" id="Package"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.Package">[docs]</a><span class="k">class</span> <span class="nc">Package</span><span class="p">(</span><span class="n">PackageDict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A Package is a dictionnary of node factory.</span>
+<span class="sd">    Each node factory is able to generate node and their widgets.</span>
+
+<span class="sd">    Meta informations are associated with a package.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c"># type information for drag and drop.</span>
+    <span class="n">mimetype</span> <span class="o">=</span> <span class="s">&quot;openalea/package&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">metainfo</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a Package</span>
+
+<span class="sd">        :param name: a unique string used as a unique identifier for the package</span>
+<span class="sd">        :param path: path where the package lies (a directory or a full wralea path)</span>
+<span class="sd">        :param metainfo: a dictionnary for metainformation.</span>
+
+<span class="sd">        Attended keys for the metainfo parameters are:</span>
+<span class="sd">            - license: a string ex GPL, LGPL, Cecill, Cecill-C</span>
+<span class="sd">            - version: a string</span>
+<span class="sd">            - authors: a string</span>
+<span class="sd">            - institutes: a string</span>
+<span class="sd">            - url: a string</span>
+<span class="sd">            - description: a string for the package description</span>
+<span class="sd">            - publication: optional string for publications</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">PackageDict</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metainfo</span> <span class="o">=</span> <span class="n">metainfo</span>
+
+        <span class="c"># package directory</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">path</span><span class="p">):</span>
+            <span class="c"># package directory</span>
+            <span class="kn">import</span> <span class="nn">inspect</span>
+            <span class="c"># get the path of the file which call this function</span>
+            <span class="n">call_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">call_path</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wralea_path</span> <span class="o">=</span> <span class="n">call_path</span>
+
+        <span class="c"># wralea.py path is specified</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">)):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">path</span><span class="p">)):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wralea_path</span> <span class="o">=</span> <span class="n">path</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">path</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wralea_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s">&quot;__wralea__.py&quot;</span><span class="p">)</span>
+
+            <span class="c">#wralea_name = name.replace(&#39;.&#39;, &#39;_&#39;)</span>
+
+<div class="viewcode-block" id="Package.is_directory"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.Package.is_directory">[docs]</a>    <span class="k">def</span> <span class="nf">is_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        New style package.</span>
+<span class="sd">        A package is embeded in a unique directory.</span>
+<span class="sd">        This directory can not contain more than one package.</span>
+<span class="sd">        Thus, you can move, copy or delete a package by acting on the directory without ambiguity.</span>
+
+<span class="sd">        Return True if the package is embeded in a directory.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">wralea_path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&quot;__wralea__.py&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Package.is_editable"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.Package.is_editable">[docs]</a>    <span class="k">def</span> <span class="nf">is_editable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A convention (for the GUI) to ensure that the user can modify the package.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="Package.get_pkg_files"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.Package.get_pkg_files">[docs]</a>    <span class="k">def</span> <span class="nf">get_pkg_files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the list of python filename of the package.</span>
+<span class="sd">        The filename are relative to self.path</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c">#assert self.is_directory()</span>
+
+        <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="nb">file</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">):</span>
+            <span class="n">src</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="nb">file</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">src</span><span class="p">)</span> <span class="ow">or</span>
+               <span class="nb">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&quot;.pyc&quot;</span><span class="p">)</span> <span class="ow">or</span>
+               <span class="nb">file</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">)):</span>
+                <span class="k">continue</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">file</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ret</span>
+</div>
+<div class="viewcode-block" id="Package.remove_files"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.Package.remove_files">[docs]</a>    <span class="k">def</span> <span class="nf">remove_files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Remove pkg files &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="Package.reload"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.Package.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Reload all python file of the package &quot;&quot;&quot;</span>
+
+        <span class="n">sources</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_pkg_files</span><span class="p">()</span>
+
+        <span class="n">s</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span> <span class="c"># set of full path name</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">sources</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&#39;.py&#39;</span><span class="p">)):</span>
+                <span class="n">f</span> <span class="o">+=</span> <span class="s">&#39;c&#39;</span>
+
+            <span class="n">s</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">f</span><span class="p">)))</span>
+
+        <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">module</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">modulefile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">__file__</span><span class="p">)</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">modulefile</span> <span class="ow">in</span> <span class="n">s</span><span class="p">):</span>
+                    <span class="n">module</span><span class="o">.</span><span class="n">oa_invalidate</span> <span class="o">=</span> <span class="bp">True</span>
+                    <span class="nb">reload</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
+                    <span class="k">print</span> <span class="s">&quot;Reloaded &quot;</span><span class="p">,</span> <span class="n">module</span><span class="o">.</span><span class="n">__name__</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="Package.get_wralea_path"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.Package.get_wralea_path">[docs]</a>    <span class="k">def</span> <span class="nf">get_wralea_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return the full path of the wralea.py (if set) &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">wralea_path</span>
+</div>
+<div class="viewcode-block" id="Package.get_id"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.Package.get_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return the package id &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+</div>
+<div class="viewcode-block" id="Package.get_tip"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.Package.get_tip">[docs]</a>    <span class="k">def</span> <span class="nf">get_tip</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return the package description &quot;&quot;&quot;</span>
+
+        <span class="nb">str</span><span class="o">=</span> <span class="s">&quot;&lt;b&gt;Package:&lt;/b&gt;</span><span class="si">%s</span><span class="s">&lt;br/&gt;</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="nb">str</span> <span class="o">+=</span> <span class="s">&quot;&lt;b&gt;Description : &lt;/b&gt;</span><span class="si">%s</span><span class="s">&lt;br/&gt;</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metainfo</span><span class="p">[</span><span class="s">&#39;description&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">,</span><span class="s">&#39;&lt;br/&gt;&#39;</span><span class="p">),</span> <span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="nb">str</span> <span class="o">+=</span> <span class="s">&quot;&lt;b&gt;Authors :&lt;/b&gt; </span><span class="si">%s</span><span class="s">&lt;br/&gt;</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metainfo</span><span class="p">[</span><span class="s">&#39;authors&#39;</span><span class="p">],</span> <span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="nb">str</span> <span class="o">+=</span> <span class="s">&quot;&lt;b&gt;Institutes :&lt;/b&gt; </span><span class="si">%s</span><span class="s">&lt;br/&gt;</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metainfo</span><span class="p">[</span><span class="s">&#39;institutes&#39;</span><span class="p">],</span> <span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="nb">str</span> <span class="o">+=</span> <span class="s">&quot;&lt;b&gt;URL : &lt;/b&gt;</span><span class="si">%s</span><span class="s">&lt;br/&gt;</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metainfo</span><span class="p">[</span><span class="s">&#39;url&#39;</span><span class="p">],</span> <span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="k">return</span> <span class="nb">str</span>
+</div>
+<div class="viewcode-block" id="Package.get_metainfo"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.Package.get_metainfo">[docs]</a>    <span class="k">def</span> <span class="nf">get_metainfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a meta information.</span>
+<span class="sd">        See the standard key in the __init__ function documentation.</span>
+
+<span class="sd">        :param key: todo</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">metainfo</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Package.add_factory"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.Package.add_factory">[docs]</a>    <span class="k">def</span> <span class="nf">add_factory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factory</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Add to the package a factory ( node or subgraph ) &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">factory</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;Factory </span><span class="si">%s</span><span class="s"> already defined. Ignored !&quot;</span> \
+                <span class="o">%</span> <span class="p">(</span><span class="n">factory</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">))</span>
+
+
+        <span class="bp">self</span><span class="p">[</span><span class="n">factory</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">factory</span>
+        <span class="n">factory</span><span class="o">.</span><span class="n">package</span> <span class="o">=</span> <span class="bp">self</span>
+
+        <span class="c"># Check validity</span>
+        <span class="c"># oops: this is a hack.</span>
+        <span class="c"># When the factory is a data factory that do not reference a file, raise an error.</span>
+        <span class="c"># This function return True or raise an error to have a specific diagnostic.</span>
+        <span class="n">factory</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">factory</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">factory</span><span class="o">.</span><span class="n">package</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="k">del</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="n">factory</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
+            <span class="k">raise</span> <span class="n">e</span>
+
+        <span class="c"># Add Aliases</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">factory</span><span class="o">.</span><span class="n">alias</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">factory</span><span class="o">.</span><span class="n">alias</span><span class="p">:</span>
+                <span class="bp">self</span><span class="p">[</span><span class="n">protected</span><span class="p">(</span><span class="n">a</span><span class="p">)]</span> <span class="o">=</span> <span class="n">factory</span>
+</div>
+<div class="viewcode-block" id="Package.update_factory"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.Package.update_factory">[docs]</a>    <span class="k">def</span> <span class="nf">update_factory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">old_name</span><span class="p">,</span> <span class="n">factory</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Update factory (change its name) &quot;&quot;&quot;</span>
+
+        <span class="k">del</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="n">old_name</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_factory</span><span class="p">(</span><span class="n">factory</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Package.get_names"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.Package.get_names">[docs]</a>    <span class="k">def</span> <span class="nf">get_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return all the factory names in a list &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Package.get_factory"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.Package.get_factory">[docs]</a>    <span class="k">def</span> <span class="nf">get_factory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return the factory associated with id &quot;&quot;&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">factory</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">UnknownNodeError</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">.</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="nb">id</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">factory</span>
+
+
+<span class="c">################################################################################</span>
+
+</div></div>
+<div class="viewcode-block" id="UserPackage"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.UserPackage">[docs]</a><span class="k">class</span> <span class="nc">UserPackage</span><span class="p">(</span><span class="n">Package</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Package user editable and persistent &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">metainfo</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; @param path : directory where to store wralea and module files &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">path</span><span class="p">):</span>
+            <span class="kn">import</span> <span class="nn">inspect</span>
+            <span class="c"># get the path of the file which call this function</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="n">Package</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">metainfo</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+
+<div class="viewcode-block" id="UserPackage.is_editable"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.UserPackage.is_editable">[docs]</a>    <span class="k">def</span> <span class="nf">is_editable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="UserPackage.remove_files"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.UserPackage.remove_files">[docs]</a>    <span class="k">def</span> <span class="nf">remove_files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Remove pkg files &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_directory</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">ignore_errors</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="UserPackage.clone_from_package"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.UserPackage.clone_from_package">[docs]</a>    <span class="k">def</span> <span class="nf">clone_from_package</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pkg</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Copy the contents of pkg in self&quot;&quot;&quot;</span>
+
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_directory</span><span class="p">()</span>
+
+        <span class="c"># Copy icon</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">metainfo</span><span class="p">[</span><span class="s">&#39;icon&#39;</span><span class="p">]):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metainfo</span><span class="p">[</span><span class="s">&#39;icon&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkg</span><span class="o">.</span><span class="n">metainfo</span><span class="p">[</span><span class="s">&#39;icon&#39;</span><span class="p">]</span>
+
+        <span class="c"># Copy files</span>
+        <span class="n">sources</span> <span class="o">=</span> <span class="n">pkg</span><span class="o">.</span><span class="n">get_pkg_files</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="nb">file</span> <span class="ow">in</span> <span class="n">sources</span><span class="p">:</span>
+            <span class="n">src</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pkg</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="nb">file</span><span class="p">)</span>
+            <span class="n">dst</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="nb">file</span><span class="p">)</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">)</span>
+
+        <span class="c"># Copy deeply all the factory</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">pkg</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="bp">self</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">replace_pkg</span> <span class="o">=</span> <span class="p">(</span><span class="n">pkg</span><span class="p">,</span> <span class="bp">self</span><span class="p">),</span>
+                             <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+
+            <span class="c">#self.update(copy.deepcopy(pkg))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="UserPackage.write"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.UserPackage.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return the writer class &quot;&quot;&quot;</span>
+
+        <span class="n">writer</span> <span class="o">=</span> <span class="n">PyPackageWriter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+
+        <span class="k">print</span> <span class="s">&quot;Writing&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">wralea_path</span>
+
+        <span class="n">writer</span><span class="o">.</span><span class="n">write_wralea</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wralea_path</span><span class="p">)</span>
+
+        <span class="c"># create a __init__.py if necessary</span>
+        <span class="n">init_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s">&#39;__init__.py&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">init_path</span><span class="p">)):</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">init_path</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="c"># Convenience function</span>
+</div>
+<div class="viewcode-block" id="UserPackage.create_user_node"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.UserPackage.create_user_node">[docs]</a>    <span class="k">def</span> <span class="nf">create_user_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span>
+                            <span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a new user node factory</span>
+<span class="sd">        This function create a new python module in the package directory</span>
+<span class="sd">        The factory is added to the package</span>
+<span class="sd">        and the package is saved.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">FactoryExistsError</span><span class="p">()</span>
+
+        <span class="n">localdir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span>
+        <span class="n">classname</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">,</span> <span class="s">&#39;_&#39;</span><span class="p">)</span>
+
+        <span class="c"># build function parameters</span>
+        <span class="n">ins</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">in_names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="nb">input</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
+            <span class="n">in_name</span> <span class="o">=</span> <span class="nb">input</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">,</span> <span class="s">&#39;_&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="n">in_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">in_name</span><span class="p">)</span>
+            <span class="n">in_value</span> <span class="o">=</span> <span class="nb">input</span><span class="p">[</span><span class="s">&#39;value&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">in_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">arg</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">=</span><span class="si">%s</span><span class="s">&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">in_name</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">in_value</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">arg</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">in_name</span><span class="p">,</span> <span class="p">)</span>
+            <span class="n">ins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+        <span class="n">in_args</span> <span class="o">=</span> <span class="s">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ins</span><span class="p">)</span>
+
+        <span class="c"># build output</span>
+        <span class="n">out_values</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="n">return_values</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">:</span>
+            <span class="n">arg</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">,</span> <span class="s">&#39;_&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="c"># if an input arg is equal to an output one,</span>
+            <span class="c"># change its name.</span>
+            <span class="k">while</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">in_names</span><span class="p">:</span>
+                <span class="n">arg</span> <span class="o">=</span> <span class="s">&#39;out_&#39;</span><span class="o">+</span><span class="n">arg</span>
+            <span class="n">out_values</span> <span class="o">+=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s"> = None; &#39;</span><span class="o">%</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="p">)</span>
+            <span class="n">return_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">return_values</span><span class="p">:</span>
+            <span class="n">return_values</span> <span class="o">=</span> <span class="s">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">return_values</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;,&#39;</span>
+        <span class="c"># Create the module file</span>
+        <span class="n">my_template</span> <span class="o">=</span> \
+<span class="sd">&quot;&quot;&quot;\</span>
+<span class="sd">def %s(%s):</span>
+<span class="sd">    &#39;&#39;&#39;\</span>
+<span class="sd">    %s</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    %s</span>
+<span class="sd">    # write the node code here.</span>
+
+<span class="sd">    # return outputs</span>
+<span class="sd">    return %s</span>
+<span class="sd">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">classname</span><span class="p">,</span> <span class="n">in_args</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">out_values</span><span class="p">,</span> <span class="n">return_values</span><span class="p">)</span>
+
+        <span class="n">module_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">localdir</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">.py&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">classname</span><span class="p">))</span>
+
+        <span class="nb">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">module_path</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
+        <span class="nb">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">my_template</span><span class="p">)</span>
+        <span class="nb">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="kn">from</span> <span class="nn">openalea.core.node</span> <span class="kn">import</span> <span class="n">NodeFactory</span>
+
+        <span class="n">factory</span> <span class="o">=</span> <span class="n">NodeFactory</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+                              <span class="n">category</span><span class="o">=</span><span class="n">category</span><span class="p">,</span>
+                              <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">,</span>
+                              <span class="n">inputs</span><span class="o">=</span><span class="n">inputs</span><span class="p">,</span>
+                              <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span>
+                              <span class="n">nodemodule</span><span class="o">=</span><span class="n">classname</span><span class="p">,</span>
+                              <span class="n">nodeclass</span><span class="o">=</span><span class="n">classname</span><span class="p">,</span>
+                              <span class="n">authors</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span>
+                              <span class="n">search_path</span> <span class="o">=</span> <span class="p">[</span><span class="n">localdir</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_factory</span><span class="p">(</span><span class="n">factory</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">factory</span>
+
+
+    <span class="c"># Convenience function</span>
+</div>
+<div class="viewcode-block" id="UserPackage.create_user_compositenode"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.UserPackage.create_user_compositenode">[docs]</a>    <span class="k">def</span> <span class="nf">create_user_compositenode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span>
+                                   <span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a new user composite node factory to the package</span>
+<span class="sd">        and save the package.</span>
+<span class="sd">        Returns the cn factory.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c"># Avoid cyclic import:</span>
+        <span class="c"># composite node factory import package...</span>
+        <span class="kn">from</span> <span class="nn">compositenode</span> <span class="kn">import</span> <span class="n">CompositeNodeFactory</span>
+
+        <span class="n">newfactory</span> <span class="o">=</span> <span class="n">CompositeNodeFactory</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+                                          <span class="n">description</span><span class="o">=</span> <span class="n">description</span><span class="p">,</span>
+                                          <span class="n">category</span> <span class="o">=</span> <span class="n">category</span><span class="p">,</span>
+                                          <span class="n">inputs</span><span class="o">=</span><span class="n">inputs</span><span class="p">,</span>
+                                          <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span>
+                                          <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_factory</span><span class="p">(</span><span class="n">newfactory</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">newfactory</span>
+</div>
+<div class="viewcode-block" id="UserPackage.add_data_file"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.UserPackage.add_data_file">[docs]</a>    <span class="k">def</span> <span class="nf">add_data_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a file in a package</span>
+<span class="sd">        (copy it in the directory)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">openalea.core.data</span> <span class="kn">import</span> <span class="n">DataFactory</span>
+
+        <span class="n">bname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">src</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">dst</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">bname</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">src</span> <span class="o">!=</span> <span class="n">dst</span><span class="p">):</span>
+                <span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">shutil</span><span class="o">.</span><span class="n">Error</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dst</span><span class="p">):</span>
+                <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="n">newfactory</span> <span class="o">=</span> <span class="n">DataFactory</span><span class="p">(</span><span class="n">bname</span><span class="p">,</span> <span class="n">description</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_factory</span><span class="p">(</span><span class="n">newfactory</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">newfactory</span>
+</div>
+<div class="viewcode-block" id="UserPackage.set_icon"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.UserPackage.set_icon">[docs]</a>    <span class="k">def</span> <span class="nf">set_icon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set package icon</span>
+<span class="sd">        Copy filename in the package dir</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">bname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">src</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">dst</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">bname</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">src</span> <span class="o">!=</span> <span class="n">dst</span><span class="p">):</span>
+                <span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metainfo</span><span class="p">[</span><span class="s">&#39;icon&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bname</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+            <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="UserPackage.add_factory"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.UserPackage.add_factory">[docs]</a>    <span class="k">def</span> <span class="nf">add_factory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factory</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Write change on disk &quot;&quot;&quot;</span>
+
+        <span class="n">Package</span><span class="o">.</span><span class="n">add_factory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factory</span><span class="p">)</span>
+</div>
+    <span class="k">def</span> <span class="nf">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Write change on disk &quot;&quot;&quot;</span>
+
+        <span class="n">Package</span><span class="o">.</span><span class="n">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+        <span class="c">#self.write()</span>
+
+
+
+<span class="c">################################################################################</span>
+
+</div>
+<div class="viewcode-block" id="AbstractPackageReader"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.AbstractPackageReader">[docs]</a><span class="k">class</span> <span class="nc">AbstractPackageReader</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Abstract class to add a package in the package manager.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Build a package from a specification file.</span>
+<span class="sd">        filename may be a __wralea__.py file for instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span>
+
+<div class="viewcode-block" id="AbstractPackageReader.register_packages"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.AbstractPackageReader.register_packages">[docs]</a>    <span class="k">def</span> <span class="nf">register_packages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pkgmanager</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Create and add a package in the package manager. &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+</div></div>
+<div class="viewcode-block" id="PyPackageReader"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.PyPackageReader">[docs]</a><span class="k">class</span> <span class="nc">PyPackageReader</span><span class="p">(</span><span class="n">AbstractPackageReader</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Build packages from wralea file</span>
+<span class="sd">    Use &#39;register_package&#39; function</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="PyPackageReader.filename_to_module"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.PyPackageReader.filename_to_module">[docs]</a>    <span class="k">def</span> <span class="nf">filename_to_module</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Transform the filename ending with .py to the module name &quot;&quot;&quot;</span>
+        <span class="n">start_index</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">end_index</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+        <span class="c"># delete the .py at the end</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&#39;.py&#39;</span><span class="p">)):</span>
+            <span class="n">end_index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">3</span>
+        <span class="c"># Windows case (e.g. C:/...)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">filename</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;:&#39;</span><span class="p">):</span>
+            <span class="n">start_index</span> <span class="o">=</span> <span class="mi">2</span>
+
+        <span class="n">modulename</span> <span class="o">=</span> <span class="n">filename</span><span class="p">[</span><span class="n">start_index</span><span class="p">:</span><span class="n">end_index</span><span class="p">]</span>
+
+        <span class="n">l</span> <span class="o">=</span> <span class="n">modulename</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span><span class="p">)</span>
+        <span class="n">modulename</span> <span class="o">=</span> <span class="s">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">modulename</span>
+</div>
+<div class="viewcode-block" id="PyPackageReader.get_pkg_name"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.PyPackageReader.get_pkg_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_pkg_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return the OpenAlea (uniq) full package name &quot;&quot;&quot;</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename_to_module</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">,</span> <span class="s">&quot;_&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">m</span>
+</div>
+<div class="viewcode-block" id="PyPackageReader.register_packages"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.PyPackageReader.register_packages">[docs]</a>    <span class="k">def</span> <span class="nf">register_packages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pkgmanager</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Execute Wralea.py &quot;&quot;&quot;</span>
+
+        <span class="n">retlist</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">pkg</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="n">basename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">basedir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">))</span>
+
+        <span class="n">modulename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_pkg_name</span><span class="p">()</span>
+        <span class="n">base_modulename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename_to_module</span><span class="p">(</span><span class="n">basename</span><span class="p">)</span>
+
+        <span class="c"># Adapt sys.path</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basedir</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">modulename</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">):</span>
+            <span class="k">del</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">modulename</span><span class="p">]</span>
+
+        <span class="p">(</span><span class="nb">file</span><span class="p">,</span> <span class="n">pathname</span><span class="p">,</span> <span class="n">desc</span><span class="p">)</span> <span class="o">=</span> <span class="n">imp</span><span class="o">.</span><span class="n">find_module</span><span class="p">(</span><span class="n">base_modulename</span><span class="p">,</span> <span class="p">[</span><span class="n">basedir</span><span class="p">])</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">wraleamodule</span> <span class="o">=</span> <span class="n">imp</span><span class="o">.</span><span class="n">load_module</span><span class="p">(</span><span class="n">modulename</span><span class="p">,</span> <span class="nb">file</span><span class="p">,</span> <span class="n">pathname</span><span class="p">,</span> <span class="n">desc</span><span class="p">)</span>
+            <span class="n">pkg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_package</span><span class="p">(</span><span class="n">wraleamodule</span><span class="p">,</span> <span class="n">pkgmanager</span><span class="p">)</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">pkgmanager</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%s</span><span class="s"> is invalid : </span><span class="si">%s</span><span class="s">&#39;</span><span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">print</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s"> is invalid : </span><span class="si">%s</span><span class="s">&#39;</span><span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+                <span class="k">pass</span>
+
+        <span class="k">except</span><span class="p">:</span> <span class="c"># Treat all exception</span>
+            <span class="n">pkgmanager</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%s</span><span class="s"> is invalid :&#39;</span><span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="p">))</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nb">file</span><span class="p">):</span>
+            <span class="nb">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="c"># Recover sys.path</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">pkg</span>
+</div>
+<div class="viewcode-block" id="PyPackageReader.build_package"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.PyPackageReader.build_package">[docs]</a>    <span class="k">def</span> <span class="nf">build_package</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wraleamodule</span><span class="p">,</span> <span class="n">pkgmanager</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Build package and update pkgmanager &quot;&quot;&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">wraleamodule</span><span class="o">.</span><span class="n">register_packages</span><span class="p">(</span><span class="n">pkgmanager</span><span class="p">)</span>
+
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="c"># compatibility issue between two types of reader</span>
+            <span class="n">reader</span> <span class="o">=</span> <span class="n">PyPackageReaderWralea</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+            <span class="n">reader</span><span class="o">.</span><span class="n">build_package</span><span class="p">(</span><span class="n">wraleamodule</span><span class="p">,</span> <span class="n">pkgmanager</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="PyPackageReaderWralea"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.PyPackageReaderWralea">[docs]</a><span class="k">class</span> <span class="nc">PyPackageReaderWralea</span><span class="p">(</span><span class="n">PyPackageReader</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Build a package from  a __wralea__.py</span>
+<span class="sd">    Use module variable</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="PyPackageReaderWralea.build_package"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.PyPackageReaderWralea.build_package">[docs]</a>    <span class="k">def</span> <span class="nf">build_package</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wraleamodule</span><span class="p">,</span> <span class="n">pkgmanager</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Build package and update pkgmanager &quot;&quot;&quot;</span>
+
+        <span class="n">name</span> <span class="o">=</span> <span class="n">wraleamodule</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;__name__&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="n">edit</span> <span class="o">=</span> <span class="n">wraleamodule</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;__editable__&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+
+        <span class="c"># Build Metainfo</span>
+        <span class="n">metainfo</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">version</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+            <span class="n">license</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+            <span class="n">authors</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+            <span class="n">institutes</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+            <span class="n">description</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+            <span class="n">icon</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+            <span class="n">alias</span> <span class="o">=</span> <span class="p">[],</span>
+            <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">wraleamodule</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;__&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">k</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&#39;__&#39;</span><span class="p">)):</span>
+                <span class="k">continue</span>
+            <span class="n">k</span> <span class="o">=</span> <span class="n">k</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="c"># remove __</span>
+            <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">metainfo</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">k</span><span class="p">)):</span>
+                <span class="k">continue</span>
+            <span class="n">metainfo</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+
+
+        <span class="c"># Build Package</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">wraleamodule</span><span class="o">.</span><span class="n">__file__</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&#39;.pyc&#39;</span><span class="p">)):</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;.pyc&#39;</span><span class="p">,</span> <span class="s">&#39;.py&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">edit</span><span class="p">):</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">Package</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">metainfo</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">UserPackage</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">metainfo</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+
+        <span class="c"># Add factories</span>
+        <span class="n">factories</span> <span class="o">=</span> <span class="n">wraleamodule</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;__all__&#39;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">factories</span><span class="p">:</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="n">wraleamodule</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">f</span><span class="p">):</span>
+                    <span class="n">p</span><span class="o">.</span><span class="n">add_factory</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">pkgmanager</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+
+        <span class="n">pkgmanager</span><span class="o">.</span><span class="n">add_package</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+
+        <span class="c"># Add Package Aliases</span>
+        <span class="n">palias</span> <span class="o">=</span> <span class="n">wraleamodule</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;__alias__&#39;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">palias</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">protected</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="ow">in</span> <span class="n">pkgmanager</span><span class="p">:</span>
+                <span class="n">alias_pkg</span> <span class="o">=</span> <span class="n">pkgmanager</span><span class="p">[</span><span class="n">protected</span><span class="p">(</span><span class="n">name</span><span class="p">)]</span>
+                <span class="k">for</span> <span class="n">name_factory</span><span class="p">,</span> <span class="n">factory</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">name_factory</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">alias_pkg</span> <span class="ow">and</span> \
+                     <span class="n">alias_pkg</span><span class="o">.</span><span class="n">name</span><span class="o">+</span><span class="s">&#39;.&#39;</span><span class="o">+</span><span class="n">name_factory</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">pkgmanager</span><span class="p">:</span>
+                         <span class="n">alias_pkg</span><span class="p">[</span><span class="n">name_factory</span><span class="p">]</span> <span class="o">=</span> <span class="n">factory</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">pkgmanager</span><span class="p">[</span><span class="n">protected</span><span class="p">(</span><span class="n">name</span><span class="p">)]</span> <span class="o">=</span> <span class="n">p</span>
+
+
+<span class="c">######################</span>
+<span class="c"># Vlab package reader</span>
+<span class="c">######################</span>
+
+</div></div>
+<div class="viewcode-block" id="PyPackageReaderVlab"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.PyPackageReaderVlab">[docs]</a><span class="k">class</span> <span class="nc">PyPackageReaderVlab</span><span class="p">(</span><span class="n">AbstractPackageReader</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Build a package from  a vlab specification file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="PyPackageReaderVlab.register_packages"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.PyPackageReaderVlab.register_packages">[docs]</a>    <span class="k">def</span> <span class="nf">register_packages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pkgmanager</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Create and add a package in the package manager. &quot;&quot;&quot;</span>
+        <span class="n">fn</span> <span class="o">=</span> <span class="n">_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">abspath</span><span class="p">()</span>
+        <span class="n">pkg_path</span> <span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="n">dirname</span><span class="p">()</span>
+
+        <span class="n">spec_file</span> <span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="n">basename</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="s">&#39;specification&#39;</span> <span class="ow">in</span> <span class="n">spec_file</span>
+
+        <span class="n">vlab_package</span> <span class="o">=</span> <span class="n">vlab_object</span><span class="p">(</span><span class="n">pkg_path</span><span class="p">,</span> <span class="n">pkgmanager</span><span class="p">)</span>
+        <span class="n">pkg</span> <span class="o">=</span> <span class="n">vlab_package</span><span class="o">.</span><span class="n">get_package</span><span class="p">()</span>
+        <span class="n">pkgmanager</span><span class="o">.</span><span class="n">add_package</span><span class="p">(</span><span class="n">pkg</span><span class="p">)</span>
+
+
+<span class="c">############################## Writers #########################################</span>
+
+</div></div>
+<div class="viewcode-block" id="PyPackageWriter"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.PyPackageWriter">[docs]</a><span class="k">class</span> <span class="nc">PyPackageWriter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Write a wralea python file &quot;&quot;&quot;</span>
+
+    <span class="n">wralea_template</span> <span class="o">=</span>\
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd"># This file has been generated at $TIME</span>
+
+<span class="sd">from openalea.core import *</span>
+
+<span class="sd">$PKG_DECLARATION</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+    <span class="n">pkg_template</span> <span class="o">=</span> \
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">$PKGNAME</span>
+
+<span class="sd">$METAINFO</span>
+
+<span class="sd">$ALL</span>
+
+<span class="sd">$FACTORY_DECLARATION</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">package</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Package to write &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">package</span> <span class="o">=</span> <span class="n">package</span>
+
+<div class="viewcode-block" id="PyPackageWriter.get_factories_str"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.PyPackageWriter.get_factories_str">[docs]</a>    <span class="k">def</span> <span class="nf">get_factories_str</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return a dict of (name:repr) of all factory&quot;&quot;&quot;</span>
+
+        <span class="c"># generate code for each factory</span>
+        <span class="n">result_str</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">package</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">writer</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">get_writer</span><span class="p">()</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">writer</span><span class="p">):</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">get_python_name</span><span class="p">()</span>
+                <span class="n">result_str</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">writer</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">result_str</span>
+</div>
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return a string with the package declaration &quot;&quot;&quot;</span>
+
+        <span class="n">fdict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_factories_str</span><span class="p">()</span>
+
+        <span class="nb">all</span> <span class="o">=</span> <span class="n">fdict</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+
+        <span class="n">fstr</span> <span class="o">=</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fdict</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+        <span class="n">pstr</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">Template</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pkg_template</span><span class="p">)</span>
+
+        <span class="n">editable</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">package</span><span class="p">,</span> <span class="n">UserPackage</span><span class="p">)</span>
+
+        <span class="n">metainfo</span> <span class="o">=</span> <span class="s">&#39;__editable__ = </span><span class="si">%s</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">%</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">editable</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">package</span><span class="o">.</span><span class="n">metainfo</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="s">&quot;__</span><span class="si">%s</span><span class="s">__&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+            <span class="n">metainfo</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s"> = </span><span class="si">%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="n">pstr</span><span class="o">.</span><span class="n">safe_substitute</span><span class="p">(</span><span class="n">PKGNAME</span><span class="o">=</span><span class="s">&quot;__name__ = </span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">package</span><span class="o">.</span><span class="n">name</span><span class="p">)),</span>
+                                      <span class="n">METAINFO</span><span class="o">=</span><span class="n">metainfo</span><span class="p">,</span>
+                                      <span class="n">ALL</span><span class="o">=</span><span class="s">&quot;__all__ = </span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="nb">all</span><span class="p">),</span> <span class="p">),</span>
+                                      <span class="n">FACTORY_DECLARATION</span><span class="o">=</span><span class="n">fstr</span><span class="p">,</span>
+                                      <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">result</span>
+
+<div class="viewcode-block" id="PyPackageWriter.get_str"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.PyPackageWriter.get_str">[docs]</a>    <span class="k">def</span> <span class="nf">get_str</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return string to write &quot;&quot;&quot;</span>
+
+        <span class="n">pstr</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">wtpl</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">Template</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wralea_template</span><span class="p">)</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="n">wtpl</span><span class="o">.</span><span class="n">safe_substitute</span><span class="p">(</span>
+            <span class="n">TIME</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">ctime</span><span class="p">(),</span>
+            <span class="n">PKG_DECLARATION</span><span class="o">=</span><span class="n">pstr</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">result</span>
+</div>
+<div class="viewcode-block" id="PyPackageWriter.write_wralea"><a class="viewcode-back" href="../../../contribute/dev/archi/api_openalea_core.html#openalea.core.package.PyPackageWriter.write_wralea">[docs]</a>    <span class="k">def</span> <span class="nf">write_wralea</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">full_filename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Write the wralea.py in the specified filename &quot;&quot;&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_str</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">print</span> <span class="n">e</span>
+            <span class="k">print</span> <span class="s">&quot;FILE HAS NOT BEEN SAVED !!&quot;</span>
+            <span class="k">return</span>
+
+        <span class="n">handler</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">full_filename</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
+        <span class="n">handler</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">handler</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="c"># Recompile</span>
+        <span class="kn">import</span> <span class="nn">py_compile</span>
+        <span class="n">py_compile</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">full_filename</span><span class="p">)</span>
+</pre></div></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">OpenAleaLab 1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Guillaume Baty.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3a0.
+    </div>
+  </body>
+</html>

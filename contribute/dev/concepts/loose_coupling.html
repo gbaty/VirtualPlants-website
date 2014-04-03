@@ -1,0 +1,333 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Loose coupling between objects &mdash; OpenAleaLab 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/virtualplants.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="OpenAleaLab 1.0 documentation" href="../../../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">OpenAleaLab 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="loose-coupling-between-objects">
+<h1>Loose coupling between objects<a class="headerlink" href="#loose-coupling-between-objects" title="Permalink to this headline">¶</a></h1>
+<p>To be modular, objects (widgets, data, models, ...) must be independents. That means to be able to create one object without creating numerous other objects each time.
+Problems occur when objects affect or need information from other objects.
+Link between object must be loose or indirect but also reliable.</p>
+<p>For example, we want a widget able to run shell commands, like a terminal.</p>
+<p>First naive approach, is to consider it as a simple class that does everything. It is easy but ...
+Some people use computation clusters without graphical environnement and cannot run widgets (but need to run shell commands).
+Features developed to decorate output messages could be used also to decorate logs... and so on.</p>
+<p>For these goals, we choose to split &#8220;command runner&#8221; in two parts.
+One, really run shell command. The other displays outputs in a Widget.</p>
+<dl class="docutils">
+<dt>These two parts have sense and are really independents:</dt>
+<dd><ul class="first last simple">
+<li>it is possible to run command without outputs (background mode).</li>
+<li>it is also possible to display simple text in the widget, comming from other origins.</li>
+</ul>
+</dd>
+</dl>
+<p>This is only an example, nor the best, nor the only one.</p>
+<p>The real question is : how to link these two parts while keeping its independents ?</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">For vocabulary, please have a look at <a class="reference internal" href="glossary.html#glossary"><em>Glossary</em></a>.
+For real use cases, see <a class="reference internal" href="coupling_use_cases.html#coupling-use-cases"><em>Coupling use cases</em></a>.</p>
+</div>
+<div class="section" id="easiest">
+<h2>Easiest<a class="headerlink" href="#easiest" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Shell</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">display</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display</span> <span class="o">=</span> <span class="n">display</span>
+
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmd</span><span class="p">):</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">run_cmd</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">new_line</span> <span class="ow">in</span> <span class="n">output</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">appendText</span><span class="p">(</span><span class="n">new_line</span><span class="p">)</span>
+
+
+<span class="n">widget</span> <span class="o">=</span> <span class="n">Widget</span><span class="p">()</span>
+<span class="n">shell</span> <span class="o">=</span> <span class="n">Shell</span><span class="p">(</span><span class="n">widget</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Advantages:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Very easy</li>
+</ul>
+</div></blockquote>
+<p>Drawbacks:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Tight coupling</li>
+<li>Contract is not explicit</li>
+<li>If widget API changes, application is broken</li>
+<li>shell cannot work alone</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="oberverd-listeners">
+<h2>Oberverd/Listeners<a class="headerlink" href="#oberverd-listeners" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Shell</span><span class="p">(</span><span class="n">Observed</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">cmd</span><span class="p">):</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">run_cmd</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">new_line</span> <span class="ow">in</span> <span class="n">output</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">notifiy_listeners</span><span class="p">(</span><span class="s">&#39;new_output_line&#39;</span><span class="p">,</span> <span class="n">new_line</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Widget</span><span class="p">(</span><span class="n">Listener</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">notify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">event</span> <span class="o">==</span> <span class="s">&#39;new_output_line&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">appendText</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+<span class="n">listener</span> <span class="o">=</span> <span class="n">Widget</span><span class="p">()</span>
+
+<span class="n">observed</span> <span class="o">=</span> <span class="n">Shell</span><span class="p">()</span>
+<span class="n">observed</span><span class="o">.</span><span class="n">register_listener</span><span class="p">(</span><span class="n">listener</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Advantages:</p>
+<blockquote>
+<div><ul class="simple">
+<li>This approach allow to run widget alone, shell alone or both together</li>
+<li>Multiple listeners can be registered.</li>
+</ul>
+</div></blockquote>
+<p>Drawbacks:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Need to register manually</li>
+<li>Widget must implements listener interface</li>
+<li>Shell must implements observed interface</li>
+<li>Can be slow</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="callbacks">
+<h2>Callbacks<a class="headerlink" href="#callbacks" title="Permalink to this headline">¶</a></h2>
+<p>Some toolkits achieve communication between widgets using callbacks.
+A callback is a pointer to a function,
+so if you want a processing function to notify you about some event you pass a pointer to another function
+(the callback) to the processing function.
+The processing function then calls the callback when appropriate.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Shell</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">display</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display</span> <span class="o">=</span> <span class="n">display</span>
+
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">callback</span><span class="p">):</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">run_cmd</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">new_line</span> <span class="ow">in</span> <span class="n">output</span><span class="p">:</span>
+            <span class="n">callback</span><span class="p">(</span><span class="n">new_line</span><span class="p">)</span>
+
+<span class="n">widget</span> <span class="o">=</span> <span class="n">Widget</span><span class="p">()</span>
+
+<span class="n">shell</span> <span class="o">=</span> <span class="n">Shell</span><span class="p">()</span>
+<span class="n">shell</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s">&#39;ls&#39;</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">widget</span><span class="o">.</span><span class="n">appendText</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Drawbacks :</p>
+<blockquote>
+<div><ul class="simple">
+<li>Implicit contract</li>
+<li>Strongly coupled to the processing function (the processing function must know which callback to call)</li>
+<li>Complexifies program structure &#8220;Spaghetti code&#8221;</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="qt-signals-slots">
+<h2>Qt Signals/Slots<a class="headerlink" href="#qt-signals-slots" title="Permalink to this headline">¶</a></h2>
+<p>As Qt documentation says, signals and slots are used for communication between objects.
+The signals and slots mechanism is a central feature of Qt and probably the part that differs most from the features provided by other frameworks.
+In GUI programming, when we change one widget,
+we often want another widget to be notified.
+More generally, we want objects of any kind to be able to communicate with one another.
+A signal is emitted when a particular event occurs.
+A slot is a function that is called in response to a particular signal.</p>
+<p>The signals and slots mechanism is type safe:
+The signature of a signal must match the signature of the receiving slot.
+Signals and slots are loosely coupled:
+A class which emits a signal neither knows nor cares which slots receive the signal.
+Signals and slots can take any number of arguments of any type.
+Slots can be used for receiving signals, but they are also normal member functions.
+Just as an object does not know if anything receives its signals, a slot does not know if it has any signals connected to it.
+This ensures that truly independent components can be created with Qt.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">PySide</span> <span class="kn">import</span> <span class="n">Signal</span>
+
+<span class="k">class</span> <span class="nc">Shell</span><span class="p">(</span><span class="n">QObject</span><span class="p">):</span>
+    <span class="n">newOutuputLineAvailable</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmd</span><span class="p">):</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">run_cmd</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">new_line</span> <span class="ow">in</span> <span class="n">output</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">newOutuputLineAvailable</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">new_line</span><span class="p">)</span>
+
+<span class="n">shell</span> <span class="o">=</span> <span class="n">Shell</span><span class="p">()</span>
+<span class="n">widget</span> <span class="o">=</span> <span class="n">Widget</span><span class="p">()</span>
+
+<span class="n">shell</span><span class="o">.</span><span class="n">newOutuputLineAvailable</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">widget</span><span class="o">.</span><span class="n">appendText</span><span class="p">)</span>
+<span class="c"># newOutuputLineAvailable is the signal with one str value</span>
+<span class="c"># appendText is the slot with one str parameter</span>
+</pre></div>
+</div>
+<p>Drawbacks:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Qt dependency</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="services">
+<h2>Services<a class="headerlink" href="#services" title="Permalink to this headline">¶</a></h2>
+<p>Here, idea is that every object can provide a service, ie, each object say that
+it is able to do something.  For example, a shell provide a service &#8220;run command&#8221;, a
+text editor provide services &#8220;edit text&#8221; and &#8220;display text&#8221;, ...
+Each object providing a service register itself in a catalog (or manager) of services.</p>
+<p>When an object (a caller) needs to do something that it cannot do internally, it
+asks catalog for a service. If catalog knows an object (a provider) able to provide that service,
+it returns it and so, caller can use it.</p>
+<p>In Shell/Widget example, we could imagine Shell provides a service &#8220;run command&#8221; and
+Widget calls for this service or the opposite, Widget provides a service &#8220;displays command outputs&#8221; and
+shell uses it.</p>
+<p>Sample code for the second case :</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">services</span>
+
+<span class="k">class</span> <span class="nc">ServiceDisplayCommandOutputs</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">display_new_line</span><span class="p">(</span><span class="n">new_line</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+<span class="k">class</span> <span class="nc">Widget</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">provides</span><span class="p">(</span><span class="n">ServiceDisplayCommandOutputs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">display_new_line</span><span class="p">(</span><span class="n">new_line</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">appendText</span><span class="p">(</span><span class="n">new_line</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Shell</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">cmd</span><span class="p">):</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">run_cmd</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+        <span class="n">display</span> <span class="o">=</span> <span class="n">services</span><span class="o">.</span><span class="n">getService</span><span class="p">(</span><span class="s">&#39;ServiceDisplayCommandOutputs&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">display</span> <span class="p">:</span>
+            <span class="k">for</span> <span class="n">new_line</span> <span class="ow">in</span> <span class="n">output</span><span class="p">:</span>
+                <span class="n">display</span><span class="o">.</span><span class="n">display_new_line</span><span class="p">(</span><span class="n">new_line</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="service-catalog">
+<h3>Service Catalog<a class="headerlink" href="#service-catalog" title="Permalink to this headline">¶</a></h3>
+<p>The important part of this approach is how to call a service ?
+What criteria, how, where, ...</p>
+</div>
+</div>
+<div class="section" id="backends">
+<h2>Backends<a class="headerlink" href="#backends" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="authors">
+<h2>Authors<a class="headerlink" href="#authors" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Parts of this documentation are copyright :</dt>
+<dd><ul class="first last simple">
+<li>Qt-project : <a class="reference external" href="https://qt-project.org/doc/qt-5.0/qtcore/signalsandslots.html">Qt Signals and Slots Documentation</a></li>
+</ul>
+</dd>
+</dl>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Loose coupling between objects</a><ul>
+<li><a class="reference internal" href="#easiest">Easiest</a></li>
+<li><a class="reference internal" href="#oberverd-listeners">Oberverd/Listeners</a></li>
+<li><a class="reference internal" href="#callbacks">Callbacks</a></li>
+<li><a class="reference internal" href="#qt-signals-slots">Qt Signals/Slots</a></li>
+<li><a class="reference internal" href="#services">Services</a><ul>
+<li><a class="reference internal" href="#service-catalog">Service Catalog</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#backends">Backends</a></li>
+<li><a class="reference internal" href="#authors">Authors</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/contribute/dev/concepts/loose_coupling.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">OpenAleaLab 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Guillaume Baty.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3a0.
+    </div>
+  </body>
+</html>
