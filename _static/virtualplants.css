@@ -1,0 +1,12 @@
+
+@import url(nature.css);
+
+.custom-float-left {
+    margin: 20px;
+    float: left;
+}
+
+.custom-float-right {
+    margin: 20px;
+    float: right;
+}

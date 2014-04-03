@@ -11,7 +11,7 @@ Methodologies and conventions
     documentation/sphinx-gh
 
 
-What to do
+Contribute
 ==========
 
 Documentation

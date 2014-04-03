@@ -1,5 +1,9 @@
 
-- Index (description, capture d'écran) [fait]
+Index (description, capture d'écran) [fait]
+Team
+Projects
+Softwares
+ - OpenAleaLab
   - Overview 
     - What's new
     - Roadmap (for users)
@@ -35,3 +39,5 @@
     - OpenAleaLab key concepts
     - Architecture
     - API
+ - MTG
+ - LPY
