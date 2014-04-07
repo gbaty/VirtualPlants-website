@@ -2,47 +2,42 @@
 Get involved
 ============
 
-Methodologies and conventions
-=============================
 
-.. toctree::
-    :maxdepth: 1
-
-    documentation/sphinx-gh
-
-
-Contribute
-==========
+How to contribute
+#################
 
 Documentation
--------------
+=============
 
 .. toctree::
     :maxdepth: 1
 
+    documentation/git-workflow
+    documentation/sphinx-gh
+    documentation/using-sphinx
     todo/documentation-to-write
 
-Programming
------------
+
+Code development
+================
 
 .. toctree::
     :maxdepth: 1
 
-    peps/index
+    dev/guidelines
+    dev/roadmap
+    dev/improving-openalealab
+    dev/extending-openalealab
 
-Accepted proposals:
 
-.. toctree::
-    :maxdepth: 1
-    :glob:
-
-    peps/accepted/pep_*
-
-Proposal in progress:
+Developer's documentation
+#########################
 
 .. toctree::
     :maxdepth: 1
-    :glob:
 
-    peps/pep_*
+    dev/concepts/extensions
+    dev/concepts/object_communication
+    dev/archi/index
 
+ 

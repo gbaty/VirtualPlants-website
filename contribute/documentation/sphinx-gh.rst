@@ -66,10 +66,11 @@ Create repository to put generated html files.
 Create your personal repositories
 =================================
 
-First, fork on github ORGANIZATION-website (https://github.com/ORGANIZATION/ORGANIZATION-website).
-This step create a new project https://github.com/USERNAME/ORGANIZATION-website.
+.. warning::
 
-Here, this repository is used for both sources and generated html files.
+    - Go on github.com and log in.
+    - Fork ORGANIZATION-website (https://github.com/ORGANIZATION/ORGANIZATION-website).
+      This step create a new project https://github.com/USERNAME/ORGANIZATION-website.
 
 Then, on a terminal, do
 

@@ -109,3 +109,10 @@ Direct approach
 
 >>> controller.IHelper.name = 'Xyz'
 >>> service_xyz = controller.helper
+
+This approach maybe be attractive but is too implicit and so too dangerous.
+
+.. warning::
+
+    This approach has been rejected
+
