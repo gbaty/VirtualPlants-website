@@ -1,6 +1,11 @@
-==============================
+
+====================
+Object communication
+====================
+
+
 Loose coupling between objects
-==============================
+##############################
 
 To be modular, objects (widgets, data, models, ...) must be independents. That means to be able to create one object without creating numerous other objects each time.
 Problems occur when objects affect or need information from other objects.
@@ -247,4 +252,17 @@ Authors
 
 Parts of this documentation are copyright :
   - Qt-project : `Qt Signals and Slots Documentation <https://qt-project.org/doc/qt-5.0/qtcore/signalsandslots.html>`_
+
+
+
+Inter-process communication
+###########################
+
+First part explained communication between objects, inside a process.
+This part explains how to communicate between process or applications.
+
+DBUS
+====
+
+
 

@@ -38,7 +38,7 @@ else :
   pages_dir = 'gh-pages'
   dest_branch = 'gh-pages'
   html_dir = '_build/html'
-  pages_repo = 'git@github.com:gbaty/openalealab-website.git'
+  pages_repo = 'git@github.com:gbaty/VirtualPlants-website.git'
 
 print 'Prepare html to publish to %s' % pages_repo
 #-----------------------------------------------------------------------------
