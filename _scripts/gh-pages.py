@@ -29,7 +29,7 @@ from subprocess import Popen, PIPE, CalledProcessError, check_call
 
 if len(sys.argv) == 2 and sys.argv[1] == 'publish':
   # Publish on official website
-  pages_dir = 'gh-pages'
+  pages_dir = 'public-pages'
   dest_branch = 'master'
   html_dir = '_build/html'
   pages_repo = 'git@github.com:VirtualPlants/VirtualPlants.github.io.git'
