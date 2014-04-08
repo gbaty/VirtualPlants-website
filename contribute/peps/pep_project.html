@@ -1,0 +1,420 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Project &mdash; OpenAleaLab 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/virtualplants.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="OpenAleaLab 1.0 documentation" href="../../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">OpenAleaLab 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="project">
+<h1>Project<a class="headerlink" href="#project" title="Permalink to this headline">¶</a></h1>
+<p>A <em>project</em> is the computational brick that encompasses the notion of &#8220;<em>modeling project</em>&#8221; for the user. A project gathers in a single logical place on the system all the data, scripts, results, configuration files that are needed or produced for a particular modeling aim.</p>
+<p>A Project can use models or script from <strong>Python</strong>, <strong>LPy</strong>, <strong>workflow</strong>, <strong>R</strong>...</p>
+<div class="section" id="problem">
+<h2>Problem<a class="headerlink" href="#problem" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>During a modelling work, modeller will:</dt>
+<dd><ul class="first last simple">
+<li>run <strong>models</strong> on some <strong>data</strong></li>
+<li>explore <strong>parameter</strong> sets</li>
+<li>test hypotesis</li>
+<li>explore <strong>results</strong></li>
+<li>try with other data</li>
+<li>write associated <strong>documentation</strong></li>
+<li>...</li>
+</ul>
+</dd>
+</dl>
+<p>Because OpenAleaLab is done for <strong>scientists</strong>, everything need to be <strong>reproducible</strong>. If somebody want to re-use existing work, he need to <strong>deploy</strong> this work on an other computer easily, execute it and get the same results.</p>
+<p>To resolve this, we need a <strong>container of your work</strong>. This container is a <strong>project</strong>.</p>
+<p>Other important things to save are <em>provenance</em> (which is the version of projects/packages/scripts/models used in this project) and &#8220;metadata&#8221;(authors, citations...). It could also be usefull to have <em>documentation</em>, <em>test</em> and <em>example</em> in a project.</p>
+<p><strong>There is a real need to use an object allowing to manipulate all this heterogeneous concepts and this in a reproducible way.</strong> This object is called the project.</p>
+</div>
+<div class="section" id="existing-work">
+<h2>Existing Work<a class="headerlink" href="#existing-work" title="Permalink to this headline">¶</a></h2>
+<p>You can find here, existing work done about <a class="reference external" href="http://www.projecttemplate.net/architecture.html">Project Template</a>.</p>
+<dl class="docutils">
+<dt>Examples of projects in other softwares:</dt>
+<dd><ul class="first last simple">
+<li><a class="reference external" href="http://www.rstudio.com/ide/docs/using/projects">RStudio Project</a></li>
+<li><a class="reference external" href="http://wiki.blender.org/index.php/Doc:2.6/Manual/Data_System/Data_System#Overview">Blender Data system</a></li>
+<li><a class="reference external" href="http://pages.cpsc.ucalgary.ca/~pwp/bmv/vlab-for-linux/html-docs/environment.html">VLab environment and oofs</a> [federl99]</li>
+<li>IPython Notebook Document : a representation of all content visible in the web application, including inputs and outputs of the computations, explanatory text, mathematics, images, and rich media representations of objects.</li>
+</ul>
+</dd>
+<dt>Scientific Python projects:</dt>
+<dd><ul class="first last simple">
+<li><a class="reference external" href="http://wakari.io">Wakari</a> See its <a class="reference external" href="https://wakari.io/docs/sharing.html#bundles">Data analysis bundle</a> concept</li>
+<li><a class="reference external" href="http://docs.enthought.com/canopy/#">Canopy</a></li>
+<li><a class="reference external" href="https://pythonhosted.org/spyder/projectexplorer.html">Spyder</a></li>
+</ul>
+</dd>
+<dt>Scientific workflows system have also to capture the whole experiment and store it as Workflow:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt><a class="reference external" href="http://www.myexperiment.org/">MyExperiment</a>: To find use and share workflow and research objects</dt>
+<dd><ul class="first last simple">
+<li><a class="reference external" href="https://www.shiwa-workflow.eu">SHIWA</a></li>
+<li><a class="reference external" href="http://www.wf4ever-project.org/">WF4ever</a></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<p><a class="reference external" href="http://en.wikipedia.org/wiki/BagIt">BagIt</a> and <a class="reference external" href="https://pypi.python.org/pypi/pybagit/">pybagit</a> pack a project and use a manifest and checksum (md5)</p>
+<p>[federl99]: P. Federl and P. Prusinkiewicz: Virtual Laboratory: an Interactive Software Environment for Computer Graphics. In Proceedings of Computer Graphics International 1999, pp. 93−100.</p>
+</div>
+<div class="section" id="proposed-solution">
+<h2>Proposed solution<a class="headerlink" href="#proposed-solution" title="Permalink to this headline">¶</a></h2>
+<p>We construct a <strong>python object</strong> which is a <strong>container</strong> and <strong>manipulator</strong> of other objects (models, data, ...) and which contain metadata too.
+This object is the Project.</p>
+<dl class="docutils">
+<dt>To summarize, main actions that we want to do on project are:</dt>
+<dd><ul class="first last simple">
+<li>create</li>
+<li>load</li>
+<li>edit</li>
+<li>run</li>
+<li>store</li>
+<li>document</li>
+<li>share</li>
+<li>explore</li>
+<li>search</li>
+</ul>
+</dd>
+</dl>
+<div class="section" id="manipulate-a-project">
+<h3>Manipulate a Project<a class="headerlink" href="#manipulate-a-project" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="create">
+<h4>Create<a class="headerlink" href="#create" title="Permalink to this headline">¶</a></h4>
+<dl class="docutils">
+<dt>Creation of new project can be done:</dt>
+<dd><ul class="first last simple">
+<li>from scratch (new)</li>
+<li>from existing directory</li>
+<li>from existing project by copying it</li>
+<li>from existing project by <em>deep-copying</em> it</li>
+<li>from existing project by inheritance (at a specific version or dynamic)</li>
+</ul>
+</dd>
+</dl>
+<p>At creation of project, OALab could ask to the user if he want to version his project (with Git for example).</p>
+<p><strong>Wizard</strong> of typical project could be propose to the user at creation.</p>
+</div>
+<div class="section" id="load">
+<h4>Load<a class="headerlink" href="#load" title="Permalink to this headline">¶</a></h4>
+<dl class="docutils">
+<dt>Loading a project can be done:</dt>
+<dd><ul class="first last simple">
+<li>from local folder</li>
+<li>from versionning system (github, subversion...)</li>
+<li>from distant repository (web)</li>
+</ul>
+</dd>
+<dt>When a project is loaded, some actions are done:</dt>
+<dd><ul class="first last simple">
+<li>launch new python process ?</li>
+<li>run startup and import</li>
+<li>push context iinside user namespace</li>
+<li>load some objects (data, scripts, ...)</li>
+<li>return a python object of type <em>Project</em></li>
+</ul>
+</dd>
+</dl>
+<p>At loading, by default, all files/scripts/models will be opened.
+A setting could register recent opened files and restore only them.
+The third solution should be to ask to user to select what he want to open. He could do that thanks to a <strong>preview page</strong> in which files should be listed (near to other informations).</p>
+<p><strong>technicality:</strong></p>
+<p>A project is composed of a range of very vast type of objects.. Each object type has his own way to save itself (pickling, text representation, binary, ...). So all objects can&#8217;t be loaded by a unical way.</p>
+<p>How to store <em>&#8220;how to load me?&#8221;</em> of each object?</p>
+<dl class="docutils">
+<dt>We have list here some of possibilities:</dt>
+<dd><ul class="first last simple">
+<li>to use only one way to save and load objects (Pickle for instance)</li>
+<li>to use only one way by extension file (Python script: raw text, Python object: Pickle, PlantGL object: BGEOM, ...)</li>
+<li>to store information in header of each file (intrusive)</li>
+<li>to store information in configuration file of project
+* factory (name of the class which permit to load object)
+* interface (name of the <em>metatype</em> of object. The project choose how to load an object of this metatype.)</li>
+</ul>
+</dd>
+<dt>Pros and cons:</dt>
+<dd><ul class="first last simple">
+<li>impose many work to adapt every objects.</li>
+<li>can cause problem if encoding are differents but extensions are the same.</li>
+<li>The 3rd point is already used in some cases in <em>real world</em> (ex: &#8220;# -<em>- coding: utf-8 -</em>-&#8221;) but it imposes a specific structure in each files.</li>
+<li>Finally, 4. seems to be the best way.</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="save">
+<h4>Save<a class="headerlink" href="#save" title="Permalink to this headline">¶</a></h4>
+<p>A project can be saved at <strong>intial step</strong> or at <strong>particular step</strong> in saving intermediary values and cache.</p>
+<dl class="docutils">
+<dt>You can save a project:</dt>
+<dd><ul class="first last simple">
+<li>in local folder</li>
+<li>in github</li>
+</ul>
+</dd>
+<dt>Format for saving project could be:</dt>
+<dd><ul class="first last simple">
+<li>folders</li>
+<li>zip</li>
+<li>notebook</li>
+<li>distant repository</li>
+</ul>
+</dd>
+</dl>
+<p><strong>technicality:</strong></p>
+<p>Problems are quite the same that for loading (cf. <strong>Load</strong>): how to know <em>&#8220;how to save me?&#8221;</em> of each object?</p>
+</div>
+<div class="section" id="edit">
+<h4>Edit<a class="headerlink" href="#edit" title="Permalink to this headline">¶</a></h4>
+<p>Re-use external files could be done by 2 ways:</p>
+<blockquote>
+<div><ul class="simple">
+<li>copy externl file inside project (here we have duplicated code)</li>
+<li>create a link to this files (here the project is not self-content)</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="discover">
+<h4>Discover<a class="headerlink" href="#discover" title="Permalink to this headline">¶</a></h4>
+<p>All projects will not be saved at the same place. But, user wants to list all available projects without knowing where they are. To abstract phisical location of projects into logical one, a system to discover projects is necessary.</p>
+<dl class="docutils">
+<dt>Discovering the projects can be done:</dt>
+<dd><ul class="first last simple">
+<li>locally (on disk) automatically (list of repositories)</li>
+<li>locally (on disk) semi-automatically (repository)</li>
+<li>locally (on disk) manually (file)</li>
+<li>distantly (on web repository)</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="explore">
+<h4>Explore<a class="headerlink" href="#explore" title="Permalink to this headline">¶</a></h4>
+<p>After dicovering projects, user will want to know some informations about them (authors, files used, license, ...) without having to load all of them. This is exploration.</p>
+<p>It will permit to interrogate projects. For example, we could search what are the projects using a particular dataset.</p>
+<p>A good exploring system will permit to create <strong>preview</strong> of project with a name, a path, a description, authors, citations, the licence, an icon, list of data, list of models, ...</p>
+</div>
+<div class="section" id="document">
+<h4>Document<a class="headerlink" href="#document" title="Permalink to this headline">¶</a></h4>
+<p>A good documentation is necessary! So, we are searching how to encourage users and developpers to write one.</p>
+<p>An <em>advanced</em> documentation could create a <strong>guide</strong>. This guide could drive the user when he use an existing project (1st explore this parameters, 2nd run this model, 3rd explore this result, 4th re-try with this parameter, ...).</p>
+<p>Moreover, we are searching how to create <em>tutorials</em> and &#8220;<em>e-learning</em>&#8221; thanks
+to OALab.</p>
+</div>
+<div class="section" id="version">
+<h4>Version<a class="headerlink" href="#version" title="Permalink to this headline">¶</a></h4>
+<p>A version control system remember the hystory of the files. So it permits to get an earlier version back again if necessary. Moreover, it makes things easier to manage if several person manipulates the same files.</p>
+<p>So a project must have the possiblity to be versionned.</p>
+<p>It exists various version control system like <a class="reference external" href="http://subversion.apache.org/">Subversion</a> or <a class="reference external" href="http://subversion.apache.org/">Subversion</a>. Git is a distributed systems and so is more powerful than a client-server system like subversion.</p>
+<p>We will focus our work on Git compatibility.</p>
+</div>
+<div class="section" id="communication-with-other-project-or-sub-project">
+<h4>Communication with other project (or sub-project)<a class="headerlink" href="#communication-with-other-project-or-sub-project" title="Permalink to this headline">¶</a></h4>
+<p>Sometimes, user will want to re-use a (whole or subpart of) project. For instance, he can want to re-use a dataset.
+To do this, he will have various possibilities:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Make a clone/copy of used project in your project</li>
+<li>Make a link to the project</li>
+<li>Create a project which <em>inherit</em> from an existing project</li>
+</ul>
+</div></blockquote>
+<p>Considering the new project B which is using existing project A.</p>
+<p>Make a copy of A in B is useful if you want something as simple as possible. It can be the case for students for example. But, if a bug is fixed in A, B will not benefit of corrections.</p>
+<p>Make a link from B to A at a version V can permit to do an Update of A at a version V&#8217;. We can do that thanks to the version manager (git, svn...). Thanks to the version manager, you can benefit of changes of A if you want but you can continue to work with an older version too.</p>
+<p>When you are working in B, if you fix a bug in A (in your local copy) you can propagate correction in A (in the master/trunk) doing a Merge.</p>
+</div>
+</div>
+<div class="section" id="applify-project">
+<h3>&#8220;Applify&#8221; project<a class="headerlink" href="#applify-project" title="Permalink to this headline">¶</a></h3>
+<p>Export a project into <em>executable project</em> could be useful to avoid edition of project and only permit to run it. (No-read, no-write, only execute)</p>
+<p>Export a project into <em>python module</em> could be useful to stay compatible with all python libraries.</p>
+</div>
+<div class="section" id="api">
+<h3>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">openalea.vpltk.project.manager</span> <span class="kn">import</span> <span class="n">ProjectManager</span>
+
+<span class="n">pm</span> <span class="o">=</span> <span class="n">ProjectManager</span><span class="p">()</span>
+<span class="c"># Discover projects availables without loading them</span>
+<span class="n">pm</span><span class="o">.</span><span class="n">discover</span><span class="p">()</span>
+<span class="k">print</span> <span class="n">pm</span><span class="o">.</span><span class="n">projects</span>
+
+<span class="c"># Add distant location to find projects</span>
+<span class="n">pm</span><span class="o">.</span><span class="n">find_links</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;https://github.com/openalea/projects/&quot;</span><span class="p">)</span>
+<span class="c"># Re-discover</span>
+<span class="n">pm</span><span class="o">.</span><span class="n">discover</span><span class="p">()</span>
+<span class="k">print</span> <span class="n">pm</span><span class="o">.</span><span class="n">projects</span>
+
+<span class="c"># Search inside list of projects</span>
+<span class="k">print</span> <span class="n">pm</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;*branch*bending*&quot;</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">pm</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s">&quot;test.lpy&quot;</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">pm</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="s">&quot;walnut.mtg&quot;</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">pm</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s">&quot;test.lpy&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="s">&quot;walnut.mtg&quot;</span><span class="p">)</span>
+<span class="n">list_of_projects_names_with_specific_author</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">authors</span><span class="o">=</span><span class="s">&quot;*Godin*&quot;</span><span class="p">)</span>
+
+<span class="c"># Get one name of project</span>
+<span class="n">project_name</span> <span class="o">=</span> <span class="n">list_of_projects_names_with_specific_author</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="c"># Load this project</span>
+<span class="n">project1</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">project_name</span><span class="p">)</span>
+
+<span class="c"># Access to models</span>
+<span class="c"># TODO: is a model a hardcoded information of a project?</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">project1</span><span class="o">.</span><span class="n">model</span><span class="p">[</span><span class="s">&#39;my_python_model.py&#39;</span><span class="p">]</span>
+<span class="c"># or:</span>
+<span class="c"># model = project1[&#39;model&#39;][&#39;my_python_model.py&#39;]</span>
+<span class="c"># or:</span>
+<span class="c"># model = project1.get(category=&#39;model&#39;,name=&#39;my_python_model.py&#39;)</span>
+<span class="n">project1</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s">&#39;model&#39;</span><span class="p">,</span> <span class="s">&#39;my_lpy_model.lpy&#39;</span><span class="p">,</span> <span class="s">&#39;my_new_lpy.lpy&#39;</span><span class="p">)</span>
+
+<span class="c"># Save project</span>
+<span class="n">project1</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+<span class="c"># Close</span>
+<span class="n">project2</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="c"># Create project</span>
+<span class="n">project2</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;name_of_new_project&quot;</span><span class="p">,</span> <span class="s">&quot;path&quot;</span><span class="p">)</span> <span class="c"># the path is optionnal</span>
+
+<span class="c"># Manipulate project</span>
+<span class="n">project2</span><span class="o">.</span><span class="n">authors</span> <span class="o">=</span> <span class="s">&quot;Me and my collegue&quot;</span>
+<span class="n">project2</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s">&#39;This project is an &quot;Hello World&quot; project&#39;</span>
+<span class="n">project2</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s">&quot;model&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;hello.py&quot;</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="s">&quot;print(&#39;hello world&#39;)&quot;</span><span class="p">)</span>
+<span class="n">project2</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s">&quot;model&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;hello.py&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="implementation">
+<h3>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h3>
+<p>TODO: Define a set of possible implementation we are or will working on.</p>
+<blockquote>
+<div><ul class="simple">
+<li>Local project : manage projects on disk</li>
+<li>Distributed project : access to project based on a distributed index (see <a class="reference external" href="https://pypi.python.org/pypi">PyPI</a>)</li>
+</ul>
+</div></blockquote>
+<p>The ProjectManager manipulate Project. In the application OpenAleaLab, this is the Session which manipulate ProjectManager (and directly Project?).</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Project</a><ul>
+<li><a class="reference internal" href="#problem">Problem</a></li>
+<li><a class="reference internal" href="#existing-work">Existing Work</a></li>
+<li><a class="reference internal" href="#proposed-solution">Proposed solution</a><ul>
+<li><a class="reference internal" href="#manipulate-a-project">Manipulate a Project</a><ul>
+<li><a class="reference internal" href="#create">Create</a></li>
+<li><a class="reference internal" href="#load">Load</a></li>
+<li><a class="reference internal" href="#save">Save</a></li>
+<li><a class="reference internal" href="#edit">Edit</a></li>
+<li><a class="reference internal" href="#discover">Discover</a></li>
+<li><a class="reference internal" href="#explore">Explore</a></li>
+<li><a class="reference internal" href="#document">Document</a></li>
+<li><a class="reference internal" href="#version">Version</a></li>
+<li><a class="reference internal" href="#communication-with-other-project-or-sub-project">Communication with other project (or sub-project)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#applify-project">&#8220;Applify&#8221; project</a></li>
+<li><a class="reference internal" href="#api">API</a></li>
+<li><a class="reference internal" href="#implementation">Implementation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/contribute/peps/pep_project.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">OpenAleaLab 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Guillaume Baty.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3a0.
+    </div>
+  </body>
+</html>

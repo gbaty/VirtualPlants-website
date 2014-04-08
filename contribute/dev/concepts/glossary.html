@@ -46,85 +46,64 @@
             
   <div class="section" id="glossary">
 <span id="id1"></span><h1>Glossary<a class="headerlink" href="#glossary" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="glossaire-francais">
-<h2>Glossaire français<a class="headerlink" href="#glossaire-francais" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="api">
-<h3>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h3>
-<p>Ensemble des classes, fonctions, attributs et méthodes fournies par une bibliothèque et accessible de l&#8217;extérieur.</p>
+<div class="section" id="object">
+<h2>Object<a class="headerlink" href="#object" title="Permalink to this headline">¶</a></h2>
+<p>Software entity. An object may belong to different interfaces</p>
 </div>
-<div class="section" id="concept">
-<h3>Concept<a class="headerlink" href="#concept" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="component">
+<h2>Component<a class="headerlink" href="#component" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul class="simple">
+<li>An object providing Input/Output ports defined by interfaces</li>
+<li>A component can be handled only by passing information through its ports</li>
+<li>The information expected from a port must comply with the port interface</li>
+<li>A component can be itself an output port (e.g. the type of the instance of a class is the class).</li>
+</ul>
+</div></blockquote>
 </div>
-<div class="section" id="contrat">
-<h3>Contrat<a class="headerlink" href="#contrat" title="Permalink to this headline">¶</a></h3>
-<p>Information permettant à un objet informatique de décrire ce qu&#8217;il s&#8217;engage à faire.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<dl class="last docutils">
-<dt>Par exemple, un éditeur de texte propose le contrat suivant :</dt>
+<div class="section" id="port">
+<h2>Port<a class="headerlink" href="#port" title="Permalink to this headline">¶</a></h2>
+<p>A port of a component is a place where information is specified that allows to connect or use a component from external world.</p>
+<p>N.B.: The notion of port has been introduced to limit the usage of objects to their declared interface and not to their implementation. Thus, a component is a black box object.</p>
+</div>
+<div class="section" id="information">
+<h2>Information<a class="headerlink" href="#information" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Information can be :</dt>
 <dd><ul class="first last simple">
-<li>afficher du texte</li>
-<li>éditer du texte</li>
-<li>charger un fichier</li>
-<li>sauver un fichier</li>
+<li>method name</li>
+<li>object</li>
 </ul>
 </dd>
 </dl>
 </div>
-<p>Ce contrat permet aux objets informatiques de communiquer entre eux et déléguer le travail.
-Concrêtement, cette information est définie à l&#8217;aide d&#8217;Interface constituant une API</p>
-<div class="section" id="contrat-explicite">
-<h4>Contrat explicite<a class="headerlink" href="#contrat-explicite" title="Permalink to this headline">¶</a></h4>
-<p>La manière dont l&#8217;objet se comporte est décrit explicitement.
-La forme n&#8217;est pas imposé. Il peut s&#8217;agir d&#8217;instructions informatiques ou de
-documentations.</p>
-</div>
-<div class="section" id="contrat-implicite">
-<h4>Contrat implicite<a class="headerlink" href="#contrat-implicite" title="Permalink to this headline">¶</a></h4>
-<p>Ce dit dans le cas où l&#8217;on peut déduire comment se comporte un objet mais
-aucune instruction ou documentation ne le certifie.
-Utiliser ce type de contrat est dangereux.</p>
-</div>
-<div class="section" id="coupling">
-<h4>Coupling<a class="headerlink" href="#coupling" title="Permalink to this headline">¶</a></h4>
-<p>High/Strong/Tight coupling
-Low/Weak/Loose coupling</p>
-</div>
-</div>
-<div class="section" id="extension-openalealab">
-<h3>Extension OpenAleaLab<a class="headerlink" href="#extension-openalealab" title="Permalink to this headline">¶</a></h3>
-<p>Spécialisation du lab OpenAleaLab pour une thématique scientifique précise.
-Dans d&#8217;autres logiciels, on appelle parfois cela une &#8220;couche metier&#8221; car elle est utilisé dans metier donné.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Exemple: TissueLab est l&#8217;extension permettant de travailler sur les tissus biologiques</p>
-</div>
-</div>
 <div class="section" id="interface">
-<h3>Interface<a class="headerlink" href="#interface" title="Permalink to this headline">¶</a></h3>
-<p>Instructions informatiques décrivant un contrat.</p>
-<p>Par exemple, une classe virtuelle pure mais de nombreuses approches sont possibles.
-L&#8217;interface peut être plus ou moins contraingnante.
-Par exemple en imposant le nom des méthodes, le nom et les paramètres, le nom, les paramètres et les types, et ainsi de suite.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>Exemple de définition d&#8217;interface en Python décrivant un contrat d&#8217;éditeur de texte</p>
-<div class="last highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">ITextEditor</span><span class="p">:</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
-
-    <span class="k">def</span> <span class="nf">display</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
-        <span class="k">pass</span>
-
-    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-        <span class="k">pass</span>
-
-    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-        <span class="k">pass</span>
-</pre></div>
+<h2>Interface<a class="headerlink" href="#interface" title="Permalink to this headline">¶</a></h2>
+<p>Name and specified information expected from a port.
+Assumption: the name of information is specific to it specification</p>
+<p>Note: here, methods are not defined from a given component but refer to an ontology</p>
 </div>
+<div class="section" id="service">
+<h2>Service<a class="headerlink" href="#service" title="Permalink to this headline">¶</a></h2>
+<p>Software component that implements an application functionality.
+Several components can provide this functionality.</p>
 </div>
+<div class="section" id="adapter">
+<h2>Adapter<a class="headerlink" href="#adapter" title="Permalink to this headline">¶</a></h2>
+<p>Component that get an object T to follow an interface I.</p>
 </div>
+<div class="section" id="register">
+<h2>Register<a class="headerlink" href="#register" title="Permalink to this headline">¶</a></h2>
+<p>Map a T-interface to an I-interface and might name this relation.
+Example of register based on dict : key: (T, I) -&gt; object &#8220;adapt_T_I&#8221;</p>
+</div>
+<div class="section" id="to-adapt">
+<h2>To adapt<a class="headerlink" href="#to-adapt" title="Permalink to this headline">¶</a></h2>
+<p>Service transforming a T object (object that follow T interface) into an object following I interface.
+(Also: supply a T object adapted to I interface)
+&#8220;adapt&#8221; uses register to find corresponding adapter.</p>
+<p>Note:
+&#8220;Adhere to interface&#8221; or &#8220;Follow interface&#8221; ?</p>
 </div>
 </div>
 
@@ -137,19 +116,15 @@ Par exemple en imposant le nom des méthodes, le nom et les paramètres, le nom,
   <h3><a href="../../../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Glossary</a><ul>
-<li><a class="reference internal" href="#glossaire-francais">Glossaire français</a><ul>
-<li><a class="reference internal" href="#api">API</a></li>
-<li><a class="reference internal" href="#concept">Concept</a></li>
-<li><a class="reference internal" href="#contrat">Contrat</a><ul>
-<li><a class="reference internal" href="#contrat-explicite">Contrat explicite</a></li>
-<li><a class="reference internal" href="#contrat-implicite">Contrat implicite</a></li>
-<li><a class="reference internal" href="#coupling">Coupling</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#extension-openalealab">Extension OpenAleaLab</a></li>
+<li><a class="reference internal" href="#object">Object</a></li>
+<li><a class="reference internal" href="#component">Component</a></li>
+<li><a class="reference internal" href="#port">Port</a></li>
+<li><a class="reference internal" href="#information">Information</a></li>
 <li><a class="reference internal" href="#interface">Interface</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#service">Service</a></li>
+<li><a class="reference internal" href="#adapter">Adapter</a></li>
+<li><a class="reference internal" href="#register">Register</a></li>
+<li><a class="reference internal" href="#to-adapt">To adapt</a></li>
 </ul>
 </li>
 </ul>

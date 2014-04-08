@@ -1,0 +1,289 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Public development on github &mdash; OpenAleaLab 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/virtualplants.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="OpenAleaLab 1.0 documentation" href="../../index.html" />
+    <link rel="up" title="Get involved" href="../index.html" />
+    <link rel="next" title="Create a developer documentation with sphinx and github" href="sphinx-gh.html" />
+    <link rel="prev" title="Get involved" href="../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="sphinx-gh.html" title="Create a developer documentation with sphinx and github"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="Get involved"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">OpenAleaLab 1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Get involved</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="public-development-on-github">
+<h1>Public development on github<a class="headerlink" href="#public-development-on-github" title="Permalink to this headline">¶</a></h1>
+<p>The workflow describe here is mainly inspired from
+IPython development workflow and especially from a
+Fernando Perez message (unfortunatly these links are no more available).</p>
+<p>Steps to follow are :</p>
+<blockquote>
+<div><ul class="simple">
+<li>configure git and github</li>
+<li>fork github project you want to work on</li>
+<li>create a new //branch// with explicit name (ex: //fix_app_crash_mac_os_10_9//)</li>
+<li>work on your new branch</li>
+<li><strong>prepare your work for merging</strong></li>
+<li>submit your pull request</li>
+</ul>
+</div></blockquote>
+<div class="section" id="configure-git">
+<h2>Configure git<a class="headerlink" href="#configure-git" title="Permalink to this headline">¶</a></h2>
+<p>&#8220;&#8211;global&#8221; refer to your username on your computer. <strong>So you need to config only once for you.</strong></p>
+<p>If you want a specific config for a specific project, please use &#8220;&#8211;local&#8221;</p>
+<div class="highlight-bash"><div class="highlight"><pre>git config --global user.name <span class="s2">&quot;my name&quot;</span>
+git config --global user.email myemail@foo.com
+git config --global push.default simple
+git config --global core.editor &lt;your_favorite_editor&gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="log-on-github">
+<h2>Log on github<a class="headerlink" href="#log-on-github" title="Permalink to this headline">¶</a></h2>
+<p>To start, you must create a github account and log in.</p>
+</div>
+<div class="section" id="fork-github-project">
+<h2>Fork github project<a class="headerlink" href="#fork-github-project" title="Permalink to this headline">¶</a></h2>
+<p>On git, you <strong>never work directly on official repository</strong> but only on your personal repository.
+Do do that, you must create a clone of the repository (a &#8220;fork&#8221;) on your personal area just by clicking on <strong>fork button</strong>.</p>
+<p>You can see in top-left corner :</p>
+<blockquote>
+<div>yourname/project
+forked from othername/project</div></blockquote>
+<p>Now, clone it on your computer.
+Just copy url displayed on your web browser and pass it to git clone command:</p>
+<div class="highlight-bash"><div class="highlight"><pre>git clone https://github.com/yourname/project
+</pre></div>
+</div>
+<p>Add a reference to official repository.
+.. code-block:: bash</p>
+<blockquote>
+<div>git remote add upstream <a class="reference external" href="https://github.com/official/project">https://github.com/official/project</a></div></blockquote>
+</div>
+<div class="section" id="create-development-branch">
+<h2>Create development branch<a class="headerlink" href="#create-development-branch" title="Permalink to this headline">¶</a></h2>
+<p>You must create a branch for each new feature, bug fix, and so on.
+Development must be short : <strong>one branch = one task</strong></p>
+<p>Please choose an explicit name for your new branch.</p>
+<p><strong>If upstream_master do not exists yet</strong></p>
+<div class="highlight-bash"><div class="highlight"><pre>git checkout upstream/master -b upstream_master
+git checkout -b fix_app_crash_mac_os_10_9
+</pre></div>
+</div>
+<p><strong>else</strong></p>
+<div class="highlight-bash"><div class="highlight"><pre>git checkout upstream_master
+git pull
+git checkout -b fix_app_crash_mac_os_10_9
+</pre></div>
+</div>
+</div>
+<div class="section" id="work-on-your-development-branch">
+<h2>Work on your development branch<a class="headerlink" href="#work-on-your-development-branch" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash"><div class="highlight"><pre><span class="c"># edit file(s)</span>
+git commit
+git add mynewfile.py
+git commit
+<span class="c"># edit file(s)</span>
+git commit
+</pre></div>
+</div>
+<p>Save your branch and commits on your personal repository on github</p>
+<div class="highlight-bash"><div class="highlight"><pre>git push origin fix_app_crash_mac_os_10_9
+</pre></div>
+</div>
+</div>
+<div class="section" id="commit-message">
+<h2>Commit message<a class="headerlink" href="#commit-message" title="Permalink to this headline">¶</a></h2>
+<p>Please write a <a class="reference external" href="http://web-design-weekly.com/blog/2013/09/01/a-better-git-commit/">good commit message</a>:</p>
+<p>Try to limit using the -m commit flag. git commit -m &#8220;A crappy commit message&#8221; and use git commit with <strong>no flags</strong>.</p>
+<p>If using the simpler git commit command it should open up Vim (if it’s your default editor) where you can construct a better commit by following some of these simple steps.</p>
+<blockquote>
+<div><ul class="simple">
+<li>The <strong>first line should be a short summary</strong>. Referencing the bug number or the main accomplishment of the change. e.g “Fixes issue #8976″. This is the title of your commit and should be <strong>less than 50 characters</strong>.</li>
+<li>Then a <strong>line break</strong>.</li>
+<li>Followed by a <strong>longer detailed description about the things that changed</strong>. This section is a really good place to explain what and why. You could cover statistics, performance wins, roadblocks, etc. The text should be wrapped at 72 characters.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="prepare-your-work-for-merging">
+<h2>Prepare your work for merging<a class="headerlink" href="#prepare-your-work-for-merging" title="Permalink to this headline">¶</a></h2>
+<p>Before asking other to integrate your work, you must clean it.
+First get last modifications and work on a new branch created especially for cleaning.</p>
+<div class="highlight-bash"><div class="highlight"><pre>git fetch upstream
+git checkout upstream_master
+git pull
+git checkout fix_app_crash_mac_os_10_9
+git checkout -b rebased-fix_app_crash_mac_os_10_9 <span class="c"># create and checkout new branch</span>
+git rebase --interactive fix_app_crash_mac_os_10_9
+git rebase --interactive upstream_master
+</pre></div>
+</div>
+<div class="highlight-bash"><div class="highlight"><pre>git rebase --interactive upstream_master fix_app_crash_mac_os_10_9
+</pre></div>
+</div>
+<p>If master has diverged during your work, conflicts can occur !
+If your shell ask you to fix it directly, you should do it using &#8220;e&#8221; command.
+That works very well if you&#8217;ve defined your favorite editor.</p>
+<p>Else, fix conflicts foreach file and finish rebase :</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="c"># edit file1 and solve conflicts</span>
+git add file1 <span class="c"># say to git that conflict is resolved</span>
+<span class="c"># edit file2 and solve conflicts</span>
+git add file2
+git rebase --continue
+</pre></div>
+</div>
+<p>If rebase has gone wrong, for example you&#8217;ve rebased the wrong branch, you can cancel it with
+.. code-block:: bash</p>
+<blockquote>
+<div>git rebase &#8211;abort</div></blockquote>
+<p>See <a class="reference external" href="https://help.github.com/articles/interactive-rebase">git rebase &#8211;interactive</a> for further information.</p>
+<div class="highlight-bash"><div class="highlight"><pre>git push origin rebased-fix_app_crash_mac_os_10_9
+</pre></div>
+</div>
+</div>
+<div class="section" id="submit-your-pull-request">
+<h2>Submit your pull-request<a class="headerlink" href="#submit-your-pull-request" title="Permalink to this headline">¶</a></h2>
+<p>On github interface, select your branch fix_app_crash_mac_os_10_9 and click on pull-request (or compare &amp; pull-request).</p>
+<p>You must see at right :</p>
+<blockquote>
+<div>Able to merge
+These branches can be automatically merged</div></blockquote>
+<p>If it&#8217;s not the case, master has probably diverged. You must turn back to previous step and do it again.</p>
+<p>Now it is OK !
+As your branch is very clean, other developpers have absolutely nothing to do to integrate your work (except to review your changes) and so they will certainly integrate it.</p>
+</div>
+<div class="section" id="maintainer-merge-pull-request">
+<h2>Maintainer: merge pull-request<a class="headerlink" href="#maintainer-merge-pull-request" title="Permalink to this headline">¶</a></h2>
+<p>This work is done in two steps :</p>
+<blockquote>
+<div><ul class="simple">
+<li>review work (read modifications, test it, ...)</li>
+<li>integrate it (merge)</li>
+</ul>
+</div></blockquote>
+<p>To review work, just checkout pull-request. See github documentation :
+<a class="reference external" href="https://help.github.com/articles/checking-out-pull-requests-locally">Checkout pull request</a>.</p>
+<p>If pull-request is ok, just click on &#8220;merge pull-request&#8221;</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Public development on github</a><ul>
+<li><a class="reference internal" href="#configure-git">Configure git</a></li>
+<li><a class="reference internal" href="#log-on-github">Log on github</a></li>
+<li><a class="reference internal" href="#fork-github-project">Fork github project</a></li>
+<li><a class="reference internal" href="#create-development-branch">Create development branch</a></li>
+<li><a class="reference internal" href="#work-on-your-development-branch">Work on your development branch</a></li>
+<li><a class="reference internal" href="#commit-message">Commit message</a></li>
+<li><a class="reference internal" href="#prepare-your-work-for-merging">Prepare your work for merging</a></li>
+<li><a class="reference internal" href="#submit-your-pull-request">Submit your pull-request</a></li>
+<li><a class="reference internal" href="#maintainer-merge-pull-request">Maintainer: merge pull-request</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../index.html"
+                        title="previous chapter">Get involved</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="sphinx-gh.html"
+                        title="next chapter">Create a developer documentation with sphinx and github</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/contribute/documentation/git-workflow.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="sphinx-gh.html" title="Create a developer documentation with sphinx and github"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="Get involved"
+             >previous</a> |</li>
+        <li><a href="../../index.html">OpenAleaLab 1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Get involved</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Guillaume Baty.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3a0.
+    </div>
+  </body>
+</html>

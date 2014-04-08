@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Loose coupling between objects &mdash; OpenAleaLab 1.0 documentation</title>
+    <title>Object communication &mdash; OpenAleaLab 1.0 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/virtualplants.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -23,7 +23,10 @@
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
-    <link rel="top" title="OpenAleaLab 1.0 documentation" href="../../../index.html" /> 
+    <link rel="top" title="OpenAleaLab 1.0 documentation" href="../../../index.html" />
+    <link rel="up" title="Get involved" href="../../index.html" />
+    <link rel="next" title="OpenAleaLab Architecture" href="../archi/index.html" />
+    <link rel="prev" title="Extensible and pluggable applications" href="extensions.html" /> 
   </head>
   <body role="document">
     <div class="related" role="navigation" aria-label="related navigation">
@@ -35,7 +38,14 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../../../index.html">OpenAleaLab 1.0 documentation</a> &raquo;</li> 
+        <li class="right" >
+          <a href="../archi/index.html" title="OpenAleaLab Architecture"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="extensions.html" title="Extensible and pluggable applications"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../index.html">OpenAleaLab 1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Get involved</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -44,8 +54,10 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="loose-coupling-between-objects">
-<h1>Loose coupling between objects<a class="headerlink" href="#loose-coupling-between-objects" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="object-communication">
+<h1>Object communication<a class="headerlink" href="#object-communication" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="loose-coupling-between-objects">
+<h2>Loose coupling between objects<a class="headerlink" href="#loose-coupling-between-objects" title="Permalink to this headline">¶</a></h2>
 <p>To be modular, objects (widgets, data, models, ...) must be independents. That means to be able to create one object without creating numerous other objects each time.
 Problems occur when objects affect or need information from other objects.
 Link between object must be loose or indirect but also reliable.</p>
@@ -71,7 +83,7 @@ One, really run shell command. The other displays outputs in a Widget.</p>
 For real use cases, see <a class="reference internal" href="coupling_use_cases.html#coupling-use-cases"><em>Coupling use cases</em></a>.</p>
 </div>
 <div class="section" id="easiest">
-<h2>Easiest<a class="headerlink" href="#easiest" title="Permalink to this headline">¶</a></h2>
+<h3>Easiest<a class="headerlink" href="#easiest" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Shell</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">display</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">display</span> <span class="o">=</span> <span class="n">display</span>
@@ -103,7 +115,7 @@ For real use cases, see <a class="reference internal" href="coupling_use_cases.h
 </div></blockquote>
 </div>
 <div class="section" id="oberverd-listeners">
-<h2>Oberverd/Listeners<a class="headerlink" href="#oberverd-listeners" title="Permalink to this headline">¶</a></h2>
+<h3>Oberverd/Listeners<a class="headerlink" href="#oberverd-listeners" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Shell</span><span class="p">(</span><span class="n">Observed</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">cmd</span><span class="p">):</span>
         <span class="n">output</span> <span class="o">=</span> <span class="n">run_cmd</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
@@ -139,7 +151,7 @@ For real use cases, see <a class="reference internal" href="coupling_use_cases.h
 </div></blockquote>
 </div>
 <div class="section" id="callbacks">
-<h2>Callbacks<a class="headerlink" href="#callbacks" title="Permalink to this headline">¶</a></h2>
+<h3>Callbacks<a class="headerlink" href="#callbacks" title="Permalink to this headline">¶</a></h3>
 <p>Some toolkits achieve communication between widgets using callbacks.
 A callback is a pointer to a function,
 so if you want a processing function to notify you about some event you pass a pointer to another function
@@ -170,7 +182,7 @@ The processing function then calls the callback when appropriate.</p>
 </div></blockquote>
 </div>
 <div class="section" id="qt-signals-slots">
-<h2>Qt Signals/Slots<a class="headerlink" href="#qt-signals-slots" title="Permalink to this headline">¶</a></h2>
+<h3>Qt Signals/Slots<a class="headerlink" href="#qt-signals-slots" title="Permalink to this headline">¶</a></h3>
 <p>As Qt documentation says, signals and slots are used for communication between objects.
 The signals and slots mechanism is a central feature of Qt and probably the part that differs most from the features provided by other frameworks.
 In GUI programming, when we change one widget,
@@ -212,7 +224,7 @@ This ensures that truly independent components can be created with Qt.</p>
 </div></blockquote>
 </div>
 <div class="section" id="services">
-<h2>Services<a class="headerlink" href="#services" title="Permalink to this headline">¶</a></h2>
+<h3>Services<a class="headerlink" href="#services" title="Permalink to this headline">¶</a></h3>
 <p>Here, idea is that every object can provide a service, ie, each object say that
 it is able to do something.  For example, a shell provide a service &#8220;run command&#8221;, a
 text editor provide services &#8220;edit text&#8221; and &#8220;display text&#8221;, ...
@@ -246,16 +258,16 @@ shell uses it.</p>
 </pre></div>
 </div>
 <div class="section" id="service-catalog">
-<h3>Service Catalog<a class="headerlink" href="#service-catalog" title="Permalink to this headline">¶</a></h3>
+<h4>Service Catalog<a class="headerlink" href="#service-catalog" title="Permalink to this headline">¶</a></h4>
 <p>The important part of this approach is how to call a service ?
 What criteria, how, where, ...</p>
 </div>
 </div>
 <div class="section" id="backends">
-<h2>Backends<a class="headerlink" href="#backends" title="Permalink to this headline">¶</a></h2>
+<h3>Backends<a class="headerlink" href="#backends" title="Permalink to this headline">¶</a></h3>
 </div>
 <div class="section" id="authors">
-<h2>Authors<a class="headerlink" href="#authors" title="Permalink to this headline">¶</a></h2>
+<h3>Authors<a class="headerlink" href="#authors" title="Permalink to this headline">¶</a></h3>
 <dl class="docutils">
 <dt>Parts of this documentation are copyright :</dt>
 <dd><ul class="first last simple">
@@ -263,6 +275,15 @@ What criteria, how, where, ...</p>
 </ul>
 </dd>
 </dl>
+</div>
+</div>
+<div class="section" id="inter-process-communication">
+<h2>Inter-process communication<a class="headerlink" href="#inter-process-communication" title="Permalink to this headline">¶</a></h2>
+<p>First part explained communication between objects, inside a process.
+This part explains how to communicate between process or applications.</p>
+<div class="section" id="dbus">
+<h3>DBUS<a class="headerlink" href="#dbus" title="Permalink to this headline">¶</a></h3>
+</div>
 </div>
 </div>
 
@@ -274,7 +295,8 @@ What criteria, how, where, ...</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="../../../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Loose coupling between objects</a><ul>
+<li><a class="reference internal" href="#">Object communication</a><ul>
+<li><a class="reference internal" href="#loose-coupling-between-objects">Loose coupling between objects</a><ul>
 <li><a class="reference internal" href="#easiest">Easiest</a></li>
 <li><a class="reference internal" href="#oberverd-listeners">Oberverd/Listeners</a></li>
 <li><a class="reference internal" href="#callbacks">Callbacks</a></li>
@@ -287,12 +309,24 @@ What criteria, how, where, ...</p>
 <li><a class="reference internal" href="#authors">Authors</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#inter-process-communication">Inter-process communication</a><ul>
+<li><a class="reference internal" href="#dbus">DBUS</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="extensions.html"
+                        title="previous chapter">Extensible and pluggable applications</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../archi/index.html"
+                        title="next chapter">OpenAleaLab Architecture</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../../../_sources/contribute/dev/concepts/loose_coupling.txt"
+      <li><a href="../../../_sources/contribute/dev/concepts/object_communication.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -322,7 +356,14 @@ What criteria, how, where, ...</p>
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../../../index.html">OpenAleaLab 1.0 documentation</a> &raquo;</li> 
+        <li class="right" >
+          <a href="../archi/index.html" title="OpenAleaLab Architecture"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="extensions.html" title="Extensible and pluggable applications"
+             >previous</a> |</li>
+        <li><a href="../../../index.html">OpenAleaLab 1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Get involved</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
