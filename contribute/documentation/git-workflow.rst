@@ -3,9 +3,8 @@ Public development on github
 ============================
 
 The workflow describe here is mainly inspired from 
-`IPython development workflow <http://ipython.org/ipython-doc/dev/development/gitwash/development_workflow.html>`_ 
-and especially from a
-`Fernando Perez message <http://mail.scipy.org/pipermail/ipython-dev/2010-October/006746.html>`_.
+`IPython development workflow and especially from a
+`Fernando Perez message` (link no more available).
 
 Steps to follow are :
 
