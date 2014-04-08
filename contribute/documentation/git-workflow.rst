@@ -69,9 +69,19 @@ Development must be short : **one branch = one task**
 
 Please choose an explicit name for your new branch.
 
+**If upstream_master do not exists yet**
+
 .. code-block:: bash
 
     git checkout upstream/master -b upstream_master
+    git checkout -b fix_app_crash_mac_os_10_9
+
+**else**
+
+.. code-block:: bash
+
+    git checkout upstream_master
+    git pull
     git checkout -b fix_app_crash_mac_os_10_9
 
 Work on your development branch
@@ -118,8 +128,12 @@ First get last modifications and work on a new branch created especially for cle
 .. code-block:: bash
 
     git fetch upstream
-    git checkout upstream/master -b upstream_master
+    git checkout upstream_master
+    git pull
+    git checkout fix_app_crash_mac_os_10_9
     git checkout -b rebased-fix_app_crash_mac_os_10_9 # create and checkout new branch
+    git rebase --interactive fix_app_crash_mac_os_10_9 
+    git rebase --interactive upstream_master
 
 
 
