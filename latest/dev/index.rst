@@ -37,9 +37,9 @@ Tasks:
         + Move vpltk doc here
         + Tutorial / Screenshots
     - GUI integration
-        # view 
-        # edit
-        # create
+        #. view 
+        #. edit
+        #. create
     - Test on real project
 
 What's Next: 
