@@ -35,14 +35,6 @@ OpenAleaLab is based on `OpenAlea Library <http://openalea.gforge.inria.fr>`_.
 .. toctree::
     :maxdepth: 2
 
-    openalealab/overview/index
-    openalealab/user/index
-
-
-
-LPY
----
-
-MTG
----
+    latest/overview/index
+    latest/user/index
 
