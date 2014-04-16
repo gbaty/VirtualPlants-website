@@ -51,7 +51,8 @@ What's Next:
         * Lazy load: load in memory only what is edited.
     - features
         * vcs inetgration (svn, git) (P1)
-        * different storage/representation strategies: directory, hdf5, bup, gzip, wheels, eggs
+        * different storage/representation strategies: directory, hdf5, bup, gzip, wheels, eggs, ftp
+        * Import using import hooks (PEP-0302)
 
 
 Application
