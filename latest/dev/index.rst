@@ -32,15 +32,16 @@ Issue: None
 
 Tasks:
 ++++++
-    - Project Documentation 
-        + Get OpenAlea PEP
-        + Move vpltk doc here
-        + Tutorial / Screenshots
-    - GUI integration
-        #. view 
-        #. edit
-        #. create
-    - Test on real project
+
+- Project Documentation
+    + Get :ref:`OpenAlea PEP project <label-pep_project>`
+    + Move vpltk project doc :ref:`here <label-api_project>`
+    + Tutorial / :ref:`Screenshot <label-project_screenshot>`
+- GUI integration
+    #. view
+    #. edit
+    #. create
+- Test on real project
 
 What's Next: 
 ++++++++++++

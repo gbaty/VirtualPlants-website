@@ -10,3 +10,4 @@ OpenAleaLab Architecture
     api_openalea_visualea
     api_openalea_grapheditor
     api_openalealab
+    api_project
