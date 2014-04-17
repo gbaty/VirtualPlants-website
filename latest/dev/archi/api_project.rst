@@ -21,9 +21,11 @@ Various Views on Project Manager and Project
 
 Project API
 ===========
+
 .. automodule:: openalea.vpltk.project.project
     :members:
     :undoc-members:
+
 .. automodule:: openalea.vpltk.project.manager
     :members:
     :undoc-members:

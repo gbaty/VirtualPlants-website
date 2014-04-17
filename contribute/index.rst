@@ -36,8 +36,6 @@ Developer's documentation
 .. toctree::
     :maxdepth: 1
 
-    dev/concepts/extensions
-    dev/concepts/object_communication
-    dev/archi/index
-
+    ../latest/dev/archi/index
+    ../latest/dev/API/index
  

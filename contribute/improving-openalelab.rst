@@ -9,4 +9,4 @@ Proposal in progress
     :maxdepth: 1
     :glob:
 
-    ../peps/pep_*
+    peps/pep_*
