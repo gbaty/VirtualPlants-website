@@ -1,8 +1,8 @@
 .. _label-api_project:
 
-===========================
-Project Quick Start and API
-===========================
+==================
+Project Management
+==================
 
 Project Quick Start
 ===================
