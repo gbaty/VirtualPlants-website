@@ -5,7 +5,6 @@
 Glossary
 ========
 
-
 Object
 ======
 

@@ -52,7 +52,7 @@ Easiest
    shell = Shell(widget)
 
 
-Advantages:
+Benefits:
 
   - Very easy
 
@@ -87,7 +87,7 @@ Oberverd/Listeners
     observed.register_listener(listener)
 
 
-Advantages:
+Benefits:
 
   - This approach allow to run widget alone, shell alone or both together
   - Multiple listeners can be registered.
@@ -111,26 +111,25 @@ The processing function then calls the callback when appropriate.
 
 .. code-block:: python
 
+    class Widget(object):
+        """ class definition """
 
-   class Shell(object):
-       def __init__(self, display):
-           self.display = display
+    class Shell(object):
+        def run(self, cmd, callback):
+            output = run_cmd(cmd)
+            for new_line in output:
+                callback(new_line)
 
-       def run(self, cmd, callback):
-           output = run_cmd(cmd)
-           for new_line in output:
-               callback(new_line)
+    widget = Widget()
 
-   widget = Widget()
-
-   shell = Shell()
-   shell.run('ls', callback=widget.appendText)
+    shell = Shell()
+    shell.run('ls', callback=widget.appendText)
 
 Drawbacks :
 
   - Implicit contract
   - Strongly coupled to the processing function (the processing function must know which callback to call)
-  - Complexifies program structure "Spaghetti code"
+  - Complexifies program structure : "Spaghetti code"
 
 Qt Signals/Slots
 ================
@@ -172,6 +171,10 @@ This ensures that truly independent components can be created with Qt.
     # newOutuputLineAvailable is the signal with one str value
     # appendText is the slot with one str parameter
 
+Benefits:
+
+  - Shell and Widgets are totally independents
+  - Link between components is defined outside components
 
 Drawbacks:
 
@@ -223,6 +226,9 @@ Service Catalog
 
 The important part of this approach is how to call a service ?
 What criteria, how, where, ...
+
+.. code-block:: python
+    search(type="CmdDisplay")
 
 
 Backends

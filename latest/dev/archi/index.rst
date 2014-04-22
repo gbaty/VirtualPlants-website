@@ -10,6 +10,17 @@ Developer's documentation
     api_gui_application
 
 
+Concepts
+========
+
+.. toctree::
+    :maxdepth: 1
+
+    object_communication
+    extensions
+    coupling_use_cases
+
+
 Full API
 ========
 
