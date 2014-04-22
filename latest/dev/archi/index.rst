@@ -1,6 +1,6 @@
-========================
-OpenAleaLab Architecture
-========================
+=========================
+Developer's documentation
+=========================
 
 .. toctree::
     :maxdepth: 1

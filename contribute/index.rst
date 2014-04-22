@@ -29,13 +29,3 @@ Code development
     dev/improving-openalealab
     dev/extending-openalealab
 
-
-Developer's documentation
-#########################
-
-.. toctree::
-    :maxdepth: 1
-
-    ../latest/dev/archi/index
-    ../latest/dev/API/index
- 

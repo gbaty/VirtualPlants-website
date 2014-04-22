@@ -38,3 +38,13 @@ OpenAleaLab is based on `OpenAlea Library <http://openalea.gforge.inria.fr>`_.
     latest/overview/index
     latest/user/index
 
+Developer documentation
+~~~~~~~~~~~~~~~~~~~~~~~
+
+.. toctree::
+    :maxdepth: 1
+
+    latest/dev/index
+    latest/dev/archi/api_project
+    latest/dev/archi/components
+    latest/dev/archi/api_gui_application
