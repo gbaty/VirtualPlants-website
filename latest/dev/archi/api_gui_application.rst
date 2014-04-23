@@ -2,8 +2,31 @@
 Builtin Graphical Components
 ============================
 
-Paned menus
+Application
 ===========
+
+OpenAleaLab proposes classes to create generic "labs".
+A lab is a graphical interfaces providing several features :
+
+  - **python shell**: runs scripts
+  - **editors** : view and edit scripts, workflow, ...
+  - **managers**: manage packages, plugins and projects
+  - **viewer**: displays a scene in 2d or 3d
+  - **scene**: a generic representation of all data used in simulation
+  - **reporting**: show logs, history, ...
+
+Library also provides generic object to ease GUI creation like ribbon bars,
+mainwindow classes, but OpenAleaLab is not a generic application framework like Qt.
+
+
+Extension
+=========
+
+Generic graphical components
+============================
+
+Paned menus
+-----------
 
 Paned menus, also called "ribbon bars" are alternatives to classical Tool bars.
 It allows to emphasize some action with larger buttons.
