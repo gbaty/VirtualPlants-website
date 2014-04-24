@@ -73,8 +73,11 @@ Issue:     None
 
 Tasks:
 ++++++
-    - Grouping the widgets in a rational way
-    - Interaction between components (Drag/Drop)
+    #. Grouping the widgets in a rational way
+    #. Interaction between components (Drag/Drop)
+
+**Progress:**
+    #. First try: define named area (inputs, outputs) than can be used to gather widgets. See mainwindow2.MainWindow
 
 Application archi
 -----------------
@@ -95,6 +98,17 @@ Tasks:
     - the application define its components
     - the components extend the application
 
+**Progress:**
+
+    - A new MainWindow class (mainwindow2.MainWindow) has been defined.
+      This class do not have widget imports except for shell and menu.
+      1/3 of widget has been integrated. Some blocking issues were identified.
+      See :ref:`label-extending_oalab`.
+    - New MainWindow uses entry_points to find plugins and add it
+
+**TODO**
+    - Fix blocking issues.
+    - Finish applet migration
 
 Service Oriented Architecture
 -----------------------------
@@ -112,7 +126,7 @@ Tasks:
 ++++++
     - Definition of concepts: component, interface, service, adapters
     - Service: 
-        + absrtact class (interface)
+        + abstract class (interface)
         + dump/load object (project)
         + 3D display
         + Help 
@@ -193,7 +207,7 @@ OpenAleaLab alpha
 Concepts and their relationships
     - Architecture
         + Interface
-        + composants
+        + components
         + Service: Manager/Registration
     - Controls
     - Component GUI
