@@ -46,5 +46,5 @@ Developer documentation
 
     latest/dev/index
     latest/dev/archi/api_project
-    latest/dev/archi/components
+    latest/dev/archi/extensions
     latest/dev/archi/api_gui_application
