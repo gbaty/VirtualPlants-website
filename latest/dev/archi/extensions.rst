@@ -104,3 +104,75 @@ Available entry points
   - **oalab.applet** [:class:`~openalea.oalab.interfaces.i_applet.IApplet`]: Graphical component displayed in main window.
 
 
+Known issues
+============
+
+actions
+-------
+
+    - method used by applet to provide action is not well described and not enough generic.
+
+app/mainwin/session
+-------------------
+
+    - role of session, application and app not clear
+
+ControlPanel
+------------
+
+    - project_manager is currently embedded in MainWindow (should be linked to session or app)
+
+VPLScene
+--------
+
+    - VPLScene has dependency to QtCore and QtGui (not expected)
+    - Qt is used only to send a "SceneChanged" signal (Qt dependency not justified for only on signal)
+    - Due to Qt dependency, scene is currently embeded in MainWindow.
+    - As Scene is not graphical, it should be linked to session or application
+    - -> Derivating VPLScene from Observed would be enouth.
+
+.. warning::
+
+    FIXED: Scene using Observed/Listeners instead of Qt Signal&Slots works.
+    There is a bug. Is it a new one ?
+
+    .. code-block:: text
+
+        No handlers could be found for logger "openalea.core.pkgmanager"
+        Traceback (most recent call last):
+          ...
+          File "/usr/local/Cellar/python/2.7.6_1/Frameworks/Python.framework/Versions/2.7/lib/python2.7/pickle.py", line 322, in save
+            raise PicklingError("%s must return string or tuple" % reduce)
+        pickle.PicklingError: <built-in method __reduce_ex__ of VPLScene object at 0x7fa15a5d6ed0> must return string or tuple
+
+
+ProjectManagerWidget
+--------------------
+
+    - dependency to AppletContainer (paradigm container). 
+    - ProjectManagerWidget must work without controller.applet_container
+
+ControlPanel
+------------
+
+    - hard links with project, colormap and control
+    - no abstraction for controls
+
+.. code-block:: python
+
+    class ControlPanel
+        def update(self)
+            colors = self.colormap_editor.getTurtle().getColorList()
+            self.session.project.control["color map"] = colors
+        
+            objects = self.geometry_editor.getObjects()
+            for (manager, obj) in objects:
+                if obj != list():
+                    obj, name = geometry_2_piklable_geometry(manager, obj)
+                    self.session.project.control[unicode(name)] = obj
+        
+            scalars = self.scalars_editor.getScalars()
+            for scalar in scalars:
+                self.session.project.control[unicode(scalar.name)] = scalar
+
+
