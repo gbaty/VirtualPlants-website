@@ -143,6 +143,8 @@ ControlPanel
 VPLScene
 --------
 
+    - we don't have viewer which permit to quickly check what is the scene
+
     - VPLScene has dependency to QtCore and QtGui (not expected)
     - Qt is used only to send a "SceneChanged" signal (Qt dependency not justified for only on signal)
     - Due to Qt dependency, scene is currently embeded in MainWindow.
@@ -194,3 +196,53 @@ ControlPanel
                 self.session.project.control[unicode(scalar.name)] = scalar
 
 
+
+Menu
+----
+
+    - tab seems to be unordered
+    - name of big buttons have disappear
+    - add icon to group
+    - add a classical menu
+
+Logger
+------
+
+    - doesn't work anymore (neither in oalab nor in visualea)
+
+Projects Manager
+----------------
+
+    - we don't have a widget that list all available projects (cf package treeview for instance)
+    - We can't edit project (metadata, startup, ...)
+
+Package Manager
+---------------
+
+    - use 3 tabs for the moment and so, take many place. TODO: centralize them in only one tab (a tab of 3 sub-tabs).
+    - hide it if we don't use workflow?
+
+Shortcuts
+---------
+
+    - shortcuts doesn't work anymore.
+
+Store
+-----
+
+    - is too big to appear by default in the application
+
+Config
+------
+
+    - create a user configuration to store preferences
+
+Status Bar
+----------
+
+    - add a status bar in mainwindow
+
+ResultPanel
+------------
+
+    - TODO: add a space to store and visualize results
