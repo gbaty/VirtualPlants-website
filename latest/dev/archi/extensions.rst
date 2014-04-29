@@ -246,3 +246,14 @@ ResultPanel
 ------------
 
     - TODO: add a space to store and visualize results
+
+Plugins
+-------
+
+Most of them are independent (they can work alone).
+For a minimal application to works with project, just set *applets = ['EditorManager', 'ProjectManager']* in the lab.
+
+But there is still some problems:
+
+    - EditorManager and ProjectManager are dependents of each others (TO FIX)
+    - ProjectWidget depends of EditorManager (TO FIX)
