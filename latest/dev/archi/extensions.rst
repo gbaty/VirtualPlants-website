@@ -93,9 +93,27 @@ Finally, we register this plugin in setup.py of package helper.
 
         entry_points = { 
             'oalab.applet': [
-                'helper = helper.plugins.oalab:HelpWidget'
+                'HelpWidget = helper.plugins.oalab:HelpWidget'
             }
         )
+
+To add the plugin in your lab (here in *minilab*), don't forhet to add it in the main file of the lab:
+
+.. code-block:: python
+    :filename: oalab/plugins/labs/minilab.py
+
+    class MiniLab(object):
+        name = 'mini'
+        applets = [ 'HelpWidget']
+
+Create a plugin
+---------------
+
+As we just see, to add a plugin to the application you have to:
+
+  - create the plugin (factory that point to the good class)
+  - add it into entry_points in setup.py
+  - add it in lab
 
 
 Available entry points
