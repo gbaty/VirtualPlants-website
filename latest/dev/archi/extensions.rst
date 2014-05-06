@@ -129,20 +129,25 @@ actions
 -------
 
     - method used by applet to provide action is not well described and not enough generic.
+    - Action object: (i) interface, (ii) application and code refactoring
 
 app/mainwin/session
 -------------------
 
     - role of session, application and app not clear
+    - Define an new object application vs mainwin which inherit of SignalSlot
+    - Define the interface of the session. (move code from actual project manaer to session).
 
 ControlPanel
 ------------
 
     - project_manager is currently embedded in MainWindow (should be linked to session or app)
+    - Rename controlPanel and project_manager to explicit and well defined names.
 
 VPLScene
 --------
 
+    - rename to world?
     - we don't have viewer which permit to quickly check what is the scene
 
     - VPLScene has dependency to QtCore and QtGui (not expected)
@@ -200,10 +205,8 @@ ControlPanel
 Menu
 ----
 
-    - tab seems to be unordered
     - name of big buttons have disappear
     - add icon to group
-    - add a classical menu
 
 Logger
 ------
@@ -256,4 +259,6 @@ For a minimal application to works with project, just set *applets = ['EditorMan
 But there is still some problems:
 
     - EditorManager and ProjectManager are dependents of each others (TO FIX)
+    - File management must move into EditorManager (TODO)
     - ProjectWidget depends of EditorManager (TO FIX)
+    - with only EditorManager, visualea doesn't work: he need packagemanager
