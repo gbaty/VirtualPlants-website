@@ -1,6 +1,6 @@
-====================
-Execution Management
-====================
+================
+Model Management
+================
 
 Simulator
 =========
@@ -17,15 +17,12 @@ Model (Knowledge Source)
 Definition
 ----------
 
-OpenAleaLab user can create and manage models.
-Models can be made from various paradigms (Python, LSystem, Workflow...)
-They are part of project.
+A Model is a modelling code that can be implemented from various paradigms (Python, LSystem, Workflow...)
 
 A model has:
   - inputs that can come from the world
   - outputs that can be put in the world
-  - a desirable execution time
-  - a real execution time
+  - a desirable *time step* and a real time step
   - an internal state
   - some specific methods:
         - *run* to execute the model
@@ -110,25 +107,14 @@ API
         """
         Contain objects of the world.
         """
-        def __init__(self):
-            super(World, self).__init__()
-
-        def get_scene(self):
-            """
-            return only object stock in self that are part of the scene
-            """
-            return_dict = OrderedDict()
-            for obj in self:
-                if self[obj].in_scene:
-                    return_dict[obj] = self[obj]
-            return return_dict
+        pass
 
 
     class WorldObject(object):
         """
         Object of the world.
         """
-        def __init__(self, obj, model_id, output_id, in_scene=False):
+        def __init__(self, obj, model_id, output_id):
             """
             :param obj: object to store
             :param model_id: identifier of the model used to create this object
@@ -138,11 +124,3 @@ API
             self.obj = obj
             self.model_id = model_id
             self.output_id = output_id
-            self.in_scene = in_scene
-
-        def _repr_qglviewer_(self):
-            """
-            Return a 3d representation used in the viewer (PyQGLViewer)
-            """
-            pass
-
