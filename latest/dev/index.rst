@@ -2,18 +2,27 @@
 Development documents
 =====================
 
+..todo::
+    Insert visual roadmap (JC) 
+
+
 RoadMap
 =======
     - Project
     - Viewer
-    - 3D World
-    - Application: archi + GUI
-    - Service Oriented Architecture
-    - Manager
-    - Controls / GUI
+    - World
+    - Simulator (Meta-model)
     - Models/ Paradigms
+    - Application: 
+        - archi
+        - GUI
+    - Service Oriented Architecture (SOA)
+    - Manager (Package, Project, ...)
+    - Controls / GUI
     - Config / Session
     - Interaction
+        - edition of objects
+        - relationships between the different models
 
 
 Concepts
