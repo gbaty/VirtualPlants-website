@@ -2,7 +2,8 @@
 Development documents
 =====================
 
-..todo::
+.. todo::
+
     Insert visual roadmap (JC) 
 
 
@@ -23,6 +24,9 @@ RoadMap
     - Interaction
         - edition of objects
         - relationships between the different models
+
+For tasks and deadlines, please have a look to Ganttproject file ":download:`tasks.gan`".
+This file can be opened with `Ganttproject <http://www.ganttproject.biz>`_
 
 
 Concepts
@@ -53,6 +57,11 @@ Tasks:
     #. create
 - Test on real project
 
+
+**Progress:**
+    Almost done, test on real projects
+
+
 What's Next:
 ++++++++++++
 
@@ -67,6 +76,9 @@ What's Next:
         + vcs integration (svn, git) (P1)
         + different storage/representation strategies: directory, hdf5, bup, gzip, wheels, eggs, ftp
         + Import using import hooks (PEP-0302)
+
+
+
 
 Application GUI
 ---------------
@@ -87,6 +99,7 @@ Tasks:
 
 **Progress:**
     #. First try: define named area (inputs, outputs) than can be used to gather widgets. See mainwindow2.MainWindow
+
 
 Application archi
 -----------------
@@ -117,7 +130,6 @@ Tasks:
 
 **TODO**
     - Fix blocking issues.
-    - Finish applet migration
 
 Service Oriented Architecture
 -----------------------------
@@ -182,7 +194,7 @@ What's Next:
 Release OpenAleaLab
 -------------------
 
-Resp.: G. Baty and J. Costes
+Resp.: G. Baty and J. Coste
 
 Obj: PlantLab & TissueLab
 
@@ -235,3 +247,151 @@ OpenAleaLab replaces VisuAlea and L-Py
     - Documentation / Installation
 
 
+
+
+
+Known issues : To FIX
+=====================
+
+Project treeview
+----------------
+break link between project treeview and applet container.
+
+actions
+-------
+
+    - method used by applet to provide action is not well described and not enough generic.
+    - Action object: (i) interface, (ii) application and code refactoring
+
+app/mainwin/session
+-------------------
+
+    - role of session, application and app not clear
+    - Define an new object application vs mainwin which inherit of SignalSlot
+    - Define the interface of the session. (move code from actual project manager to session).
+
+ControlPanel
+------------
+
+    - project_manager is currently embedded in MainWindow (should be linked to session or app)
+    - Rename controlPanel and project_manager to explicit and well defined names.
+
+VPLScene
+--------
+
+    - rename to world?
+    - we don't have viewer which permit to quickly check what is the scene
+
+    - VPLScene has dependency to QtCore and QtGui (not expected)
+    - Qt is used only to send a "SceneChanged" signal (Qt dependency not justified for only on signal)
+    - Due to Qt dependency, scene is currently embeded in MainWindow.
+    - As Scene is not graphical, it should be linked to session or application
+    - -> Derivating VPLScene from Observed would be enouth.
+
+.. warning::
+
+    FIXED: Scene using Observed/Listeners instead of Qt Signal&Slots works.
+    There is a bug. Is it a new one ?
+
+    .. code-block:: text
+
+        No handlers could be found for logger "openalea.core.pkgmanager"
+        Traceback (most recent call last):
+          ...
+          File "/usr/local/Cellar/python/2.7.6_1/Frameworks/Python.framework/Versions/2.7/lib/python2.7/pickle.py", line 322, in save
+            raise PicklingError("%s must return string or tuple" % reduce)
+        pickle.PicklingError: <built-in method __reduce_ex__ of VPLScene object at 0x7fa15a5d6ed0> must return string or tuple
+
+
+ProjectManagerWidget
+--------------------
+
+    - dependency to AppletContainer (paradigm container). 
+    - ProjectManagerWidget must work without controller.applet_container
+
+ControlPanel
+------------
+
+    - hard links with project, colormap and control
+    - no abstraction for controls
+
+.. code-block:: python
+
+    class ControlPanel
+        def update(self)
+            colors = self.colormap_editor.getTurtle().getColorList()
+            self.session.project.control["color map"] = colors
+        
+            objects = self.geometry_editor.getObjects()
+            for (manager, obj) in objects:
+                if obj != list():
+                    obj, name = geometry_2_piklable_geometry(manager, obj)
+                    self.session.project.control[unicode(name)] = obj
+        
+            scalars = self.scalars_editor.getScalars()
+            for scalar in scalars:
+                self.session.project.control[unicode(scalar.name)] = scalar
+
+
+
+-Menu
+-----
+
+    - add icon to group
+    - fix titlebar size for tab widgets (too small on MacOSX) 
+      by setting minimal size to QWidget or by detecting platform (search setTitleBarWidget)
+
+Logger
+------
+
+    - doesn't work anymore (neither in oalab nor in visualea)
+
+Projects Manager
+----------------
+
+    - we don't have a widget that list all available projects (cf package treeview for instance)
+    - We can't edit project (metadata, startup, ...)
+
+Package Manager
+---------------
+
+    - use 3 tabs for the moment and so, take many place. TODO: centralize them in only one tab (a tab of 3 sub-tabs).
+    - hide it if we don't use workflow?
+
+Shortcuts
+---------
+
+    - shortcuts doesn't work anymore.
+
+Store
+-----
+
+    - is too big to appear by default in the application
+
+Config
+------
+
+    - create a user configuration to store preferences
+
+Status Bar
+----------
+
+    - add a status bar in mainwindow
+
+ResultPanel
+-----------
+
+    - TODO: add a space to store and visualize results
+
+Plugins
+-------
+
+Most of them are independent (they can work alone).
+For a minimal application to works with project, just set *applets = ['EditorManager', 'ProjectManager']* in the lab.
+
+But there is still some problems:
+
+    - EditorManager and ProjectManager are dependents of each others (TO FIX)
+    - File management must move into EditorManager (TODO)
+    - ProjectWidget depends of EditorManager (TO FIX)
+    - with only EditorManager, visualea doesn't work: he need packagemanager
