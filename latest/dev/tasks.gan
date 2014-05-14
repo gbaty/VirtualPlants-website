@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="OpenAleaLab" company="" webLink="http://" view-date="2014-04-14" view-index="0" gantt-divider-location="388" resource-divider-location="300" version="2.0" locale="fr_FR">
+<?xml version="1.0" encoding="UTF-8"?><project name="OpenAleaLab" company="" webLink="http://" view-date="2014-04-14" view-index="1" gantt-divider-location="388" resource-divider-location="465" version="2.0" locale="fr_FR">
     <description/>
     <view zooming-state="default:3" id="gantt-chart">
         <field id="tpd3" name="Nom" width="60" order="0"/>
@@ -6,8 +6,8 @@
         <field id="tpd5" name="Date de fin" width="22" order="2"/>
     </view>
     <view id="resource-table">
-        <field id="0" name="Nom" width="57" order="0"/>
-        <field id="1" name="Rôle par défaut" width="42" order="1"/>
+        <field id="0" name="Nom" width="73" order="0"/>
+        <field id="1" name="Rôle par défaut" width="26" order="1"/>
     </view>
     <!-- -->
     <calendars>
@@ -60,6 +60,7 @@
             <notes><![CDATA[Define architecture for drag and drop between components]]></notes>
         </task>
         <task id="33" name="Controls" color="#8cb6ce" meeting="false" start="2014-05-12" duration="5" complete="0" expand="true"/>
+        <task id="45" name="App/Mainwin/Project/session roles" color="#8cb6ce" meeting="false" start="2014-05-19" duration="5" complete="0" expand="true"/>
     </tasks>
     <resources>
         <resource id="0" name="Guillaume Baty" function="Default:0" contacts="" phone=""/>
@@ -67,13 +68,16 @@
         <resource id="2" name="Christophe Pradal" function="Default:1" contacts="" phone=""/>
     </resources>
     <allocations>
-        <allocation task-id="6" resource-id="0" function="Default:0" responsible="true" load="50.0"/>
+        <allocation task-id="6" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="45" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="8" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="25" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="33" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="36" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="17" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="45" resource-id="1" function="Default:0" responsible="false" load="20.0"/>
         <allocation task-id="23" resource-id="2" function="Default:1" responsible="true" load="100.0"/>
+        <allocation task-id="45" resource-id="2" function="Default:1" responsible="false" load="20.0"/>
     </allocations>
     <vacations/>
     <taskdisplaycolumns>
