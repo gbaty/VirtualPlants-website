@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="OpenAleaLab" company="" webLink="http://" view-date="2014-04-14" view-index="1" gantt-divider-location="388" resource-divider-location="465" version="2.0" locale="fr_FR">
+<?xml version="1.0" encoding="UTF-8"?><project name="OpenAleaLab" company="" webLink="http://" view-date="2014-05-09" view-index="0" gantt-divider-location="324" resource-divider-location="465" version="2.0" locale="fr">
     <description/>
     <view zooming-state="default:3" id="gantt-chart">
         <field id="tpd3" name="Nom" width="60" order="0"/>
@@ -6,8 +6,8 @@
         <field id="tpd5" name="Date de fin" width="22" order="2"/>
     </view>
     <view id="resource-table">
-        <field id="0" name="Nom" width="73" order="0"/>
-        <field id="1" name="Rôle par défaut" width="26" order="1"/>
+        <field id="0" name="Nom" width="55" order="0"/>
+        <field id="1" name="Rôle par défaut" width="44" order="1"/>
     </view>
     <!-- -->
     <calendars>
@@ -50,7 +50,6 @@
             <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
         </taskproperties>
         <task id="8" name="Project Management" color="#8cb6ce" meeting="false" start="2014-04-14" duration="1" complete="0" expand="true"/>
-        <task id="36" name="Project Manager" color="#ccffff" meeting="false" start="2014-05-19" duration="5" complete="0" expand="true"/>
         <task id="17" name="Run model from another one" color="#8cb6ce" meeting="false" start="2014-05-12" duration="2" complete="0" expand="true">
             <notes><![CDATA[Allow to run a model from another]]></notes>
         </task>
@@ -59,8 +58,16 @@
         <task id="25" name="Drag/Drop" color="#cc0033" meeting="false" start="2014-05-14" duration="1" complete="0" expand="true">
             <notes><![CDATA[Define architecture for drag and drop between components]]></notes>
         </task>
-        <task id="33" name="Controls" color="#8cb6ce" meeting="false" start="2014-05-12" duration="5" complete="0" expand="true"/>
+        <task id="33" name="Controls" color="#8cb6ce" meeting="false" start="2014-05-12" duration="10" complete="0" expand="true"/>
         <task id="45" name="App/Mainwin/Project/session roles" color="#8cb6ce" meeting="false" start="2014-05-19" duration="5" complete="0" expand="true"/>
+        <task id="36" name="Project Manager" color="#ccffff" meeting="false" start="2014-05-19" duration="5" complete="0" expand="true"/>
+        <task id="49" name="Models Python" color="#8cb6ce" meeting="false" start="2014-05-12" duration="5" complete="0" expand="true">
+            <depend id="52" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="52" name="Models Visualea LPy" color="#8cb6ce" meeting="false" start="2014-05-19" duration="5" complete="0" expand="true"/>
+        <task id="62" name="Historique" color="#8cb6ce" meeting="false" start="2014-05-21" duration="3" complete="0" expand="true"/>
+        <task id="65" name="Service Save/Load object" color="#8cb6ce" meeting="false" start="2014-05-26" duration="5" complete="0" expand="true"/>
+        <task id="67" name="Multi-project" color="#8cb6ce" meeting="false" start="2014-06-02" duration="5" complete="0" expand="true"/>
     </tasks>
     <resources>
         <resource id="0" name="Guillaume Baty" function="Default:0" contacts="" phone=""/>
@@ -70,12 +77,15 @@
     <allocations>
         <allocation task-id="6" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="45" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="33" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="8" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="25" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
-        <allocation task-id="33" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
-        <allocation task-id="36" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="33" resource-id="1" function="Default:0" responsible="false" load="20.0"/>
+        <allocation task-id="36" resource-id="1" function="Default:0" responsible="true" load="20.0"/>
         <allocation task-id="17" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="45" resource-id="1" function="Default:0" responsible="false" load="20.0"/>
+        <allocation task-id="49" resource-id="1" function="Default:0" responsible="true" load="50.0"/>
+        <allocation task-id="52" resource-id="1" function="Default:0" responsible="true" load="50.0"/>
         <allocation task-id="23" resource-id="2" function="Default:1" responsible="true" load="100.0"/>
         <allocation task-id="45" resource-id="2" function="Default:1" responsible="false" load="20.0"/>
     </allocations>
@@ -90,9 +100,9 @@
         <displaycolumn property-id="tpd9" order="-1" width="75" visible="false"/>
         <displaycolumn property-id="tpd8" order="-1" width="75" visible="false"/>
         <displaycolumn property-id="tpd0" order="-1" width="75" visible="false"/>
-        <displaycolumn property-id="tpd3" order="0" width="232" visible="true"/>
-        <displaycolumn property-id="tpd4" order="1" width="65" visible="true"/>
-        <displaycolumn property-id="tpd5" order="2" width="85" visible="true"/>
+        <displaycolumn property-id="tpd3" order="0" width="192" visible="true"/>
+        <displaycolumn property-id="tpd4" order="1" width="56" visible="true"/>
+        <displaycolumn property-id="tpd5" order="2" width="72" visible="true"/>
     </taskdisplaycolumns>
     <previous/>
     <roles roleset-name="Default"/>
