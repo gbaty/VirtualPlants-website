@@ -32,6 +32,48 @@ This file can be opened with `Ganttproject <http://www.ganttproject.biz>`_
 Concepts
 ========
 
+Model
+------
+
+========== ==========
+Summary
+========== ==========
+Resp:      J. Coste
+Due Date:  23/05/2014
+Objective: Access model in other models
+Issue:     None
+========== ==========
+
+Tasks:
+++++++
+    - Defining the :ref:`Models <label-model>`
+        + generic interface (API)
+            * run, step, init, ...
+            * get_documentation, ...
+        + implementation for all paradigms (Python, LPy, Visualea, R)
+    - Drag and drop a model in other model
+        + Python
+        + Visualea
+            * Create *model node*
+            * Open model node? Open a pop up or a new tab?
+        + LPy
+        + R
+    - Project
+        + store models instead of files (else we create new models and we doesn't keep the internal state model!)
+        + call models without extension (*model1* and not *model1.py*)
+    - Standardize
+        + use the same classes in OpenAleaLab and in Visualea:
+            * ex: NodeFactory / ModelFactory, InputObject(oalab) / InputObject(visualea), ...
+
+**Progress:**
+    - API and implementation is done.
+    - Drag and drop into python is done.
+    - Drag and drop into Visualea is in progress.
+
+What's Next:
+++++++++++++
+    - Do we want to call models that are in an other project?
+
 Project
 -------
 
@@ -280,7 +322,6 @@ VPLScene
 --------
 
     - rename to world?
-    - we don't have viewer which permit to quickly check what is the scene
 
     - VPLScene has dependency to QtCore and QtGui (not expected)
     - Qt is used only to send a "SceneChanged" signal (Qt dependency not justified for only on signal)
@@ -357,11 +398,6 @@ Package Manager
 
     - use 3 tabs for the moment and so, take many place. TODO: centralize them in only one tab (a tab of 3 sub-tabs).
     - hide it if we don't use workflow?
-
-Shortcuts
----------
-
-    - shortcuts doesn't work anymore.
 
 Store
 -----

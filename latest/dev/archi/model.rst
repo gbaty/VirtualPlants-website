@@ -20,7 +20,10 @@ Here we suppose that we have a model named *sum_int* that do the sum between two
   - Get result:
       >>> result, = sum_int.outputs
       >>> print "4 + 38 = ", result
-      [out]: 4 + 38 =  ('result', 42)
+      [out]: 4 + 38 =  42
+
+You can get result in the run function:
+      >>> result = sum_int.run()
 
 Usage
 =====
