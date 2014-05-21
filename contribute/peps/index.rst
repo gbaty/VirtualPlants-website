@@ -11,3 +11,5 @@ Plugin and extensions
     pep_plugins
     pep_suppliers
     pep_project
+    pep_configurable_apps
+    pep_ui_declarative
