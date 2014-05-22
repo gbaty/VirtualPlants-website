@@ -44,7 +44,6 @@ How to contribute
     :maxdepth: 1
 
     contribute/documentation/index
-    contribute/peps/index
     contribute/todo/index
     contribute/devel/index
 
@@ -57,14 +56,16 @@ Roadmap and tasks
     :maxdepth: 1
 
     latest/dev/index
+    latest/dev/peps/index
 
 OpenAleaLab and OpenAlea concepts
 
 .. toctree::
     :maxdepth: 1
 
-    latest/dev/archi/api_plugins
+    latest/dev/archi/api_plugin
     latest/dev/archi/api_project
     latest/dev/archi/api_model
+    latest/dev/archi/api_control
     latest/dev/archi/api_observer
     latest/dev/archi/api_gui_application

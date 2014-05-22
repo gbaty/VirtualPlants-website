@@ -1,6 +1,6 @@
-
-Configurable application
-########################
+=============================
+PEP: Configurable application
+=============================
 
 Overview of existing technologies
 =================================

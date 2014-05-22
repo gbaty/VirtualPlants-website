@@ -1,6 +1,6 @@
-==================
-Contract Suppliers
-==================
+=======================
+PEP: Contract Suppliers
+=======================
 
 In applications, some classes have a central role and are used by numerous other 
 classes.

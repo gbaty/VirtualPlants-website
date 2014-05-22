@@ -1,6 +1,6 @@
-
-Declarative Language to Design GUI
-##################################
+=======================================
+PEP: Declarative Language to Design GUI
+=======================================
 
 Overview of existing technologies
 =================================

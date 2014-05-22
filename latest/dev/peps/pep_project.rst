@@ -1,8 +1,8 @@
 .. _label-pep_project:
 
-===========
-PEP Project
-===========
+============
+PEP: Project
+============
 
 A *project* is the computational brick that encompasses the notion of "*modeling project*" for the user. A project gathers in a single logical place on the system all the data, scripts, results, configuration files that are needed or produced for a particular modeling aim.
 
