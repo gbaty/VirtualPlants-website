@@ -13,10 +13,9 @@ Softwares
 =========
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
 
     install/index
-    contribute/index
 
 
 OpenAleaLab
@@ -38,6 +37,17 @@ OpenAleaLab is based on `OpenAlea Library <http://openalea.gforge.inria.fr>`_.
     latest/overview/index
     latest/user/index
 
+How to contribute
+~~~~~~~~~~~~~~~~~
+
+.. toctree::
+    :maxdepth: 1
+
+    contribute/documentation/index
+    contribute/peps/index
+    contribute/todo/index
+    contribute/devel/index
+
 Developer documentation
 ~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -48,3 +58,4 @@ Developer documentation
     latest/dev/archi/api_project
     latest/dev/archi/extensions
     latest/dev/archi/api_gui_application
+    latest/dev/archi/tutorials/index

@@ -201,6 +201,7 @@ Communication with other project (or sub-project)
 
 Sometimes, user will want to re-use a (whole or subpart of) project. For instance, he can want to re-use a dataset.
 To do this, he will have various possibilities:
+
   * Make a clone/copy of used project in your project
   * Make a link to the project
   * Create a project which *inherit* from an existing project

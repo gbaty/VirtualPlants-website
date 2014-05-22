@@ -123,12 +123,15 @@ Existing technology in OpenAlea
 classes in openalea.core.settings :
 
 Settings: singleton
-Methods:  [
-           'add_option', 'add_section', 'add_section_update_handler', 'configfile',
-           'defaults', 'exists', 'get', 'getboolean', 'getfloat', 'getint', 'has_option',
-           'has_section', 'instance', 'items', 'options', 'optionxform', 'read', 'readfp',
-           'remove_option', 'remove_section', 'sections', 'set', 'write'
-           ]
+
+.. code-block:: python
+
+    Methods:  [
+               'add_option', 'add_section', 'add_section_update_handler', 'configfile',
+               'defaults', 'exists', 'get', 'getboolean', 'getfloat', 'getint', 'has_option',
+               'has_section', 'instance', 'items', 'options', 'optionxform', 'read', 'readfp',
+               'remove_option', 'remove_section', 'sections', 'set', 'write'
+               ]
 
 
 

@@ -23,6 +23,8 @@ Notebook:
 .. code:: python
 
     %matplotlib inline
+
+
 You can also use Matplotlib GUI backends in the Notebook, such as the Qt
 backend (``%matplotlib qt``). This will use Matplotlib's interactive Qt
 UI in a floating window to the side of your browser. Of course, this

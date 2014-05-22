@@ -228,6 +228,7 @@ The important part of this approach is how to call a service ?
 What criteria, how, where, ...
 
 .. code-block:: python
+
     search(type="CmdDisplay")
 
 

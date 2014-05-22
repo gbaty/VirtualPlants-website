@@ -71,6 +71,7 @@ Plugin description
 
 Variable or variables describing plugin.
 **work in progress**: Potential useful information:
+
     - classical meta info (name, icon, desc, authors, license, ...)
     - python/qt compatibility (does-it work with PyQt4 ? PySide ? Qt 5)
     - python compatibility (python 2 ? python 3 ?)
