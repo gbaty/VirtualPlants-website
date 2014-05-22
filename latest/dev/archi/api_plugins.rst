@@ -1,9 +1,9 @@
 
 .. _label-extending_oalab:
 
-=====================
-Extending OpenAleaLab
-=====================
+=======
+Plugins
+=======
 
 This document explains how to concretely extend OpenAleaLab.
 For theorirical aspects and future plans, see :ref:`label-pep_plugins`.

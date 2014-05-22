@@ -1,11 +1,11 @@
 .. _label-model:
 
-=====
-Model
-=====
+======
+Models
+======
 
 Model Quick Start
-===================
+=================
 
 Here we suppose that we have a model named *sum_int* that do the sum between two integers. The classical use of this model is:
 

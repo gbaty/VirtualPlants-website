@@ -51,11 +51,20 @@ How to contribute
 Developer documentation
 ~~~~~~~~~~~~~~~~~~~~~~~
 
+Roadmap and tasks
+
 .. toctree::
     :maxdepth: 1
 
     latest/dev/index
+
+OpenAleaLab and OpenAlea concepts
+
+.. toctree::
+    :maxdepth: 1
+
+    latest/dev/archi/api_plugins
     latest/dev/archi/api_project
-    latest/dev/archi/extensions
+    latest/dev/archi/api_model
+    latest/dev/archi/api_observer
     latest/dev/archi/api_gui_application
-    latest/dev/archi/tutorials/index

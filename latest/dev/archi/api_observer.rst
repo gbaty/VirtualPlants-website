@@ -1,6 +1,6 @@
-===============================
-Use Observer/Listener mechanism
-===============================
+===================
+Observers/Listeners
+===================
 
 .. code-block:: python
 
