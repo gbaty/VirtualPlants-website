@@ -48,19 +48,29 @@ Tasks:
 ++++++
     - Defining the :ref:`Models <label-model>`
         + generic interface (API)
-            * run, step, init, ...
-            * get_documentation, ...
-        + implementation for all paradigms (Python, LPy, Visualea, R)
-    - Drag and drop a model in other model
-        + Python
+            * run, step, init, ... (*)
+            * get_documentation, ... (*)
+        + implementation for all paradigms
+            * Python (*)
+            * VisuAlea (*)
+            * LPy
+            * R
+    - Drag and drop a model in other models
+        + Python (*)
         + Visualea
-            * Create *model node*
-            * Open model node? Open a pop up or a new tab?
-        + LPy
+            * Create *model node* (*) (TODO: connect reset, step, ...)
+            * Open/Edit the widget of a node :
+                - **Open** a widget in the widget manager (To define: GadgetManager?)
+                - **Edit** a model in the ModelEditors
+        + LPy:
+            - I/O :
+                * AxialTree vs MTG
+                * Sub-context
+                * LPy / World (AxialTree Interpretation)
         + R
     - Project
-        + store models instead of files (else we create new models and we doesn't keep the internal state model!)
-        + call models without extension (*model1* and not *model1.py*)
+        + store models instead of files (else we create new models and we doesn't keep the internal state model!) (*)
+        + call models without extension (*model1* and not *model1.py*) (*)
     - Standardize
         + use the same classes in OpenAleaLab and in Visualea:
             * ex: NodeFactory / ModelFactory, InputObject(oalab) / InputObject(visualea), ...
@@ -69,6 +79,7 @@ Tasks:
     - API and implementation is done.
     - Drag and drop into python is done.
     - Drag and drop into Visualea is in progress.
+    - Everything with (*) is done
 
 What's Next:
 ++++++++++++
