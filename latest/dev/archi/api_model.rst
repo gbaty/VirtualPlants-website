@@ -10,7 +10,7 @@ Model Quick Start
 Here we suppose that we have a model named *sum_int* that do the sum between two integers. The classical use of this model is:
 
   - First, get the model:
-      >>> sum_int = Model("sum_int.py")
+      >>> sum_int = Model("sum_int")
   - Set inputs:
       >>> sum_int.inputs = 4, 38
   - Run model:

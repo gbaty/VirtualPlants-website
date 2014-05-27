@@ -62,6 +62,7 @@ Tasks:
             * Open/Edit the widget of a node :
                 - **Open** a widget in the widget manager (To define: GadgetManager?)
                 - **Edit** a model in the ModelEditors
+            + save (model) node
         + LPy:
             - I/O :
                 * AxialTree vs MTG
