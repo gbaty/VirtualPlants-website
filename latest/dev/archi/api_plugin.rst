@@ -6,25 +6,34 @@ Plugins
 =======
 
 This document explains how to concretely extend OpenAleaLab.
-For theorirical aspects and future plans, see :ref:`label-pep_plugins`.
+For theoretical aspects and future plans, see :ref:`label-pep_plugins`.
 
 OpenAleaLab plugins
 ===================
 
-Plugin category -> Plugin Factories -> Plugin
+Idea behind plugins is to extend application without modifying code of this application.
+Another important aspect is that a plugin can be load automatically by application or **only on demand**.
+For the second case, it is very important to keep a plugin light.
 
+Plugin mechanism can be explained by this scheme:
+
+Plugin category -> Plugin identifier -> Plugin (factory) -> Class
 
 **Plugin category**:
-A plugin category is defined using entry_point group. 
-It defines implicitly that all plugins in this category adhere to a common interface.
-One plugin category contains at least one plugin factories.
+A plugin category gather all extension providing **same feature** (for example, an applet in GUI).
+This category is defined using **entry_point group**. 
+It defines implicitly that all plugins in this category adhere to a common interface. 
+See "Available entry points" to know matching between groups and interfaces.
 
-**Plugin factory**:
+**Plugin identifier**:
+A name and a path to identify and allow to load real plugin.
+
+**Plugin (factory)**:
 A simple class that describe component features.
-But, it is very important, that class must not imports module or implements features.
-To get class implementing features, a special method called instantiate can be used.
+But, it is very important, that class must not import module or implement features.
+To get class implementing features, a special method called load can be used.
 
-**Plugin**
+**Class**
 Class that actually implements features.
 
 GUI special feature
@@ -61,12 +70,12 @@ The module called oalab.gui.help provides this help widget:
 
 OpenAleaLab is the main application that gather all widgets.
 We want to add HelpWidget in the MainWindow and allow communication between both classes.
-For that purpose, we create a Plugin called HelpWidget in helper package:
+For that purpose, we create a Plugin called HelpWidgetPlugin in helper package:
 
 .. code-block:: python
     :filename: helper/plugins/oalab/helpwidget.py
 
-    class HelpWidget(object):
+    class HelpWidgetPlugin(object):
 
         data = {
         # Data that describe plugin
@@ -87,24 +96,20 @@ Finally, we register this plugin in setup.py of package helper.
 
 .. code-block:: python
     :filename: helper/setup.py
+    :linenos:
+    :emphasize-lines: 5,7
 
     setup(
         # setup instructions
 
-        entry_points = { 
-            'oalab.applet': [
-                'HelpWidget = helper.plugins.oalab:HelpWidget'
+        entry_points = {
+            'oalab.applet':                                                  # Plugin category
+                [
+                'HelpWidgetPlugin = helper.plugins.oalab:HelpWidgetPlugin'   # Plugin name = path to plugin (factory)
+                ]
             }
         )
 
-To add the plugin in your lab (here in *minilab*), don't forhet to add it in the main file of the lab:
-
-.. code-block:: python
-    :filename: oalab/plugins/labs/minilab.py
-
-    class MiniLab(object):
-        name = 'mini'
-        applets = [ 'HelpWidget']
 
 Create a plugin
 ---------------
@@ -113,11 +118,44 @@ As we just see, to add a plugin to the application you have to:
 
   - create the plugin (factory that point to the good class)
   - add it into entry_points in setup.py
-  - add it in lab
 
+
+Plugins on demand
+-----------------
+
+Some plugins are loaded automatically by application. For instance, it is the case for interfaces.
+Some other plugins are loaded only if ask for it. For exemple, if user want to edit a curve, interface may
+propose different editors and allow user to choose which one he prefers. In this case, only plugin chosen by
+user is really loaded.
+
+
+Finally, in some cases, developer might hard code name of a plugin he want to use to select the right one.
+This case can be seen as a preset of plugin instead of standard plugin approach.
 
 Available entry points
 ======================
 
-  - **oalab.applet** [:class:`~openalea.oalab.interfaces.i_applet.IApplet`]: Graphical component displayed in main window.
+  - :mod:`oalab.applet<openalea.oalab.plugins.applet>`: Graphical component displayed in main window.
+  - **oalab.control**:
+  - **oalab.qt_control**:
+  - **oalab.notebook_control**:
+  - **oalab.interface**:
+
+.. automodule:: openalea.oalab.plugins.applet
+    :members:
+    :undoc-members:
+    :special-members:
+    :show-inheritance:
+
+WIP: documentation to improve or remove
+=======================================
+
+To add the plugin in your lab (here in *minilab*), don't forhet to add it in the main file of the lab:
+
+.. code-block:: python
+    :filename: oalab/plugins/labs/minilab.py
+
+    class MiniLab(object):
+        name = 'mini'
+        applets = ['HelpWidget']
 

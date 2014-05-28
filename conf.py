@@ -103,6 +103,9 @@ pygments_style = 'sphinx'
 # If true, keep warnings as "system message" paragraphs in the built documents.
 # keep_warnings = False
 
+# -- Options for autodoc --------------------------------------------------
+
+autodoc_member_order = 'groupwise'
 
 # -- Options for HTML output ----------------------------------------------
 

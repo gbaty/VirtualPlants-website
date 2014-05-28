@@ -1,6 +1,6 @@
-===================
-Observers/Listeners
-===================
+===========================
+Events (Observed/Listeners)
+===========================
 
 .. code-block:: python
 
