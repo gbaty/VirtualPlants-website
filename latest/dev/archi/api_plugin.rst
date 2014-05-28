@@ -136,26 +136,17 @@ Available entry points
 ======================
 
   - :mod:`oalab.applet<openalea.oalab.plugins.applet>`: Graphical component displayed in main window.
-  - **oalab.control**:
+  - :mod:`oalab.lab<openalea.oalab.plugins.lab>`: OpenAleaLab extensions
   - **oalab.qt_control**:
   - **oalab.notebook_control**:
   - **oalab.interface**:
 
 .. automodule:: openalea.oalab.plugins.applet
-    :members:
     :undoc-members:
     :special-members:
     :show-inheritance:
 
-WIP: documentation to improve or remove
-=======================================
-
-To add the plugin in your lab (here in *minilab*), don't forhet to add it in the main file of the lab:
-
-.. code-block:: python
-    :filename: oalab/plugins/labs/minilab.py
-
-    class MiniLab(object):
-        name = 'mini'
-        applets = ['HelpWidget']
-
+.. automodule:: openalea.oalab.plugins.lab
+    :undoc-members:
+    :special-members:
+    :show-inheritance:

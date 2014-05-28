@@ -85,6 +85,7 @@ Immediately before a comma, semicolon, or colon:
 
 
 .. code-block:: python
+
     # Yes:
     if x == 4:
         print x, y
@@ -141,6 +142,7 @@ Don't use spaces around the '=' sign when used to indicate a keyword argument or
 
 
 .. code-block:: python
+
     #Yes:
     
     def complex(real, imag=0.0):
