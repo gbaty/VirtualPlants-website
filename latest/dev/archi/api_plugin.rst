@@ -49,7 +49,8 @@ The module called oalab.gui.help provides this help widget:
 
 .. code-block:: python
     :filename: oalab/gui/help.py
-
+    :linenos:
+    
     class HelpWidget(QtGui.QWidget):
 
         def openWeb(self, url):
@@ -74,7 +75,8 @@ For that purpose, we create a Plugin called HelpWidgetPlugin in helper package:
 
 .. code-block:: python
     :filename: helper/plugins/oalab/helpwidget.py
-
+    :linenos:
+    
     class HelpWidgetPlugin(object):
 
         data = {

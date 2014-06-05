@@ -1,6 +1,36 @@
 
 @import url(nature.css);
 
+div.body h1 {
+    margin-left: -10px;
+    color: rgb(65, 100, 18);
+    background-color: white;
+}
+
+div.body h2 {
+    color: rgb(65, 100, 18);
+    background-color: white;
+}
+
+div.body h3 {
+    color: rgb(65, 100, 18);
+    background-color: white;
+}
+
+div.body p {
+    margin-left: 40px;
+}
+
+div.code-block-filename {
+    background-color: white;
+    text-decoration: underline;
+    border: none;
+}
+
+.section {
+
+}
+
 .custom-float-left {
     margin: 20px;
     float: left;
