@@ -17,6 +17,11 @@ div.body h3 {
     background-color: white;
 }
 
+div.body h4 {
+    color: rgb(65, 100, 18);
+    background-color: white;
+}
+
 div.body p {
     margin-left: 40px;
 }

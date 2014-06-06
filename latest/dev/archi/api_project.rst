@@ -6,18 +6,11 @@ Projects
 
 Project Quick Start
 ===================
+
 .. automodule:: openalea.vpltk.project
     :members:
     :undoc-members:
 
-.. _label-project_screenshot:
-
-Various Views on Project Manager and Project
-============================================
-
-.. image:: ../../../images/project.png
-    :height: 200px
-    :align:   center
 
 Project API
 ===========

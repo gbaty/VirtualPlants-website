@@ -1,6 +1,7 @@
-====================
+####################
 User's Documentation
-====================
+####################
+
 
 Getting start
 =============
@@ -10,14 +11,29 @@ Features
 
 .. s'inspirer de https://support.rstudio.com/hc/en-us/categories/200035113-Documentation
 
+
+.. toctree::
+    :maxdepth: 1
+    
+    project
+
+
+
+.. warning::
+
+    Move it
+
+
 Command History
 ---------------
 
 OpenAleaLab automatically store all the commands that you use in the interpreter (bottom red circle) during the current session into the *history* panel (right red circle).
 
-.. image:: ../../images/history.png
-    :height: 500px
-    :align:   center
+.. container:: custom-float-right
+
+    .. image:: ../../images/history.png
+        :height: 500px
+        :align:   center
 
 You can browse this history into the panel *History*.
 The commands are displayed in order (most recent at the bottom).
@@ -32,15 +48,7 @@ This graphical component display informations about objects that you can select.
 
 It can display help from models, packages and nodes.
 
-Using Project
--------------
 
-Project Creation
-################
-
-.. image:: ../../images/create_project.png
-    :height: 400px
-    :align:   center
 
 Metadata
 ########
