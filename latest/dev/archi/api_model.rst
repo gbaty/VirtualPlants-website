@@ -55,5 +55,13 @@ Models API
     :members:
     :undoc-members:
 
+.. automodule:: openalea.oalab.model.lpy
+    :members:
+    :undoc-members:
+
+.. automodule:: openalea.oalab.model.visualea
+    :members:
+    :undoc-members:
+
 
 
