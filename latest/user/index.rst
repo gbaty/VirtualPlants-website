@@ -16,6 +16,7 @@ Features
     :maxdepth: 1
     
     project
+    model
 
 
 

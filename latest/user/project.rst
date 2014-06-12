@@ -1,4 +1,4 @@
-.. _label-api_project:
+.. _label-user_project:
 
 ========
 Projects
