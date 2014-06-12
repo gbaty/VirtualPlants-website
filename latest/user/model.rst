@@ -4,6 +4,38 @@
 Models
 ======
 
+Create New Model
+================
+
+To create a model, you can:
+
+  - create new one from scratch
+  - open an existing file
+
+Create a new model:
+
+.. image:: ../../images/new_model.png
+    :height: 400px
+    :align:   center
+
+Open an existing model:
+
+.. image:: ../../images/open_model.png
+    :height: 400px
+    :align:   center
+
+Now you can edit it, run it, ...
+
+Add Model to the current project
+================================
+
+Once you have your model, you must incorporate it inside your working project.
+So, it will be accessible to the other models of your project.
+
+.. image:: ../../images/add_model_to_proj.png
+    :height: 400px
+    :align:   center
+
 Drag and Drop
 =============
 
