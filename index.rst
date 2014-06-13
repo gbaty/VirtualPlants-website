@@ -50,13 +50,15 @@ How to contribute
 Developer documentation
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Roadmap and tasks
+Developer documents
 
 .. toctree::
     :maxdepth: 1
 
     latest/dev/index
     latest/dev/peps/index
+    latest/dev/commandline
+    latest/glossary
 
 OpenAleaLab and OpenAlea concepts
 
