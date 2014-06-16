@@ -4,14 +4,6 @@ openalea.vpltk.project package
 Submodules
 ----------
 
-openalea.vpltk.project.configobj module
----------------------------------------
-
-.. automodule:: openalea.vpltk.project.configobj
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 openalea.vpltk.project.loader module
 ------------------------------------
 

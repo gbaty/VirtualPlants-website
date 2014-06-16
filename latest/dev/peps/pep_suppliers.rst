@@ -62,8 +62,8 @@ Reader supplies IReader contract.
     user_path = ~/home/guillaume/plugins/tests/
 
 
->>> from openalea.vpltk.catalog.controller import Controller
->>> controller = Controller()
+>>> from openalea.vpltk.catalog.catalog import Catalog
+>>> catalog = Catalog()
 
 Two appraoches are available. First one uses methods to search suppliers. It
 allows to pass numerous parameters to specify research.
@@ -77,38 +77,48 @@ To get a supplier of IReader :
 To get a facotry of IHelper suppliers (for example to create several instances) :
 To get interface class :
 
->>> service = controller.supplier('IHelper')
->>> facotry = controller.factory('IHelper')
->>> interface = controller.interface('IHelper')
+.. doctest ::
+    :options: +SKIP
 
->>> suppliers = controller.suppliers('IHelper')
->>> factories = controller.factories('IHelper')
 
->>> service_xyz = controller.service(identifier='Xyz')
+    >>> service = catalog.supplier('IHelper')
+    >>> facotry = catalog.factory('IHelper')
+    >>> interface = catalog.interface('IHelper')
+    
+    >>> suppliers = catalog.suppliers('IHelper')
+    >>> factories = catalog.factories('IHelper')
+    
+    >>> service_xyz = catalog.service(identifier='Xyz')
 
 Advanced search
 ~~~~~~~~~~~~~~~
 
->>> service = controller.supplier('IHelper', tags=['PyQt4'])
->>> service = controller.supplier('IHelper', tags=['PyQt4'])
+.. doctest ::
+    :options: +SKIP
+
+    >>> service = catalog.supplier('IHelper', tags=['PyQt4'])
+    >>> service = catalog.supplier('IHelper', tags=['PyQt4'])
 
 Direct approach
 ---------------
 
->>> service = controller.helper
->>> factory = controller.Helper
->>> interface = controller.IHelper
+.. doctest ::
+    :options: +SKIP
 
->>> suppliers = controller.helpers
->>> factories = controller.Helpers
-
->>> controller.tags = ['PyQt4']
-
->>> controller.IHelper.tags = ['PyQt4']
->>> service = controller.helper
-
->>> controller.IHelper.name = 'Xyz'
->>> service_xyz = controller.helper
+    >>> service = catalog.helper
+    >>> factory = catalog.Helper
+    >>> interface = catalog.IHelper
+    
+    >>> suppliers = catalog.helpers
+    >>> factories = catalog.Helpers
+    
+    >>> catalog.tags = ['PyQt4']
+    
+    >>> catalog.IHelper.tags = ['PyQt4']
+    >>> service = catalog.helper
+    
+    >>> catalog.IHelper.name = 'Xyz'
+    >>> service_xyz = catalog.helper
 
 This approach maybe be attractive but is too implicit and so too dangerous.
 

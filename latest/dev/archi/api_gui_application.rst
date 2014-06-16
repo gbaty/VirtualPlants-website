@@ -2,6 +2,20 @@
 Graphical Components
 ====================
 
+.. testsetup::
+
+    from openalea.vpltk.qt import QtGui
+    instance = QtGui.QApplication.instance()
+    if instance is None:
+        app = QtGui.QApplication([])
+    else:
+        app = instance
+
+    # .. testcleanup::
+    # 
+    # if instance is None:
+    #    app.exec_()
+
 Build new graphical application
 ===============================
 

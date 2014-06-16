@@ -4,13 +4,16 @@ openalea.oalab.gui package
 Submodules
 ----------
 
-openalea.oalab.gui.allwidgets module
-------------------------------------
+.. testsetup::
 
-.. automodule:: openalea.oalab.gui.allwidgets
-    :members:
-    :undoc-members:
-    :show-inheritance:
+    from openalea.vpltk.qt import QtGui
+    instance = QtGui.QApplication.instance()
+    if instance is None:
+        app = QtGui.QApplication([])
+    else:
+        app = instance
+
+
 
 openalea.oalab.gui.app module
 -----------------------------
