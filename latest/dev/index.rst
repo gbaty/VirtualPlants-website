@@ -7,6 +7,8 @@ Development documents
     Insert visual roadmap (JC) 
 
 
+Browse `Tasks online <https://docs.google.com/spreadsheets/d/1UmptewjBkf5q1f5FfQFCN-MEAciHQF-UQ5ILTerAdVo/edit#gid=0>`_
+
 RoadMap
 =======
     - Project
@@ -33,7 +35,7 @@ Concepts
 ========
 
 Model
-------
+-----
 
 ========== ==========
 Summary
