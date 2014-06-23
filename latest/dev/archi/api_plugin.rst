@@ -68,7 +68,7 @@ For the second case, it is very important to keep a plugin light.
 Plugin categories
 =================
 
-  - :mod:`Lab Extensions<openalea.oalab.plugins.lab>` [oalab.lab]: New laboratory based on OpenAleaLab
+  - :ref:`label-plugin_control` [oalab.lab]: New laboratory based on OpenAleaLab
   - :mod:`Applets<openalea.oalab.plugins.applet>` [oalab.applet] : Graphical component displayed in main window.
   - :mod:`Controls <openalea.oalab.plugins.control>` [oalab.qt_control, oalab.notebook_control]: Data editors and viewers
   - :mod:`Interfaces <openalea.oalab.plugins.interface>` [oalab.interface]: Description of data types
