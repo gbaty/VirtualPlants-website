@@ -1,21 +1,10 @@
-========================
-VirtualPlants' Softwares
-========================
+==================
+OpenAlea community
+==================
 
-Virtual Plants is a joint research team between Inria, Cirad and Inra.  
-We develop computational models of plant development to understand the physical and biological principles that drive the development of plant branching systems and organs.
-
-For further information, please visit visit `VirtualPlants' team website <https://team.inria.fr/virtualplants>`_.
-
-
-
-Softwares
-=========
-
-.. toctree::
-    :maxdepth: 1
-
-    install/index
+OpenAlea is an open source project primarily aimed at the plant research community. 
+It is a distributed collaborative effort to develop Python libraries and tools that address the needs of current and future works in Plant Architecture modeling. 
+OpenAlea includes modules to analyse, visualize and model the functioning and growth of plant architecture. 
 
 
 OpenAleaLab
