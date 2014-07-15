@@ -154,5 +154,6 @@ When loaded, all plot using matplotlib.pyplot_ are automatically send to this ap
 Which give the following result:
 
 .. image:: ../../images/matplotlib_plugin.png
+    :width: 50%
 
 .. _matplotlib.pyplot: http://matplotlib.org/api/pyplot_api.html
