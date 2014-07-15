@@ -138,11 +138,11 @@ World Viewer
 3D Viewer
 ---------
 
-2d plot
--------
+Plot2d
+------
 
-The matplotlib plugin add interactive 2D plot to OpenAleaLab, using matplotlib.
-When loaded, all plot using matplotlib.pyplot_ are automatically send to this applet. For Example, you can write either in a python model (or in the ipython shell)::
+The Plot2d plugin add interactive 2D plot to OpenAleaLab, using matplotlib.
+When loaded, all plot using matplotlib.pyplot_ functionalities are automatically send to this applet. For Example, you can write in a python model (or in the ipython shell)::
     
     from matplotlib import pyplot as plt
     import numpy as np
@@ -151,9 +151,9 @@ When loaded, all plot using matplotlib.pyplot_ are automatically send to this ap
     x = np.arange(0,12*np.pi,.1)
     plt.plot(np.exp(-x/12)*np.cos(x))
     
-Which give the following result:
+Running this model gives the following result:
 
-.. image:: ../../images/matplotlib_plugin.png
-    :width: 50%
+.. image:: ../../images/plot2d_plugin.png
+    :width: 70%
 
 .. _matplotlib.pyplot: http://matplotlib.org/api/pyplot_api.html
