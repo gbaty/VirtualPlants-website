@@ -142,7 +142,7 @@ World Viewer
 -------
 
 The matplotlib plugin add interactive 2D plot to OpenAleaLab, using matplotlib.
-When loaded, all plot using matplotlib.pyplot_ are automatically send to this applet. For Example, you can write either in the ipython shell of in a python model::
+When loaded, all plot using matplotlib.pyplot_ are automatically send to this applet. For Example, you can write either in a python model (or in the ipython shell)::
     
     from matplotlib import pyplot as plt
     import numpy as np
@@ -151,7 +151,7 @@ When loaded, all plot using matplotlib.pyplot_ are automatically send to this ap
     x = np.arange(0,12*np.pi,.1)
     plt.plot(np.exp(-x/12)*np.cos(x))
     
-An get the follwing plot:
+Which give the following result:
 
 .. image:: ../../images/matplotlib_plugin.png
 
