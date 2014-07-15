@@ -142,7 +142,7 @@ Plot2d
 ------
 
 The Plot2d plugin add interactive 2D plot to OpenAleaLab, using matplotlib.
-When loaded, all plot using matplotlib.pyplot_ functionalities are automatically send to this applet. For Example, you can write in a python model (or in the ipython shell)::
+When loaded, all plot  functionalities from matplotlib pyplot_ or pylab_ (which is included in ipython after running `pylab`) are automatically send to this applet. For Example, you can write in a python model::
     
     from matplotlib import pyplot as plt
     import numpy as np
@@ -153,7 +153,28 @@ When loaded, all plot using matplotlib.pyplot_ functionalities are automatically
     
 Running this model gives the following result:
 
-.. image:: ../../images/plot2d_plugin.png
+.. image:: ../../images/plot2d_plugin_ex1.png
     :width: 70%
 
-.. _matplotlib.pyplot: http://matplotlib.org/api/pyplot_api.html
+Another example, using pylab_::
+    
+    from scipy import stats
+    %pylab
+    
+    dist = randn(10000)
+    n = stats.norm(*stats.norm.fit(dist))
+    
+    # ploting
+    clf()
+    x = arange(dist.min(),dist.max(),.1)
+    hist(dist,100,normed=1)
+    plot(x,n.pdf(x),'r')
+    
+Produce this:
+
+.. image:: ../../images/plot2d_plugin_ex2.png
+    :width: 70%
+
+
+.. _pyplot: http://matplotlib.org/api/pyplot_api.html
+.. _pylab:  http://wiki.scipy.org/PyLab
