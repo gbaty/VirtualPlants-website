@@ -23,31 +23,47 @@ Create official organization website
 
 If you just want to contribute, please go to next step. This step is useful for organization owners only.
 
+* Install softwares:
+
+    - `git <http://git-scm.com>`_
+    - `sphinx <http://sphinx-doc.org>`_
+
 Create source repository
 ------------------------
 
-* Generate a github project called "organization-website" with organization account, not with your user account. This project contains documentation sources (mainly sphinx rst files)
-* Prepare github directory :
+* Generate a github project called "organization-website".
+
+  - Select right organization account (not your user account). This project contains documentation sources (mainly sphinx rst files)
+  - To question "Add readme", say yes !
+
+* Prepare github directory
+
+  - Launch a terminal
+  - **Warning**: you must modify replace ORGANIZATION with the right one.
+  - Once modified, launch these commands.
 
 .. code-block:: bash
 
+    # cd /go/to/your/directory
     git clone https://github.com/ORGANIZATION/ORGANIZATION-website
     cd ORGANIZATION-website
     mkdir _scripts
 
 * Copy scripts :download:`gh-pages.py` and :download:`copy_trees.py` into "_scripts" directory
-* Modify _scripts/gh-pages.py and change page_repo values. Generally, just replace ORGANIZATION and USERNAME.
+* Modify _scripts/gh-pages.py and change page_repo values. Generally, just replace both ORGANIZATION and USERNAME with organization name.
 
-* Create your sphinx project with sphinx-wizard
+* Create your sphinx project with sphinx-wizard.
 
 .. code-block:: bash
 
+    # Go to root directory (not in _scripts)
     sphinx-quickstart
 
+    # Keep default value except ...
     # To question "Separate source and build directories (y/n) [n]", answer n
-    # To question "Generate Makefile (y/n) [y]", answer n
+    # To question "Generate Makefile (y/n) [y]", answer n (to use a custom Makefile)
 
-* Copy this :download:`Makefile` into directory
+* Click on this :download:`link <Makefile>` and save Makefile into you documentation directory.
 
 
 Create html repository
@@ -55,10 +71,14 @@ Create html repository
 
 Create repository to put generated html files.
 
-* create one repository for your user or organization as explained in `Github help pages <http://pages.github.com>`_.
-    - Normally, just replace "-website" by ".github.io".
+* Go to github.com again
+* Generate a github project called "organization.github.io", as explained in `Github help pages <http://pages.github.com>`_.
 
-* create a file named ".nojekyll" in project myorganization.github.io this is required to 
+  - Select right organization account (not your user account). This project contains documentation sources (mainly sphinx rst files)
+  - To question "Add readme", say yes !
+
+
+* Create a file named ".nojekyll" in project myorganization.github.io this is required to 
     - disable jekyll (and allow to put folder beginning with _, see `Github faq <http://help.github.com/articles/files-that-start-with-an-underscore-are-missing>`_)
     - create a master branch necessary to build scripts
 

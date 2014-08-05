@@ -29,16 +29,16 @@ from subprocess import Popen, PIPE, CalledProcessError, check_call
 
 if len(sys.argv) == 2 and sys.argv[1] == 'publish':
   # Publish on official website
-  pages_dir = 'public-pages'
+  pages_dir = 'pages-public'
   dest_branch = 'master'
   html_dir = '_build/html'
   pages_repo = 'git@github.com:VirtualPlants/VirtualPlants.github.io.git'
 else :
   # Publish on your fork
-  pages_dir = 'gh-pages'
+  pages_dir = 'pages-github'
   dest_branch = 'gh-pages'
   html_dir = '_build/html'
-  pages_repo = 'git@github.com:USERNAME/VirtualPlants-website.git'
+  pages_repo = 'git@github.com:VirtualPlants/VirtualPlants-website.git'
 
 print 'Prepare html to publish to %s' % pages_repo
 #-----------------------------------------------------------------------------

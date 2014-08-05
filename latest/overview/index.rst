@@ -8,9 +8,6 @@ What's new
 Roadmap
 =======
 
-Features
-========
-
 Examples
 ========
 

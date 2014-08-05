@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?><project name="OpenAleaLab" company="" webLink="http://" view-date="2014-05-09" view-index="0" gantt-divider-location="324" resource-divider-location="465" version="2.0" locale="fr">
+    <description/>
+    <view zooming-state="default:3" id="gantt-chart">
+        <field id="tpd3" name="Nom" width="60" order="0"/>
+        <field id="tpd4" name="Date de début" width="17" order="1"/>
+        <field id="tpd5" name="Date de fin" width="22" order="2"/>
+    </view>
+    <view id="resource-table">
+        <field id="0" name="Nom" width="55" order="0"/>
+        <field id="1" name="Rôle par défaut" width="44" order="1"/>
+    </view>
+    <!-- -->
+    <calendars>
+        <day-types>
+            <day-type id="0"/>
+            <day-type id="1"/>
+            <calendar id="1" name="default">
+                <default-week sun="1" mon="0" tue="0" wed="0" thu="0" fri="0" sat="1"/>
+                <only-show-weekends value="false"/>
+                <overriden-day-types/>
+                <days/>
+            </calendar>
+        </day-types>
+        <date year="2012" month="1" date="2"/>
+        <date year="2012" month="4" date="9"/>
+        <date year="2012" month="5" date="17"/>
+        <date year="2012" month="5" date="28"/>
+        <date year="2012" month="11" date="12"/>
+        <date year="2005" month="3" date="28"/>
+        <date year="" month="1" date="1"/>
+        <date year="" month="5" date="1"/>
+        <date year="" month="5" date="8"/>
+        <date year="" month="7" date="14"/>
+        <date year="" month="8" date="15"/>
+        <date year="" month="11" date="1"/>
+        <date year="" month="11" date="11"/>
+        <date year="" month="12" date="25"/>
+    </calendars>
+    <tasks empty-milestones="true">
+        <taskproperties>
+            <taskproperty id="tpd0" name="type" type="default" valuetype="icon"/>
+            <taskproperty id="tpd1" name="priority" type="default" valuetype="icon"/>
+            <taskproperty id="tpd2" name="info" type="default" valuetype="icon"/>
+            <taskproperty id="tpd3" name="name" type="default" valuetype="text"/>
+            <taskproperty id="tpd4" name="begindate" type="default" valuetype="date"/>
+            <taskproperty id="tpd5" name="enddate" type="default" valuetype="date"/>
+            <taskproperty id="tpd6" name="duration" type="default" valuetype="int"/>
+            <taskproperty id="tpd7" name="completion" type="default" valuetype="int"/>
+            <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
+            <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
+        </taskproperties>
+        <task id="8" name="Project Management" color="#8cb6ce" meeting="false" start="2014-04-14" duration="1" complete="0" expand="true"/>
+        <task id="17" name="Run model from another one" color="#8cb6ce" meeting="false" start="2014-05-12" duration="2" complete="0" expand="true">
+            <notes><![CDATA[Allow to run a model from another]]></notes>
+        </task>
+        <task id="6" name="Définition du Viewer3D" color="#0099ff" meeting="false" start="2014-05-14" duration="3" complete="0" expand="true"/>
+        <task id="23" name="Service Oriented Architecture" color="#cc0033" meeting="false" start="2014-05-12" duration="5" complete="0" expand="true"/>
+        <task id="25" name="Drag/Drop" color="#cc0033" meeting="false" start="2014-05-14" duration="1" complete="0" expand="true">
+            <notes><![CDATA[Define architecture for drag and drop between components]]></notes>
+        </task>
+        <task id="33" name="Controls" color="#8cb6ce" meeting="false" start="2014-05-12" duration="10" complete="0" expand="true"/>
+        <task id="45" name="App/Mainwin/Project/session roles" color="#8cb6ce" meeting="false" start="2014-05-19" duration="5" complete="0" expand="true"/>
+        <task id="36" name="Project Manager" color="#ccffff" meeting="false" start="2014-05-19" duration="5" complete="0" expand="true"/>
+        <task id="49" name="Models Python" color="#8cb6ce" meeting="false" start="2014-05-12" duration="5" complete="0" expand="true">
+            <depend id="52" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="52" name="Models Visualea LPy" color="#8cb6ce" meeting="false" start="2014-05-19" duration="5" complete="0" expand="true"/>
+        <task id="62" name="Historique" color="#8cb6ce" meeting="false" start="2014-05-21" duration="3" complete="0" expand="true"/>
+        <task id="65" name="Service Save/Load object" color="#8cb6ce" meeting="false" start="2014-05-26" duration="5" complete="0" expand="true"/>
+        <task id="67" name="Multi-project" color="#8cb6ce" meeting="false" start="2014-06-02" duration="5" complete="0" expand="true"/>
+    </tasks>
+    <resources>
+        <resource id="0" name="Guillaume Baty" function="Default:0" contacts="" phone=""/>
+        <resource id="1" name="Julien Coste" function="Default:0" contacts="" phone=""/>
+        <resource id="2" name="Christophe Pradal" function="Default:1" contacts="" phone=""/>
+    </resources>
+    <allocations>
+        <allocation task-id="6" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="45" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="33" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="8" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="25" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="33" resource-id="1" function="Default:0" responsible="false" load="20.0"/>
+        <allocation task-id="36" resource-id="1" function="Default:0" responsible="true" load="20.0"/>
+        <allocation task-id="17" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="45" resource-id="1" function="Default:0" responsible="false" load="20.0"/>
+        <allocation task-id="49" resource-id="1" function="Default:0" responsible="true" load="50.0"/>
+        <allocation task-id="52" resource-id="1" function="Default:0" responsible="true" load="50.0"/>
+        <allocation task-id="23" resource-id="2" function="Default:1" responsible="true" load="100.0"/>
+        <allocation task-id="45" resource-id="2" function="Default:1" responsible="false" load="20.0"/>
+    </allocations>
+    <vacations/>
+    <taskdisplaycolumns>
+        <displaycolumn property-id="tpd2" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd7" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd6" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd10" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd11" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd1" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd9" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd8" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd0" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd3" order="0" width="192" visible="true"/>
+        <displaycolumn property-id="tpd4" order="1" width="56" visible="true"/>
+        <displaycolumn property-id="tpd5" order="2" width="72" visible="true"/>
+    </taskdisplaycolumns>
+    <previous/>
+    <roles roleset-name="Default"/>
+</project>

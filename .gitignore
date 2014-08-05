@@ -1,0 +1,8 @@
+_build
+gh-pages
+public-pages
+_scripts/gh-pages.py
+.DS_Store
+*.pyc
+*~
+

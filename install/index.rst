@@ -1,18 +1,3 @@
-============
-Installation
-============
 
-Download
-========
-
-Installation
-============
-
-Install on Mac OS X
--------------------
-
-.. toctree::
-   :maxdepth: 1
-
-   osx
-
+.. include:: download.rst
+.. include:: install.rst

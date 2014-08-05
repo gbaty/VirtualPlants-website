@@ -103,6 +103,9 @@ pygments_style = 'sphinx'
 # If true, keep warnings as "system message" paragraphs in the built documents.
 # keep_warnings = False
 
+# -- Options for autodoc --------------------------------------------------
+
+autodoc_member_order = 'groupwise'
 
 # -- Options for HTML output ----------------------------------------------
 
@@ -120,7 +123,7 @@ html_theme_path = ['themes']
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
-# html_title = None
+html_title = 'OpenAlea community website'
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 # html_short_title = None
