@@ -224,6 +224,11 @@ Export a project into *python module* could be useful to stay compatible with al
 API
 ###
 
+API v1
+------
+
+This API has not been totally implemented.
+
 .. code-block:: python
 
     from openalea.vpltk.project.manager import ProjectManager
@@ -274,6 +279,211 @@ API
     project2.description = 'This project is an "Hello World" project'
     project2.add(category="model", name="hello.py", code="print('hello world')")
     project2.run(category="model", name="hello.py")
+
+
+
+API v2
+------
+
+API v2 is totally redefined here and totally independent from api v1.
+
+
+**ProjectManager**
+
+.. code-block:: python
+
+
+    from openalea.vpltk.project import Project, ProjectManager
+
+    pm = ProjectManager()
+    # Discover projects availables without loading them
+    pm.discover()
+
+    # Add distant location to find projects
+    pm.repositories.append("https://github.com/openalea/projects/")
+    # Re-discover
+    pm.discover()
+
+    # List projects
+    projects = pm.projects
+
+    # Lazy load this project
+    project = pm.load("sample")
+
+
+**Project**
+
+Load project
+
+.. code-block:: python
+
+    from openalea.vpltk.project import Project, ProjectManager
+
+    pm = ProjectManager()
+
+    # Lazy load this project
+    project = pm.load("sample")
+
+    # Completly load this project
+    project.load()
+
+Get project data
+
+.. code-block:: python
+
+    # project.get(category, name, filename=None)
+
+    # Example: get model ...
+
+    # ... by name
+    model = project.get('model', 'model_1')
+    model = project.model['model_1']
+
+    # ... by filename
+    model = project.get('model', 'model_1.py')
+
+
+Save/close project data
+
+.. code-block:: python
+
+    # Save project
+    project.save()
+
+    # Close
+    project.close()
+
+
+Create project from scratch
+
+.. code-block:: python
+
+    # Create project
+    project = pm.create(name, path=None) # the path is optionnal
+
+    # Manipulate project
+    project.authors = "Me and my collegue"
+    project.description = 'This project is an "Hello World" project'
+
+
+Add item to project
+
+.. code-block:: python
+
+    # Manual : for developpers only
+    from openalea.vpltk.model import ModelPython
+    data = ModelPython(name, filepath=path)
+    project.add(category, data)
+
+    # Using service
+    from openalea.oalab.service import new_project_data
+    model = new_project_data(category, **kwargs)
+    project.add(category, model)
+
+
+    # Convenience signature to add ...
+
+    # ... binary data
+    project.add('data', filename=filename, content=content)
+    project.add('data', path=filepath, [name])
+    project.add('data', path=filepath, [filename])
+
+    # ... models
+    project.add('model', name, paradigm, [content]) # filename generated from name
+    project.add('model', filename, [content]) # name  and paradigm generated from file name
+    project.add('model', path) # name, filename and content generated from path
+
+
+add data unit tests
+
+.. code-block:: python
+
+    def test_data(filename):
+        pass
+
+    def test_path_incompatibility():
+        from openalea.oalab.service import new_project_data
+
+        model = new_project_data('model', test_data('model.py'))
+        project.add('model', model)
+        # ValueError, path is yet defined to ... but it should be defined to ...
+
+        model = new_project_data('model', filename='model.py')
+        project.add('model', model)
+        # OK, path was not defined, so project has generated a new one
+        assert model.path == project.path / 'model' / 'model.py'
+
+    def test_add_data():
+
+        d1 = project.add('data', filename='image_1.tiff', content=b'')
+        assert data.path.name == 'image_1.tiff'
+        assert data.name == 'image_1'
+    
+        d2 = project.add('data', path=test_data('image_2.tiff'))
+        assert data.path.name == 'image_2.tiff'
+        assert data.name == 'image_2'
+    
+        d3 = project.add('data', path=test_data('image_2.tiff'), name='image_3')
+        assert data.name == 'image_3'
+        assert data.path.name == 'image_3.tiff'
+    
+        d4 = project.add('data', path=test_data('image.jpg'), filename='image_4.jpeg')
+        assert data.name == 'image_4'
+        assert data.path.name == 'image_4.jpeg'
+    
+        for data in [d1, d2, d3, d4]:
+            assert data.path.parent == project.path / 'data'
+
+        assert len(project.data) == 4
+
+    def test_add_model():
+
+        m1 = project.add('model', name='model_1', paradigm='python', content='print 1')
+        assert m1.code == 'print 1'
+        assert m1.name == 'model_1'
+        assert str(m1.filename) == 'model_1.py'
+        assert m1.path == project.path / 'model' / 'model_1.py'
+
+        m2 = project.add('model', filename='model_2.py', content='print 2')
+        assert m2.code == 'print 2'
+        assert m2.name == 'model_2'
+        assert str(m2.filename) == 'model_2.py'
+        assert m2.path == project.path / 'model' / 'model_2.py'
+
+
+        sample = test_data('model.py')
+        f = open(sample)
+        code = f.read()
+        f.close()
+
+        m3 = project.add('model', path=sample, name='model_3')
+        assert m3.name == 'model_3'
+        assert str(m3.filename) == 'model_3.py'
+        assert m3.path == project.path / 'model' / 'model_3.py'
+        assert m3.code == code
+
+        # Check object is a valid model
+        for model in [m1]:
+            assert hasattr(model, 'run')
+            assert model.paradigm == 'python'
+
+
+
+API v2.1
+--------
+
+Add tag managment and search features
+
+.. code-block:: python
+
+    from openalea.vpltk.project import Project, ProjectManager
+    pm = ProjectManager()
+
+    # Search projects
+    projects = pm.search(name="*branch*bending*")
+
+    tags = pm.tags
+    projects = pm.search(tags=['tutorial', 'beginner'])
 
 Implementation
 ##############
