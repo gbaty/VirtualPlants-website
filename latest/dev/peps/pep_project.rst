@@ -288,7 +288,25 @@ API v2
 API v2 is totally redefined here and totally independent from api v1.
 
 
+**Service**
+
+from openalea.vpltk.service import SERVICE
+
+Services:
+
+    - project
+    - active_project
+    - new_project
+    - new_data
+
+prj = active_project()
+prj.add('startup', filename='test.py', content='from numpy import array')
+prj.add('data', path='mydata.dat')
+
 **ProjectManager**
+
+ProjectManager role is to discover, search and load projects.
+It is not the role of the projectmanager to manipulate project data.
 
 .. code-block:: python
 
@@ -307,11 +325,6 @@ API v2 is totally redefined here and totally independent from api v1.
     # List projects
     projects = pm.projects
 
-    # Lazy load this project
-    project = pm.load("sample")
-
-
-**Project**
 
 Load project
 
@@ -322,10 +335,33 @@ Load project
     pm = ProjectManager()
 
     # Lazy load this project
-    project = pm.load("sample")
+    # List only file names in project
+    project = pm.get("sample", projectdir=None)
 
-    # Completly load this project
-    project.load()
+Create a new project object in default projectdir:
+
+.. code-block:: python
+
+    project = pm.new('test')
+
+
+Manager can define an active project. To do that, you must load it.
+
+.. code-block:: python
+
+    pm.set_active('sample')
+
+
+**Project**
+
+Create project object
+
+.. code-block:: python
+
+    project = Project('test', projectdir='ssh://')
+
+If project yet exists, load filenames and metadata.
+
 
 Get project data
 
@@ -339,9 +375,12 @@ Get project data
     model = project.get('model', 'model_1')
     model = project.model['model_1']
 
-    # ... by filename
-    model = project.get('model', 'model_1.py')
+    data = project.get('data', 'image_1')
+    data = project.data['image_1']
 
+    # ... by filename
+    model = project.get('model', filename='model_1.py')
+    data = project.get('data', filename='image_1.png')
 
 Save/close project data
 
@@ -359,9 +398,9 @@ Create project from scratch
 .. code-block:: python
 
     # Create project
-    project = pm.create(name, path=None) # the path is optionnal
+    project = pm.create(name, projectdir=None) # the projectdir path is optionnal
 
-    # Manipulate project
+    # Manipulate project metadata
     project.authors = "Me and my collegue"
     project.description = 'This project is an "Hello World" project'
 
@@ -376,101 +415,61 @@ Add item to project
     project.add(category, data)
 
     # Using service
-    from openalea.oalab.service import new_project_data
-    model = new_project_data(category, **kwargs)
-    project.add(category, model)
+    from openalea.oalab.service import new_data
+    data_obj = new_data(category, **kwargs)
+    new_data_obj = project.add(category, data_obj)
 
 
     # Convenience signature to add ...
+    # data_obj = project.add(...)
 
-    # ... binary data
+    # You can create a new data with only a name.
+    # You must specify datatype with filename for data, with paradigm for model and startups.
+
     project.add('data', filename=filename, content=content)
-    project.add('data', path=filepath, [name])
-    project.add('data', path=filepath, [filename])
-
-    # ... models
-    project.add('model', name, paradigm, [content]) # filename generated from name
-    project.add('model', filename, [content]) # name  and paradigm generated from file name
-    project.add('model', path) # name, filename and content generated from path
+    project.add('data', path=filepath, [filename or name])
+    project.add('data', name=name, datatype=datatype, content=content)
 
 
-add data unit tests
+Remove item:
 
 .. code-block:: python
 
-    def test_data(filename):
-        pass
-
-    def test_path_incompatibility():
-        from openalea.oalab.service import new_project_data
-
-        model = new_project_data('model', test_data('model.py'))
-        project.add('model', model)
-        # ValueError, path is yet defined to ... but it should be defined to ...
-
-        model = new_project_data('model', filename='model.py')
-        project.add('model', model)
-        # OK, path was not defined, so project has generated a new one
-        assert model.path == project.path / 'model' / 'model.py'
-
-    def test_add_data():
-
-        d1 = project.add('data', filename='image_1.tiff', content=b'')
-        assert data.path.name == 'image_1.tiff'
-        assert data.name == 'image_1'
-    
-        d2 = project.add('data', path=test_data('image_2.tiff'))
-        assert data.path.name == 'image_2.tiff'
-        assert data.name == 'image_2'
-    
-        d3 = project.add('data', path=test_data('image_2.tiff'), name='image_3')
-        assert data.name == 'image_3'
-        assert data.path.name == 'image_3.tiff'
-    
-        d4 = project.add('data', path=test_data('image.jpg'), filename='image_4.jpeg')
-        assert data.name == 'image_4'
-        assert data.path.name == 'image_4.jpeg'
-    
-        for data in [d1, d2, d3, d4]:
-            assert data.path.parent == project.path / 'data'
-
-        assert len(project.data) == 4
-
-    def test_add_model():
-
-        m1 = project.add('model', name='model_1', paradigm='python', content='print 1')
-        assert m1.code == 'print 1'
-        assert m1.name == 'model_1'
-        assert str(m1.filename) == 'model_1.py'
-        assert m1.path == project.path / 'model' / 'model_1.py'
-
-        m2 = project.add('model', filename='model_2.py', content='print 2')
-        assert m2.code == 'print 2'
-        assert m2.name == 'model_2'
-        assert str(m2.filename) == 'model_2.py'
-        assert m2.path == project.path / 'model' / 'model_2.py'
+    project.remove(category, name)
 
 
-        sample = test_data('model.py')
-        f = open(sample)
-        code = f.read()
-        f.close()
+Rename item:
 
-        m3 = project.add('model', path=sample, name='model_3')
-        assert m3.name == 'model_3'
-        assert str(m3.filename) == 'model_3.py'
-        assert m3.path == project.path / 'model' / 'model_3.py'
-        assert m3.code == code
+.. code-block:: python
 
-        # Check object is a valid model
-        for model in [m1]:
-            assert hasattr(model, 'run')
-            assert model.paradigm == 'python'
+    project.rename(category, old_name, new_name)
+
+
+Start project
+
+Start run files in startup and define namespace.
+
+.. code-block:: python
+
+    project.start()
+
+
+Link data in project instead of copy it
+
+.. code-block:: python
+
+    data = project.add(category, data, link=True)
+    # here data parent path can differ from project data path
+
 
 
 
 API v2.1
 --------
+
+Services
+
+    - import_data_files([dir1, dir2])
 
 Add tag managment and search features
 
