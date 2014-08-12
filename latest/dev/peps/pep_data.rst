@@ -4,16 +4,18 @@
 PEP: Data
 =========
 
-Data
-  -> Model 
-        -> PythonModel
-        -> LPyModel
-        -> RModel
-        -> ...
-  -> BinaryData
-  -> TextData
+.. code-block:: text
 
-A model is a data with optionnal inputs and outputs and that can be run.
+    Data
+      -> Model 
+            -> PythonModel
+            -> LPyModel
+            -> RModel
+            -> ...
+      -> BinaryData
+      -> TextData
+
+A model is a data with optional inputs and outputs and that can be run.
 
 .. code-block:: python
 
