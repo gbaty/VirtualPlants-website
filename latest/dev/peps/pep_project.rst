@@ -299,9 +299,11 @@ Services:
     - new_project
     - new_data
 
-prj = active_project()
-prj.add('startup', filename='test.py', content='from numpy import array')
-prj.add('data', path='mydata.dat')
+.. code-block:: python
+
+    project = active_project()
+    project.add('startup', filename='test.py', content='from numpy import array')
+    project.add('data', path='mydata.dat')
 
 **ProjectManager**
 
@@ -349,8 +351,7 @@ Manager can define an active project. To do that, you must load it.
 
 .. code-block:: python
 
-    pm.set_active('sample')
-
+    pm.set_active(project) # equivalent to old pm.cproject = project
 
 **Project**
 
@@ -358,7 +359,7 @@ Create project object
 
 .. code-block:: python
 
-    project = Project('test', projectdir='ssh://')
+    project = Project('test', projectdir='ssh://...')
 
 If project yet exists, load filenames and metadata.
 
@@ -369,18 +370,14 @@ Get project data
 
     # project.get(category, name, filename=None)
 
-    # Example: get model ...
+    # Example: get model or data ...
 
-    # ... by name
+    # ... by name (notice that get support model name with our without extension)
     model = project.get('model', 'model_1')
-    model = project.model['model_1']
+    model = project.model['model_1.py']
 
-    data = project.get('data', 'image_1')
-    data = project.data['image_1']
-
-    # ... by filename
-    model = project.get('model', filename='model_1.py')
-    data = project.get('data', filename='image_1.png')
+    data = project.get('data', 'image_1.tiff')
+    data = project.data['image_1.tiff']
 
 Save/close project data
 
@@ -415,8 +412,8 @@ Add item to project
     project.add(category, data)
 
     # Using service
-    from openalea.oalab.service import new_data
-    data_obj = new_data(category, **kwargs)
+    from openalea.oalab.service import DataFactory
+    data_obj = DataFactory(**kwargs)
     new_data_obj = project.add(category, data_obj)
 
 
