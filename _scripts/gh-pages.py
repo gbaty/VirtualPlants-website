@@ -46,6 +46,7 @@ print 'Prepare html to publish to %s' % pages_repo
 #-----------------------------------------------------------------------------
 def sh(cmd):
     """Execute command in a subshell, return status code."""
+    print '-->', cmd
     return check_call(cmd, shell=True)
 
 
@@ -110,8 +111,8 @@ if __name__ == '__main__':
 
     try:
         cd(pages_dir)
-        status = sh2('git status | head -1')
-        branch = re.search('On branch (.*)$', status).group(1)
+        status = sh2('git branch')
+        branch = status.split('* ')[1]
         if branch != dest_branch:
             e = 'On %r, git branch is %r, MUST be %r' % (pages_dir, branch, dest_branch)
             raise RuntimeError(e)
