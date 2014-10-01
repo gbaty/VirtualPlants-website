@@ -1,37 +1,37 @@
-openalea.vpltk.project package
+openalea.core.project package
 ==============================
 
 Submodules
 ----------
 
-openalea.vpltk.project.loader module
+openalea.core.project.loader module
 ------------------------------------
 
-.. automodule:: openalea.vpltk.project.loader
+.. automodule:: openalea.core.project.loader
     :members:
     :undoc-members:
     :show-inheritance:
 
-openalea.vpltk.project.manager module
+openalea.core.project.manager module
 -------------------------------------
 
-.. automodule:: openalea.vpltk.project.manager
+.. automodule:: openalea.core.project.manager
     :members:
     :undoc-members:
     :show-inheritance:
 
-openalea.vpltk.project.project module
+openalea.core.project.project module
 -------------------------------------
 
-.. automodule:: openalea.vpltk.project.project
+.. automodule:: openalea.core.project.project
     :members:
     :undoc-members:
     :show-inheritance:
 
-openalea.vpltk.project.saver module
+openalea.core.project.saver module
 -----------------------------------
 
-.. automodule:: openalea.vpltk.project.saver
+.. automodule:: openalea.core.project.saver
     :members:
     :undoc-members:
     :show-inheritance:
@@ -40,7 +40,7 @@ openalea.vpltk.project.saver module
 Module contents
 ---------------
 
-.. automodule:: openalea.vpltk.project
+.. automodule:: openalea.core.project
     :members:
     :undoc-members:
     :show-inheritance:

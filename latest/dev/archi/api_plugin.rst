@@ -17,6 +17,12 @@ Overview
 This document explains how to concretely extend OpenAleaLab.
 For theoretical aspects and future plans, see :ref:`label-pep_plugins`.
 
+Plugins are used to extend application.
+All plugins are managed in the same way but can do really different tasks and have very different behaviour.
+For example an "image processing algorithm", a "qt applet" and an "OpenAleaLab extension"
+are all plugins, defined and registered in the same way but with very different logics.
+The logic and expected behaviour are described in an "interface" associated to a "category".
+
 Plugin mechanism can be explained by this scheme:
 
 :menuselection:`Plugin category --> Plugin identifier --> Plugin (factory) --> Class`
@@ -38,22 +44,6 @@ To get class implementing features, a special method called load can be used.
 **Class**
 Class that actually implements features.
 
-.. note::
-
-    In particular case of graphical components, a plugin generally defines an adapter
-    able to connect a graphical component (a widget for example) to a specific
-    application. 
-
-
-
-Create a plugin
----------------
-
-To add a plugin to the application you have to:
-
-  - create the plugin (factory that point to the right class)
-  - add it into right :term:`entry_point category` in setup.py
-
 
 Plugins on demand
 -----------------
@@ -68,10 +58,19 @@ For the second case, it is very important to keep a plugin light.
 Plugin categories
 =================
 
-  - :ref:`label-plugin_control` [oalab.lab]: New laboratory based on OpenAleaLab
-  - :mod:`Applets<openalea.oalab.plugins.applet>` [oalab.applet] : Graphical component displayed in main window.
-  - :mod:`Controls <openalea.oalab.plugins.control>` [oalab.qt_control, oalab.notebook_control]: Data editors and viewers
-  - :mod:`Interfaces <openalea.oalab.plugins.interface>` [oalab.interface]: Description of data types
+  - :mod:`Labs<openalea.core.plugin.lab>` [oalab.lab] New laboratory based on OpenAleaLab
+  - :mod:`Applets<openalea.core.plugin.applet>` [oalab.applet] : Graphical component displayed in main window.
+  - :ref:`Controls<label-plugin_control>` [oalab.qt_control, oalab.notebook_control]: Data editors and viewers
+  - :mod:`Interfaces <openalea.core.plugin.interface>` [oalab.interface]: Description of data types
+
+
+How to define a plugin
+======================
+
+.. automodule:: openalea.core.plugin
+    :undoc-members:
+    :special-members:
+    :show-inheritance:
 
 
 Developer tools

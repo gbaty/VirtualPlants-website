@@ -1,5 +1,4 @@
-
-.. automodule:: openalea.core.plugin.applet
+.. automodule:: openalea.core.plugin.control
     :undoc-members:
     :special-members:
     :show-inheritance:

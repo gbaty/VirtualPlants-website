@@ -7,15 +7,15 @@ Projects
 Project Quick Start
 ===================
 
-.. automodule:: openalea.vpltk.project
+.. automodule:: openalea.core.project
     :members:
 
 
 Project API
 ===========
 
-.. automodule:: openalea.vpltk.project.project
+.. automodule:: openalea.core.project.project
     :members:
 
-.. automodule:: openalea.vpltk.project.manager
+.. automodule:: openalea.core.project.manager
     :members:

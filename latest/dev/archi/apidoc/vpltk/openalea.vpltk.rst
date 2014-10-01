@@ -9,7 +9,7 @@ Subpackages
     openalea.vpltk.catalog
     openalea.vpltk.check
     openalea.vpltk.control
-    openalea.vpltk.project
+    openalea.core.project
     openalea.vpltk.qt
     openalea.vpltk.qt.test
     openalea.vpltk.sample

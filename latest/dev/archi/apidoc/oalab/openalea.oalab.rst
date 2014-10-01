@@ -9,7 +9,7 @@ Subpackages
     openalea.oalab.applets
     openalea.oalab.cli
     openalea.oalab.config
-    openalea.oalab.control
+    openalea.core.control
     openalea.oalab.editor
     openalea.oalab.fspm
     openalea.oalab.gui
