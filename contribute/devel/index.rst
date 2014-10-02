@@ -1,4 +1,9 @@
 
 
-.. include:: guidelines.rst
-.. include:: git-workflow.rst
+.. toctree::
+    :maxdepth: 1
+
+    guidelines
+    git-workflow
+    git-svn
+    testing

@@ -34,7 +34,10 @@ How to contribute
 
     contribute/documentation/index
     contribute/todo/index
-    contribute/devel/index
+    contribute/devel/guidelines
+    contribute/devel/git-workflow
+    contribute/devel/git-svn
+    contribute/devel/testing
 
 Developer documentation
 ~~~~~~~~~~~~~~~~~~~~~~~
