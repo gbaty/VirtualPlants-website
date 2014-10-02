@@ -1,45 +1,45 @@
-openalea.oalab.control package
+openalea.core.control package
 ==============================
 
 Submodules
 ----------
 
-openalea.oalab.control.controlABC module
+openalea.core.control.controlABC module
 ----------------------------------------
 
-.. automodule:: openalea.oalab.control.controlABC
+.. automodule:: openalea.core.control.controlABC
     :members:
     :undoc-members:
     :show-inheritance:
 
-openalea.oalab.control.controlpanel module
+openalea.core.control.controlpanel module
 ------------------------------------------
 
-.. automodule:: openalea.oalab.control.controlpanel
+.. automodule:: openalea.core.control.controlpanel
     :members:
     :undoc-members:
     :show-inheritance:
 
-openalea.oalab.control.observerpanel module
+openalea.core.control.observerpanel module
 -------------------------------------------
 
-.. automodule:: openalea.oalab.control.observerpanel
+.. automodule:: openalea.core.control.observerpanel
     :members:
     :undoc-members:
     :show-inheritance:
 
-openalea.oalab.control.picklable_curves module
+openalea.core.control.picklable_curves module
 ----------------------------------------------
 
-.. automodule:: openalea.oalab.control.picklable_curves
+.. automodule:: openalea.core.control.picklable_curves
     :members:
     :undoc-members:
     :show-inheritance:
 
-openalea.oalab.control.stdcontrol module
+openalea.core.control.stdcontrol module
 ----------------------------------------
 
-.. automodule:: openalea.oalab.control.stdcontrol
+.. automodule:: openalea.core.control.stdcontrol
     :members:
     :undoc-members:
     :show-inheritance:
@@ -48,7 +48,7 @@ openalea.oalab.control.stdcontrol module
 Module contents
 ---------------
 
-.. automodule:: openalea.oalab.control
+.. automodule:: openalea.core.control
     :members:
     :undoc-members:
     :show-inheritance:

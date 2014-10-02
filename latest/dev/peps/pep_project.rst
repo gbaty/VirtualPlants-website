@@ -231,7 +231,7 @@ This API has not been totally implemented.
 
 .. code-block:: python
 
-    from openalea.vpltk.project.manager import ProjectManager
+    from openalea.core.project.manager import ProjectManager
 
     pm = ProjectManager()
     # Discover projects availables without loading them
@@ -313,7 +313,7 @@ It is not the role of the projectmanager to manipulate project data.
 .. code-block:: python
 
 
-    from openalea.vpltk.project import Project, ProjectManager
+    from openalea.core.project import Project, ProjectManager
 
     pm = ProjectManager()
     # Discover projects availables without loading them
@@ -332,7 +332,7 @@ Load project
 
 .. code-block:: python
 
-    from openalea.vpltk.project import Project, ProjectManager
+    from openalea.core.project import Project, ProjectManager
 
     pm = ProjectManager()
 
@@ -472,7 +472,7 @@ Add tag managment and search features
 
 .. code-block:: python
 
-    from openalea.vpltk.project import Project, ProjectManager
+    from openalea.core.project import Project, ProjectManager
     pm = ProjectManager()
 
     # Search projects
