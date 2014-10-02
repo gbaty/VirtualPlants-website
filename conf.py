@@ -38,6 +38,8 @@ extensions = [
     'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
     'sphinx.ext.inheritance_diagram',
+    'openalea.misc.dataflow_directive',
+    'openalea.misc.sphinx_role',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
