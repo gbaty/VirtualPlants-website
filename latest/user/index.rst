@@ -6,6 +6,11 @@ User's Documentation
 Getting start
 =============
 
+Upgrade from OpenAlea <= 1.2
+============================
+
+.. include:: upgrade.rst
+
 Features
 ========
 
