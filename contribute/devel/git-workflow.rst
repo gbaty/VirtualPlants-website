@@ -56,6 +56,7 @@ Just copy url displayed on your web browser and pass it to git clone command:
 
 
 Add a reference to official repository.
+
 .. code-block:: bash
 
     git remote add upstream https://github.com/official/project
@@ -67,22 +68,23 @@ Create development branch
 You must create a branch for each new feature, bug fix, and so on.
 Development must be short : **one branch = one task**
 
-Please choose an explicit name for your new branch.
+**NEVER NEVER work on master, always on a branch**
 
-**If upstream_master do not exists yet**
-
-.. code-block:: bash
-
-    git checkout upstream/master -b upstream_master
-    git checkout -b fix_app_crash_mac_os_10_9
-
-**else**
+Get last version of upstream/master
 
 .. code-block:: bash
 
-    git checkout upstream_master
-    git pull
+    git checkout master # go to your local master branch
+    git pull upstream master # update it with upstream master
+    git push # push upstream changes to your personal repository
+
+Now, you can create your new branch.
+Please choose an explicit name.
+
+.. code-block:: bash
+
     git checkout -b fix_app_crash_mac_os_10_9
+
 
 Work on your development branch
 ===============================
@@ -102,6 +104,10 @@ Save your branch and commits on your personal repository on github
 
 .. code-block:: bash
 
+    # The first time you push your branch, you need to do:
+    # git push --set-upstream origin fix_app_crash_mac_os_10_9
+
+    # after, just do:
     git push origin fix_app_crash_mac_os_10_9
 
 
@@ -111,7 +117,7 @@ Commit message
 
 Please write a `good commit message <http://web-design-weekly.com/blog/2013/09/01/a-better-git-commit/>`_:
 
-Try to limit using the -m commit flag. git commit -m "A crappy commit message" and use git commit with **no flags**.
+Try to limit using the -m commit flag.
 
 If using the simpler git commit command it should open up Vim (if it’s your default editor) where you can construct a better commit by following some of these simple steps.
 
@@ -125,27 +131,24 @@ Prepare your work for merging
 Before asking other to integrate your work, you must clean it.
 First get last modifications and work on a new branch created especially for cleaning. 
 
+Get last version of upstream/master
+
 .. code-block:: bash
 
-    git fetch upstream
-    git checkout upstream_master
-    git pull
-    git checkout fix_app_crash_mac_os_10_9
+    git checkout master # go to your local master branch
+    git pull upstream master # update it with upstream master
+    git push # push upstream changes to your personal repository
+
+It is safer to create a new branch for rebase
+
+.. code-block:: bash
+
+    git checkout fix_app_crash_mac_os_10_9 # get your development branch
     git checkout -b rebased-fix_app_crash_mac_os_10_9 # create and checkout new branch
-    git rebase --interactive fix_app_crash_mac_os_10_9 
-    git rebase --interactive upstream_master
-
-
-
-.. code-block:: bash
-
-    git rebase --interactive upstream_master fix_app_crash_mac_os_10_9
+    git rebase master
 
 If master has diverged during your work, conflicts can occur !
-If your shell ask you to fix it directly, you should do it using "e" command. 
-That works very well if you've defined your favorite editor.
-
-Else, fix conflicts foreach file and finish rebase :
+Fix conflicts for each file and finish rebase :
 
 .. code-block:: bash
 
@@ -155,25 +158,26 @@ Else, fix conflicts foreach file and finish rebase :
     git add file2
     git rebase --continue
 
-
-
 If rebase has gone wrong, for example you've rebased the wrong branch, you can cancel it with
 .. code-block:: bash
 
     git rebase --abort
 
+.. note::
 
-See `git rebase --interactive <https://help.github.com/articles/interactive-rebase>`_ for further information.
+    For advanced user, you can also use `git rebase --interactive <https://help.github.com/articles/interactive-rebase>`_.
 
+Finally, you can push rebased branch to github
 
 .. code-block:: bash
 
-    git push origin rebased-fix_app_crash_mac_os_10_9
+    git push --set-upstream origin rebased-fix_app_crash_mac_os_10_9
+
 
 Submit your pull-request
 ========================
 
-On github interface, select your branch fix_app_crash_mac_os_10_9 and click on pull-request (or compare & pull-request).
+On github interface, select your branch rebased-fix_app_crash_mac_os_10_9 and click on pull-request (or compare & pull-request).
 
 You must see at right :
 

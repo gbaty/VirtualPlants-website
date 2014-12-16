@@ -72,6 +72,10 @@ How to define a plugin
     :special-members:
     :show-inheritance:
 
+Advanced
+========
+
+See :ref:`label-api_pluginmanager`.
 
 Developer tools
 ===============
