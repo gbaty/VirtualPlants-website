@@ -159,6 +159,7 @@ Fix conflicts for each file and finish rebase :
     git rebase --continue
 
 If rebase has gone wrong, for example you've rebased the wrong branch, you can cancel it with
+
 .. code-block:: bash
 
     git rebase --abort

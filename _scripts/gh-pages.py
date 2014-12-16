@@ -119,6 +119,8 @@ if __name__ == '__main__':
             e = 'On %r, git branch is %r, MUST be %r' % (pages_dir, branch, dest_branch)
             raise RuntimeError(e)
 
+        sh('rm -rf openalea')  # ignore submodule
+        sh('rm -rf pages-public')  # ignore submodule
         sh('git add -A')
         sh('git commit -m"Updated website (automated commit)"')
         print
