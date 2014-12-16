@@ -1,0 +1,3 @@
+[submodule "openalea"]
+	path = openalea
+	url = git@github.com:openalea/openalea.git

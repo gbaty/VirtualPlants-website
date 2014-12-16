@@ -28,22 +28,24 @@ from subprocess import Popen, PIPE, CalledProcessError, check_call
 #-----------------------------------------------------------------------------
 
 if len(sys.argv) == 2 and sys.argv[1] == 'publish':
-  # Publish on official website
-  pages_dir = 'pages-public'
-  dest_branch = 'master'
-  html_dir = '_build/html'
-  pages_repo = 'git@github.com:VirtualPlants/VirtualPlants.github.io.git'
-else :
-  # Publish on your fork
-  pages_dir = 'pages-github'
-  dest_branch = 'gh-pages'
-  html_dir = '_build/html'
-  pages_repo = 'git@github.com:VirtualPlants/VirtualPlants-website.git'
+    # Publish on official website
+    pages_dir = 'pages-public'
+    dest_branch = 'master'
+    html_dir = '_build/html'
+    pages_repo = 'git@github.com:VirtualPlants/VirtualPlants.github.io.git'
+else:
+    # Publish on your fork
+    pages_dir = 'pages-github'
+    dest_branch = 'gh-pages'
+    html_dir = '_build/html'
+    pages_repo = 'git@github.com:VirtualPlants/VirtualPlants-website.git'
 
 print 'Prepare html to publish to %s' % pages_repo
 #-----------------------------------------------------------------------------
 # Functions
 #-----------------------------------------------------------------------------
+
+
 def sh(cmd):
     """Execute command in a subshell, return status code."""
     print '-->', cmd
@@ -105,7 +107,7 @@ if __name__ == '__main__':
 
     # This is pretty unforgiving: we unconditionally nuke the destination
     # directory, and then copy the html tree in there
-    sh('rm -r %s/*' % pages_dir)
+    sh('rm -rf %s/*' % pages_dir)
 
     sh('cp -r %s/* %s/' % (html_dir, pages_dir))
 

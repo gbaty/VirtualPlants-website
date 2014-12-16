@@ -180,13 +180,13 @@ We define a widget based on QCheckBox like that:
 
 This widget will be used for all shapes and will also be used as selector.
 
-.. literalinclude:: ../../../openalea-src/oalab/src/openalea/oalab/plugins/controls/widgets.py
+.. literalinclude:: ../../../openalea/oalab/src/openalea/oalab/plugins/controls/widgets.py
     :linenos:
     :pyobject: BoolCheckBox
 
 Now, lets define plugin that links to it:
 
-.. literalinclude:: ../../../openalea-src/oalab/src/openalea/oalab/plugins/controls/__init__.py
+.. literalinclude:: ../../../openalea/oalab/src/openalea/oalab/plugins/controls/__init__.py
     :linenos:
     :pyobject: PluginIntWidgetSelector
 
