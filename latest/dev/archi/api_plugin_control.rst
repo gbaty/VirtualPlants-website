@@ -14,18 +14,21 @@ Introduction
 Idea behind control is to improve user interaction in application.
 For that purpose, idea is to write a minimum amount of code to define only part specific to your needs
 and let openalealab **generate automatically** complex widgets and user interaction like
+
   - Graphical view to draw virtual "laboratory equipment" (virtual oscilloscope for instance)
   - Table to summarize and edit all user input data (useful for user productivity)
   - Drag and drop between panels, view, models, ...
   - Compatibility with all frontends like OpenAleaLab, notebooks and command line
   - All future features you'll benefit without rewriting code
 
+Example of "summary table", "data editor" and "user data creator" generated automatically from "curve widget"
+
 .. figure:: ../../../images/control_manager.png
     :width: 400px
     :alt: Control manager
     :align: center
 
-    Example of "summary table", "data editor" and "user data creator" generated automatically from "curve widget"
+
 
 Technical details
 -----------------
@@ -64,7 +67,7 @@ Control widget
 
 If your widget fits well to all contexts, the easiest way is to use the widget class as both
 "Control widget" and "Control widget selector".
- You just need to define the widget part as this widget will be used in all cases described in plugin.
+You just need to define the widget part as this widget will be used in all cases described in plugin.
 
 .. testcode::
 
