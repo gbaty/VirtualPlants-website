@@ -1,7 +1,7 @@
-openalea
-========
+src
+===
 
 .. toctree::
    :maxdepth: 4
 
-   openalea
+   core

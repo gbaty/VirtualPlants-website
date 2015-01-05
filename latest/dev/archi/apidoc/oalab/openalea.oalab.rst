@@ -6,19 +6,21 @@ Subpackages
 
 .. toctree::
 
-    openalea.oalab.applets
     openalea.oalab.cli
     openalea.oalab.config
-    openalea.core.control
     openalea.oalab.editor
     openalea.oalab.fspm
-    openalea.oalab.gui
     openalea.oalab.interfaces
+    openalea.oalab.model
     openalea.oalab.package
+    openalea.oalab.plot2d
     openalea.oalab.plugins
     openalea.oalab.project
     openalea.oalab.scene
+    openalea.oalab.service
     openalea.oalab.session
+    openalea.oalab.shell
+    openalea.oalab.world
 
 Submodules
 ----------

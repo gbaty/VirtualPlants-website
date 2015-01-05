@@ -4,10 +4,10 @@ openalea.oalab.project package
 Submodules
 ----------
 
-openalea.oalab.project.manager module
+openalea.oalab.project.creator module
 -------------------------------------
 
-.. automodule:: openalea.oalab.project.manager
+.. automodule:: openalea.oalab.project.creator
     :members:
     :undoc-members:
     :show-inheritance:
@@ -28,18 +28,18 @@ openalea.oalab.project.preview module
     :undoc-members:
     :show-inheritance:
 
-openalea.oalab.project.symlink module
--------------------------------------
+openalea.oalab.project.projectwidget module
+-------------------------------------------
 
-.. automodule:: openalea.oalab.project.symlink
+.. automodule:: openalea.oalab.project.projectwidget
     :members:
     :undoc-members:
     :show-inheritance:
 
-openalea.oalab.project.treeview module
---------------------------------------
+openalea.oalab.project.symlink module
+-------------------------------------
 
-.. automodule:: openalea.oalab.project.treeview
+.. automodule:: openalea.oalab.project.symlink
     :members:
     :undoc-members:
     :show-inheritance:

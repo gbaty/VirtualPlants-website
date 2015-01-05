@@ -1,37 +1,32 @@
 openalea.oalab.plugins package
 ==============================
 
+Subpackages
+-----------
+
+.. toctree::
+
+    openalea.oalab.plugins.applets
+    openalea.oalab.plugins.controls
+    openalea.oalab.plugins.interfaces
+    openalea.oalab.plugins.labs
+    openalea.oalab.plugins.models
+
 Submodules
 ----------
 
-openalea.oalab.plugins.lpy module
----------------------------------
+openalea.oalab.plugins.control module
+-------------------------------------
 
-.. automodule:: openalea.oalab.plugins.lpy
+.. automodule:: openalea.oalab.plugins.control
     :members:
     :undoc-members:
     :show-inheritance:
 
-openalea.oalab.plugins.python module
-------------------------------------
+openalea.oalab.plugins.project_repository module
+------------------------------------------------
 
-.. automodule:: openalea.oalab.plugins.python
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-openalea.oalab.plugins.r module
--------------------------------
-
-.. automodule:: openalea.oalab.plugins.r
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-openalea.oalab.plugins.visualea module
---------------------------------------
-
-.. automodule:: openalea.oalab.plugins.visualea
+.. automodule:: openalea.oalab.plugins.project_repository
     :members:
     :undoc-members:
     :show-inheritance:

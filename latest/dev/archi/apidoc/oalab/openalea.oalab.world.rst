@@ -1,13 +1,13 @@
-openalea.oalab.scene package
+openalea.oalab.world package
 ============================
 
 Submodules
 ----------
 
-openalea.oalab.scene.vplscene module
-------------------------------------
+openalea.oalab.world.world module
+---------------------------------
 
-.. automodule:: openalea.oalab.scene.vplscene
+.. automodule:: openalea.oalab.world.world
     :members:
     :undoc-members:
     :show-inheritance:
@@ -16,7 +16,7 @@ openalea.oalab.scene.vplscene module
 Module contents
 ---------------
 
-.. automodule:: openalea.oalab.scene
+.. automodule:: openalea.oalab.world
     :members:
     :undoc-members:
     :show-inheritance:

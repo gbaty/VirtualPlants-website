@@ -36,14 +36,6 @@ openalea.oalab.editor.line_number module
     :undoc-members:
     :show-inheritance:
 
-openalea.oalab.editor.lpy_lexer module
---------------------------------------
-
-.. automodule:: openalea.oalab.editor.lpy_lexer
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 openalea.oalab.editor.search module
 -----------------------------------
 
