@@ -2,6 +2,30 @@
 Development guidelines
 ======================
 
+Python guidelines are documented on python website under the name `PEP8 <https://www.python.org/dev/peps/pep-0008>`_.
+For Python, we use all PEP8 conventions excepted that we allow 120 characters per line instead of 80.
+
+
+Tools
+=====
+
+Many editor or IDE (Integrated Development Environments) integrate tools to check or fix coding guidelines.
+For example:
+
+  - Eclipse with pydev extension
+  - pyCharm
+  - Spyder
+  - Vim (with plugin)
+  - Emacs (with plugin)
+
+If your editor do not support natively PEP8, you can search if a plugin exists or use these two external tools:
+  
+  - `flake8 <https://pypi.python.org/pypi/flake8>`_ : check coding guidelines
+  - `autopep8 <https://pypi.python.org/pypi/flake8>`_ : fix automatically guidelines
+
+These tools may be available in your system package manager (apt-get, urpmi, ports, ...) or can be install using 
+`pip <https://pip.pypa.io/en/latest/>`_ or easy_install.
+
 Indentation
 ===========
 
