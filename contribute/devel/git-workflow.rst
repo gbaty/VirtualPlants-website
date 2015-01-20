@@ -89,7 +89,7 @@ Please choose an explicit name.
 .. code-block:: bash
 
     git checkout -b fix_app_crash_mac_os_10_9
-
+    git push --set-upstream origin fix_app_crash_mac_os_10_9
 
 Work on your development branch
 ===============================
@@ -109,10 +109,6 @@ Save your branch and commits on your personal repository on github
 
 .. code-block:: bash
 
-    # The first time you push your branch, you need to do:
-    # git push --set-upstream origin fix_app_crash_mac_os_10_9
-
-    # after, just do:
     git push origin fix_app_crash_mac_os_10_9
 
 
