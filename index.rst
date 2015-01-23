@@ -32,10 +32,14 @@ How to contribute
 .. toctree::
     :maxdepth: 1
 
+    contribute/devel/git-workflow
+
+.. toctree::
+    :maxdepth: 1
+
     contribute/documentation/index
     contribute/todo/index
     contribute/devel/guidelines
-    contribute/devel/git-workflow
     contribute/devel/git-svn
     contribute/devel/testing
 
