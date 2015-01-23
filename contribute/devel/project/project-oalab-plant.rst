@@ -11,5 +11,5 @@ repositories
   - **workflow**: :ref:`workflow-private`
   - **status**: private, unstable
   - **git**: `git+ssh://username@scm.gforge.inria.fr//gitroot/oalab/oalab-plant.git`
-  - **integrators**: Guillaume Baty
+  - **integrators**: Christophe Pradal, Frédéric Boudon
   - **reviewers**: Guillaume Baty, Christophe Pradal, Frédéric Boudon
