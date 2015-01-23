@@ -9,9 +9,10 @@ Workflows
 =========
 
   - :ref:`workflow-github`
+  - :ref:`workflow-private` 
   - :ref:`workflow-direct`
-  - :ref:`workflow-private`
 
+ 
 Projects
 ========
 
@@ -20,3 +21,12 @@ Projects
     :glob:
 
     project/*
+
+Advanced
+========
+
+.. toctree::
+    :maxdepth: 1
+
+    git-svn
+
