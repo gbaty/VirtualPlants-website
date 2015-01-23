@@ -10,6 +10,6 @@ repositories
 
   - **workflow**: :ref:`workflow-private`
   - **status**: private, unstable
-  - **git**: `git+ssh://gbaty@scm.gforge.inria.fr//gitroot/oalab/oalab-tissue.git`
+  - **git**: `git+ssh://username@scm.gforge.inria.fr//gitroot/oalab/oalab-tissue.git`
   - **integrators**: Guillaume Baty
   - **reviewers**: Guillaume Baty, Sophie Ribes, Guillaume Cerutti, Léo Guignard, Emmanuel Faure
