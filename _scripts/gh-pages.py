@@ -128,5 +128,5 @@ if __name__ == '__main__':
         cd(startdir)
 
     print
-    print 'Now verify the build in: %r' % pages_dir
+    print 'Please go in: %r' % pages_dir
     print "If everything looks good, 'git push'"
