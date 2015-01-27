@@ -85,12 +85,12 @@ Wait at least one hour!
 Configure your fork
 ===================
 
-.. code-block::
+.. code-block:: bash
 
-    git remote add private_upstream giturl
+    git remote add private_devel giturl
     # with giturl something like git+ssh://gbaty@scm.gforge.inria.fr//gitroot/project/repository.git
-    git fetch private_upstream
-    git checkout private_upstream/master -b private_upstream_master
+    git fetch private_devel
+    git checkout private_devel/master -b private_devel_master
 
 Your fork is now ready to work on !
 
