@@ -67,8 +67,9 @@ Add a reference to official repository.
 
 .. code-block:: bash
 
-    git remote add public_upstream https://github.com/official/project
-    git checkout public_upstream/master -b public_upstream_master
+    git remote add upstream https://github.com/official/project
+    git fetch upstream
+    git checkout upstream/master -b upstream_master
 
 
 Create development branch
@@ -79,12 +80,12 @@ Development must be short : **one branch = one task**
 
 **NEVER NEVER work on master, always on a branch**
 
-Get last version of public_upstream/master
+Get last version of upstream/master
 
 .. code-block:: bash
 
-    git checkout public_upstream_master # go to your local master branch
-    git pull public_upstream master # update it with upstream master
+    git checkout upstream_master # go to your local master branch
+    git pull upstream master # update it with upstream master
     git push # push upstream changes to your personal repository
 
 Now, you can create your new branch.
@@ -140,8 +141,8 @@ Get last version of upstream/master
 
 .. code-block:: bash
 
-    git checkout public_upstream_master # go to your local master branch
-    git pull public_upstream master # update it with upstream master
+    git checkout upstream_master # go to your local master branch
+    git pull upstream master # update it with upstream master
     git push # push upstream changes to your personal repository
 
 It is safer to create a new branch for rebase
@@ -150,7 +151,7 @@ It is safer to create a new branch for rebase
 
     git checkout wip_fix_app_crash_mac_os_10_9 # get your development branch
     git checkout -b fix_app_crash_mac_os_10_9 # create and checkout new branch
-    git rebase public_upstream_master
+    git rebase upstream_master
 
 If master has diverged during your work, conflicts can occur !
 Fix conflicts for each file and finish rebase :
@@ -222,8 +223,8 @@ Then:
 .. code-block:: bash
 
     git fetch -p
-    git checkout public_upstream_master
-    git pull public_upstream master
+    git checkout upstream_master
+    git pull upstream master
     git push
 
 You can now start a new contribution cycle, see "Create development branch"
