@@ -2,6 +2,19 @@
 Migrate public gforge/svn to github
 ===================================
 
+First install **git-svn**
+
+On linux, package is generally called "git-svn"
+
+On Mac OS X with macport:
+
+.. code-block:: bash
+
+    sudo port deactivate git
+    sudo port install git +svn
+
+All scripts are available in virtualplants/svntogit project.
+
 Migrate whole svn repository to git
 ===================================
 
@@ -26,6 +39,7 @@ If it fails due to an author missing in author file, like
 Author: anonymous not defined in svn-authors file
 
 Just add it to author file, go to PROJECT-git-svn and continue:
+
 .. code-block:: bash
 
     cd PROJECT-git-svn
@@ -48,14 +62,15 @@ Useful links:
 
 
 
-Hack to migrate subpart of repository while keeping history
-===========================================================
+Migrate subpart of repository while keeping history
+===================================================
 Hack to extract only commit with modification in a specific directory
 
 .. code-block:: bash
 
-    #1. Convert a whole repository but keep only one directory (here misc)
-    git svn clone --authors-file=../../utilitaires/svn-authors  --include-paths="^misc" svn://scm.gforge.inria.fr/svnroot/openalea/trunk misc-git-svn
+    #1. Convert a whole repository but keep only one directory (here "misc" from "openalea" svn repository)
+    # Replace svn url with right one found on gforge
+    git svn clone --authors-file=svn-authors  --include-paths="^misc" svn://scm.gforge.inria.fr/svnroot/openalea/trunk misc-git-svn
     
     #2. Generate a file with commit information
     cd misc-git-svn
