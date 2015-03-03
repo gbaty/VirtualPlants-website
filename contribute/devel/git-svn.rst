@@ -97,7 +97,7 @@ Hack to extract only commit with modification in a specific directory
     git checkout local_misc/master -b misc-git-svn
     
     # 7. Rewrite historic to avoid to appears as commiter in each commit
-    
+    see change-history.sh script
     
     # 8. Merge it
     git checkout master

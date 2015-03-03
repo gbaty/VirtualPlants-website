@@ -87,10 +87,10 @@ Configure your fork
 
 .. code-block:: bash
 
-    git remote add private_devel giturl
-    # with giturl something like git+ssh://gbaty@scm.gforge.inria.fr//gitroot/project/repository.git
-    git fetch private_devel
-    git checkout private_devel/master -b private_devel_master
+    git remote add upstream giturl
+    # with giturl something like git+ssh://username@scm.gforge.inria.fr//gitroot/project/repository.git
+    git fetch upstream
+    git checkout upstream/master -b upstream_master
 
 Your fork is now ready to work on !
 
@@ -106,8 +106,8 @@ Get last version of upstream/master
 
 .. code-block:: bash
 
-    git checkout private_upstream_master # go to your local master branch
-    git pull private_upstream master # update it with upstream master
+    git checkout upstream_master # go to your local master branch
+    git pull upstream master # update it with upstream master
     git push # push upstream changes to your personal repository
 
 Now, you can create your new branch.
@@ -166,8 +166,8 @@ Get last version of upstream/master
 
 .. code-block:: bash
 
-    git checkout private_upstream_master # go to your local master branch
-    git pull private_upstream private_upstream_master # update it with upstream master
+    git checkout upstream_master # go to your local master branch
+    git pull upstream upstream_master # update it with upstream master
     git push # push upstream changes to your personal repository
 
 It is safer to create a new branch for rebase
@@ -176,7 +176,7 @@ It is safer to create a new branch for rebase
 
     git checkout wip_fix_app_crash_mac_os_10_9 # get your development branch
     git checkout -b fix_app_crash_mac_os_10_9 # create and checkout new branch, not we removed the "wip"
-    git rebase private_upstream_master
+    git rebase upstream_master
 
 If master has diverged during your work, conflicts can occur !
 Fix conflicts for each file and finish rebase :
@@ -235,10 +235,10 @@ Read this paragraph only if you are an integrator !
 
 .. code-block:: bash
 
-    git checkout private_upstream_master
-    git pull private_upstream master
+    git checkout upstream_master
+    git pull upstream master
     git merge username/branch
-    git push private_upstream master
+    git push upstream master
 
 Finalization
 ============
@@ -247,10 +247,10 @@ If pull request has been integrated:
 
 .. code-block:: bash
 
-    git checkout private_upstream_master
-    git pull private_upstream master
+    git checkout upstream_master
+    git pull upstream master
 
-    # Check you find all yours commits on private_upstream_master
+    # Check you find all yours commits on upstream_master
     # If yes:
     # git branch --delete branch # delete branch locally
     # git push origin :branch # delete branch on gforge fork
