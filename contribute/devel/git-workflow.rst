@@ -1,9 +1,9 @@
-=====================
-Project and workflows
-=====================
+=============
+Git workflows
+=============
 
 This page list all projects managed by OpenAlea community and VirtualPlants team.
-For each project, we define the correct workflow to use.
+For each project, we define the right workflow to use.
 
 Workflows
 =========
