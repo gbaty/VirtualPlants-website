@@ -16,15 +16,24 @@ OpenAleaLab
         :height: 200px
         :align:   center
 
-OpenAleaLab is a multiparadigm modelling environnement for plants.
+OpenAleaLab is a multi-paradigm modeling environment for plants.
 It will permit to divide the modeller’s work into multiple tasks. Each task can be viewed as a virtual experiment.
 OpenAleaLab is based on `OpenAlea Library <http://openalea.gforge.inria.fr>`_.
+
 
 .. toctree::
     :maxdepth: 2
 
     latest/overview/index
     latest/user/index
+
+Several extensions are available.
+
+.. toctree::
+    :maxdepth: 1
+    :glob:
+
+    latest/extension/*lab
 
 How to contribute
 ~~~~~~~~~~~~~~~~~

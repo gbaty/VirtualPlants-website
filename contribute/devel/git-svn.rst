@@ -18,6 +18,9 @@ All scripts are available in virtualplants/svntogit project.
 Migrate whole svn repository to git
 ===================================
 
+All scripts are available on gforge: virtualplants/svntogit
+
+
 1. extract svn author names and save it in a file:
 
 .. code-block:: bash
