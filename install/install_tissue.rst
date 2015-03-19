@@ -2,11 +2,21 @@
 Install Mars-Alt and TissueLab
 ##############################
 
+Install tools
+#############
+
+install these tools:
+
+  - git
+  - subversion
+
 Install dependencies
 ####################
 
 Install external dependencies:
 
+  - ipython
+  - scons
   - python-qt4
   - python-vtk5
   - python-numpy
@@ -16,6 +26,12 @@ See `Linux <http://openalea.gforge.inria.fr/dokuwiki/doku.php?id=documentation:u
 
 Then, if not yet installed, install openalea dependencies: **deploy** and **sconsx**
 
+Open a terminal, go to the directory where you want to install programs, for example
+
+.. code-block:: bash
+
+  cd $HOME/development
+
 .. code-block:: bash
 
   git clone https://github.com/openalea/deploy.git
@@ -25,10 +41,24 @@ Then, if not yet installed, install openalea dependencies: **deploy** and **scon
 
 .. code-block:: bash
 
-  git clone https://github.com/openalea/deploy.git
-  cd deploy
+  git clone https://github.com/openalea/sconsx.git
+  cd sconsx
   python setup.py develop --user
   cd -
+
+Setup your environment
+######################
+
+If not yet done, edit your bashrc file (generally in /home/user/.bashrc) and add
+
+
+.. code-block:: bash
+
+  export PATH=$PATH:$HOME/.local/bin/
+
+Then close your terminal and open it again.
+
+To download private repository, you need to configure your `ssh key on gforge <https://gforge.inria.fr/account/editsshkeys.php>`_.
 
 Download Mars-Alt and TissueLab
 ###############################
@@ -41,10 +71,10 @@ These commands clone all repositories and must be done only one time !
 
   git clone https://github.com/openalea/openalea.git
   git clone https://github.com/openalea/openalea-components.git
-  svn co svn+ssh://scm.gforge.inria.fr/svnroot/vplants/vplants/trunk/container
-  git clone git+ssh://scm.gforge.inria.fr//gitroot/tissue/tissue.git
-  git clone git+ssh://scm.gforge.inria.fr//gitroot/marsalt/marsalt.git
-  git clone git+ssh://scm.gforge.inria.fr//gitroot/tissue/tissuelab.git
+  svn co svn+ssh://username@scm.gforge.inria.fr/svnroot/vplants/vplants/trunk/container
+  git clone git+ssh://username@scm.gforge.inria.fr//gitroot/tissue/tissue.git
+  git clone git+ssh://username@scm.gforge.inria.fr//gitroot/marsalt/marsalt.git
+  git clone git+ssh://username@scm.gforge.inria.fr//gitroot/tissue/tissuelab.git
 
 
 Update and install packages
