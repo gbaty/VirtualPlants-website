@@ -8,7 +8,6 @@ Install tools
 install these tools:
 
   - git
-  - subversion
 
 Install dependencies
 ####################
@@ -79,7 +78,6 @@ These commands clone all repositories and must be done only one time !
 
   git clone https://github.com/openalea/openalea.git
   git clone https://github.com/openalea/openalea-components.git
-  svn co svn+ssh://username@scm.gforge.inria.fr/svnroot/vplants/vplants/trunk/container
   git clone git+ssh://username@scm.gforge.inria.fr//gitroot/tissue/tissue.git
   git clone git+ssh://username@scm.gforge.inria.fr//gitroot/marsalt/marsalt.git
   git clone git+ssh://username@scm.gforge.inria.fr//gitroot/tissue/tissuelab.git
