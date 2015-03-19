@@ -27,14 +27,6 @@ OpenAleaLab is based on `OpenAlea Library <http://openalea.gforge.inria.fr>`_.
     latest/overview/index
     latest/user/index
 
-Several extensions are available.
-
-.. toctree::
-    :maxdepth: 1
-    :glob:
-
-    latest/extension/*lab
-
 How to contribute
 ~~~~~~~~~~~~~~~~~
 

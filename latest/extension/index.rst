@@ -2,9 +2,4 @@
 OpenAleaLab extensions
 ######################
 
-    
-.. toctree::
-    :maxdepth: 1
-    :glob:
-
-    *lab
+Page under construction
