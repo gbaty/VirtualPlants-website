@@ -1,6 +1,6 @@
-##############################
-Install Mars-Alt and TissueLab
-##############################
+################
+Install Mars-Alt
+################
 
 Install tools
 #############
@@ -68,10 +68,10 @@ Then close your terminal and open it again.
 
 To download private repository, you need to configure your `ssh key on gforge <https://gforge.inria.fr/account/editsshkeys.php>`_.
 
-Download Mars-Alt and TissueLab
-###############################
+Download Mars-Alt
+#################
 
-Then, install **OpenAleaLab**, **TissueLab** and **openalea** core components
+Then, install Mars-Alt and **openalea** core components
 
 These commands clone all repositories and must be done only one time !
 
@@ -81,7 +81,6 @@ These commands clone all repositories and must be done only one time !
   git clone https://github.com/openalea/openalea-components.git
   git clone git+ssh://username@scm.gforge.inria.fr//gitroot/tissue/tissue.git
   git clone git+ssh://username@scm.gforge.inria.fr//gitroot/marsalt/marsalt.git
-  git clone git+ssh://username@scm.gforge.inria.fr//gitroot/tissue/tissuelab.git
 
 
 Update and install packages
@@ -98,10 +97,9 @@ For these packages:
   cd package
   python multisetup.py COMMAND
 
-For these packages:
+For this package:
 
   - tissue
-  - tissuelab
 
 .. code-block:: bash
 
@@ -127,8 +125,7 @@ Run programs
 
 .. code-block:: bash
 
-  oalab # to run OpenAleaLab
-  visualea # to run Visualea
+  visualea # to run Visualea to test mars-alt in dataflows
 
 Update packages
 ###############
@@ -139,9 +136,6 @@ To get last version available, just do
 
   cd package
   git pull
-
-Important, for container, you need to do "svn up" instead.
-This package will be migrated in openalea-components soon.
 
 
 Contribute to packges
