@@ -16,10 +16,11 @@ Install external dependencies:
 
   - ipython
   - scons
-  - python-qt4
-  - python-vtk5
-  - python-numpy
-  - python-matplotlib
+  - PyQt4 (apt: python-qt4)
+  - Vtk5 (apt: python-vtk5)
+  - Numpy (apt: python-numpy)
+  - matplotlib (apt: python-matplotlib)
+  - zlib headers (apt: zlib1g-dev)
 
 See `Linux <http://openalea.gforge.inria.fr/dokuwiki/doku.php?id=documentation:user:installation_linux>`_ or `MacOSX <http://openalea.gforge.inria.fr/dokuwiki/doku.php?id=documentation:user:installation_mac>`_ page on  `openalea website <http://openalea.gforge.inria.fr>`_.
 
@@ -50,7 +51,7 @@ COMMAND can be:
 
   git clone https://github.com/openalea/sconsx.git
   cd sconsx
-  python setup.py develop --user
+  python setup.py COMMAND
   cd -
 
 Setup your environment
@@ -111,6 +112,24 @@ For these packages:
 
   $HOME/.local/bin/alea_config
 
+close terminal and reopen it.
+
+Download Test Data
+##################
+
+.. code-block:: bash
+
+  sudo $HOME/.local/bin/alea_install VPlants.VTissueData
+
+
+Run programs
+############
+
+.. code-block:: bash
+
+  oalab # to run OpenAleaLab
+  visualea # to run Visualea
+
 Update packages
 ###############
 
@@ -123,6 +142,7 @@ To get last version available, just do
 
 Important, for container, you need to do "svn up" instead.
 This package will be migrated in openalea-components soon.
+
 
 Contribute to packges
 #####################
