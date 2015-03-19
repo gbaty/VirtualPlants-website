@@ -6,7 +6,7 @@ project name: oalab-plant
 repositories
 ------------
 
-`gforge/OpenAleaLab/oalab-plant <https://gforge.inria.fr/scm/?group_id=5683>`_
+`gforge/OpenAleaLab/oalab-plant <https://gforge.inria.fr/projects/oalab>`_
 
   - **workflow**: :ref:`workflow-private`
   - **status**: private, unstable

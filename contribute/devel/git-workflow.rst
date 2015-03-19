@@ -1,3 +1,6 @@
+
+.. _git-workflows:
+
 =============
 Git workflows
 =============

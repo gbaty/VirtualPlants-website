@@ -36,8 +36,16 @@ Open a terminal, go to the directory where you want to install programs, for exa
 
   git clone https://github.com/openalea/deploy.git
   cd deploy
-  python setup.py develop --user
+  python setup.py COMMAND
   cd -
+
+COMMAND can be:
+  
+  - `develop --user` : to install in developer mode, in your home dir
+  - `develop --prefix=$HOME/local` : to install in developer mode in directory of your choice
+  - `install` : to do a system installation
+  - `install --prefix=...` : to install in directory of your choice
+
 
 .. code-block:: bash
 
@@ -89,7 +97,7 @@ For these packages:
 .. code-block:: bash
 
   cd package
-  python multisetup.py develop --user
+  python multisetup.py COMMAND
 
 For these packages:
 
@@ -99,7 +107,11 @@ For these packages:
 .. code-block:: bash
 
   cd package
-  python setup.py develop --user
+  python setup.py COMMAND
+
+.. code-block:: bash
+
+  $HOME/.local/bin/alea_config
 
 Update packages
 ###############
@@ -114,6 +126,10 @@ To get last version available, just do
 Important, for container, you need to do "svn up" instead.
 This package will be migrated in openalea-components soon.
 
+Contribute to packges
+#####################
+
+See :ref:`contribute` and :ref:`git-workflows`.
 
 
 

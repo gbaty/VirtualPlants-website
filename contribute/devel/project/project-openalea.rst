@@ -16,6 +16,14 @@ repositories
   - **integrators**: Christophe Pradal, Pierre Fernique, Guillaume Baty
   - **reviewers**: Christophe Pradal, Pierre Fernique, Guillaume Baty, Frédéric Boudon
 
+`github.com/openalea/openalea-components <https://github.com/openalea/openalea-components>`_
+
+  - **workflow**: :ref:`workflow-github`
+  - **status**: public, stable
+  - **git**: `git@github.com:openalea/openalea-components.git`
+  - **integrators**: Christophe Pradal, Pierre Fernique, Guillaume Baty
+  - **reviewers**: Christophe Pradal, Pierre Fernique, Guillaume Baty, Frédéric Boudon
+
 `github.com/virtualplants/openalea <https://github.com/virtualplants/openalea>`_
 
   - **workflow**: :ref:`workflow-github`
