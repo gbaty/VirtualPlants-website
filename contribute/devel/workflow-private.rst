@@ -215,7 +215,7 @@ Create a new entry, and do not forget to give an url.
 This url is used by reviewers to reach your work, review it and integrate it.
 
 url is something like:
-git+ssh://username@scm.gforge.inria.fr//gitroot/username/username.git
+git+ssh://username@scm.gforge.inria.fr//gitroot/username/project.git
 
 branch is the name of your branch, for example "fix_app_crash_mac_os_10_9".
 
@@ -227,8 +227,9 @@ Read this part only if you are a reviewer !
 
 .. code-block:: bash
 
-    git remote add username git+ssh://username@scm.gforge.inria.fr//gitroot/username/username.git
-    git checkout username/branch
+    git remote add username git+ssh://username@scm.gforge.inria.fr//gitroot/username/project.git
+    git fetch username
+    git checkout username/branch -b review_username_branch
     # review changes, if all correct, write it on tracker and set state to "confirmed"
 
 Integrator: integrate branch
@@ -238,10 +239,32 @@ Read this paragraph only if you are an integrator !
 
 .. code-block:: bash
 
+    # Check branch has not changed since previous review
+    git checkout review_username_branch
+    git pull
+
     git checkout upstream_master
     git pull upstream master
-    git merge username/branch
+
+    # --no-ff (no fast forward) is used to create a merge commit.
+    # This commit is used to create a link between tracker and git repository
+    git merge --no-ff review_username_branch
+
+It is very important to follow this message convention:
+
+.. code-block:: text
+
+    Merge pr/[#trackerid] from branch username/branchname into master
+    #example: Merge pr/[#18786] from branch gbaty/support_repr_vtk into master
+
+Then push it to official repository
+
+.. code-block:: bash
+
     git push upstream master
+
+Finally, set PR tracker state to "closed" and add comment "merged".
+This is important to signal to others contributors that pr has been integrated.
 
 Finalization
 ============

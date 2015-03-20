@@ -12,7 +12,7 @@ I did all my commits in my personal master ... oops
 It is very easy to create a new branch from master, dont worry!
 First create right now a new branch
 
-.. code-block::
+.. code-block:: bash
     
     git checkout -b mybranch
 
@@ -24,7 +24,7 @@ Now all your development are in both master and mybranch. You can check it with 
 
 Then, reset master to its original state
 
-.. code-block::
+.. code-block:: bash
     
     git checkout master
 
@@ -39,7 +39,7 @@ In screenshot, "support_repr_vtk" correspond to mybranch.
 Now, all is correct. Just push your new branch
 
 
-.. code-block::
+.. code-block:: bash
     
     git push --set-upstream origin mybranch
 
@@ -53,7 +53,7 @@ Generally, when you are just user, you clone official repository ...
 But when you become developer, you need to create your personal one to follow git workflow.
 Here a tip to change it without restarting from scratch:
 
-.. code-block::
+.. code-block:: bash
 
     git remote rename origin upstream
     git remote add origin git:...
