@@ -15,6 +15,14 @@ Workflows
   - :ref:`workflow-private` 
   - :ref:`workflow-direct`
 
+
+Tips & doc
+==========
+
+  - :ref:`git-zen`
+  - :ref:`git-tips`
+  - :ref:`git-usual-errors` 
+
  
 Projects
 ========
