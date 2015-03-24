@@ -91,7 +91,6 @@ Configure your fork
     # with giturl something like git+ssh://username@scm.gforge.inria.fr//gitroot/project/repository.git
     # for example: git+ssh://username@scm.gforge.inria.fr//gitroot/oalab/oalab-tissue.git
     git fetch upstream
-    git checkout upstream/master -b upstream_master
 
 Your fork is now ready to work on !
 
@@ -107,7 +106,7 @@ Get last version of upstream/master
 
 .. code-block:: bash
 
-    git checkout upstream_master # go to your local master branch
+    git checkout master # go to your local master branch
     git pull upstream master # update it with upstream master
     git push # push upstream changes to your personal repository
 
@@ -167,8 +166,8 @@ Get last version of upstream/master
 
 .. code-block:: bash
 
-    git checkout upstream_master # go to your local master branch
-    git pull upstream upstream_master # update it with upstream master
+    git checkout master # go to your local master branch
+    git pull upstream master # update it with upstream master
     git push # push upstream changes to your personal repository
 
 It is safer to create a new branch for rebase
@@ -177,7 +176,7 @@ It is safer to create a new branch for rebase
 
     git checkout wip_fix_app_crash_mac_os_10_9 # get your development branch
     git checkout -b fix_app_crash_mac_os_10_9 # create and checkout new branch, not we removed the "wip"
-    git rebase upstream_master
+    git rebase master
 
 If master has diverged during your work, conflicts can occur !
 Fix conflicts for each file and finish rebase :
@@ -210,7 +209,7 @@ Finally, you can push rebased branch to github
 Submit your pull-request
 ========================
 
-Go to project page on gforge.inria.fr and click on tracker tab. 
+Go to upstream project page on gforge.inria.fr and click on tracker tab (outils suivi). 
 Create a new entry, and do not forget to give an url.
 This url is used by reviewers to reach your work, review it and integrate it.
 
@@ -218,6 +217,10 @@ url is something like:
 git+ssh://username@scm.gforge.inria.fr//gitroot/username/project.git
 
 branch is the name of your branch, for example "fix_app_crash_mac_os_10_9".
+
+You need to allow at list one official "integrator" to read your private repository.
+For that, on your private project, go to "user and permissions", 
+add a new "reviewer" (or integrator) role with "read access" to repository and then add the integrator.
 
 
 Reviewer: review branch
@@ -243,7 +246,7 @@ Read this paragraph only if you are an integrator !
     git checkout review_username_branch
     git pull
 
-    git checkout upstream_master
+    git checkout master
     git pull upstream master
 
     # --no-ff (no fast forward) is used to create a merge commit.
@@ -273,7 +276,7 @@ If pull request has been integrated:
 
 .. code-block:: bash
 
-    git checkout upstream_master
+    git checkout master
     git pull upstream master
 
     # Check you find all yours commits on upstream_master

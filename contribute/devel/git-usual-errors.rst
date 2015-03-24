@@ -1,13 +1,13 @@
 .. _git-usual-errors:
 
-=====================
-Usual errors with git
-=====================
+===========================================
+Usual mistakes and unexpected git behaviour
+===========================================
 
 
 
-I did all my commits in my personal master ... oops
-===================================================
+I did all my commits in master instead of branch... oops
+========================================================
 
 It is very easy to create a new branch from master, dont worry!
 First create right now a new branch
