@@ -11,9 +11,10 @@ For each project, we define the right workflow to use.
 Workflows
 =========
 
-  - :ref:`workflow-github`
-  - :ref:`workflow-private` 
-  - :ref:`workflow-direct`
+  - :ref:`workflow-github` (standard github workflow)
+  - :ref:`workflow-gforge` (standard gforge workflow)
+  - :ref:`workflow-pull-push` (for new projects, websites)
+  - :ref:`workflow-private` (advanced, for stable and 100% private development)
 
 
 Tips & doc
