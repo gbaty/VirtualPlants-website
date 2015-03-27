@@ -34,11 +34,24 @@ Submit your pull-request
 ========================
 
 Go to upstream project page on gforge.inria.fr and click on tracker tab (outils suivi). 
-Create a new entry, and do not forget to give an url.
+Click on "pull-request-project" link, and then create a new entry, and do not forget to give an url.
 This url is used by reviewers to reach your work, review it and integrate it.
 
 url is something like:
 git+ssh://username@scm.gforge.inria.fr//gitroot/username/project.git
+You can obtain it with, 
+
+.. code-block:: bash
+    :emphasize-lines: 4
+
+    git remote -v
+    
+    origin   git+ssh://username@scm.gforge.inria.fr//gitroot/usernamegit/project.git (fetch)
+    origin   git+ssh://username@scm.gforge.inria.fr//gitroot/usernamegit/project.git (push)
+    upstream git+ssh://username@scm.gforge.inria.fr//gitroot/organization/project.git (fetch)
+    upstream git+ssh://username@scm.gforge.inria.fr//gitroot/organization/project.git (push)
+
+Copy paste line corresponding to origin and remove "git+ssh://username@"
 
 branch is the name of your branch, for example "fix_app_crash_mac_os_10_9".
 
