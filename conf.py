@@ -155,7 +155,7 @@ html_static_path = ['_static']
 
 # If true, SmartyPants will be used to convert quotes and dashes to
 # typographically correct entities.
-# html_use_smartypants = True
+html_use_smartypants = False
 
 # Custom sidebar templates, maps document names to template names.
 # html_sidebars = {}
@@ -197,17 +197,17 @@ htmlhelp_basename = 'devel-docdoc'
 # -- Options for LaTeX output ---------------------------------------------
 
 latex_elements = {
-# The paper size ('letterpaper' or 'a4paper').
- 'papersize': 'a4paper',
+    # The paper size ('letterpaper' or 'a4paper').
+    'papersize': 'a4paper',
 
-# The font size ('10pt', '11pt' or '12pt').
- 'pointsize': '10pt',
+    # The font size ('10pt', '11pt' or '12pt').
+    'pointsize': '10pt',
 
-# Additional stuff for the LaTeX preamble.
-# 'preamble': '',
+    # Additional stuff for the LaTeX preamble.
+    # 'preamble': '',
 
-  'classoptions': ' ,openany,oneside',
-  'babel': '\\usepackage[english]{babel}'
+    'classoptions': ' ,openany,oneside',
+    'babel': '\\usepackage[english]{babel}'
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
@@ -216,15 +216,15 @@ latex_elements = {
 
 authors = '\n\\\\\n'.join(
     [
-     'Christophe Pradal',
-     'Guillaume Baty',
-     'Julien Coste',
+        'Christophe Pradal',
+        'Guillaume Baty',
+        'Julien Coste',
     ])
 authors = ''
 
 latex_documents = [
-  ('index', 'devel-doc.tex', u'OpenAleaLab\'s Documentation',
-   u'OpenAlea community' + authors, 'manual'),
+    ('index', 'devel-doc.tex', u'OpenAleaLab\'s Documentation',
+     u'OpenAlea community' + authors, 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -267,9 +267,9 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'devel-doc', u'devel-doc Documentation',
-   u'Guillaume Baty', 'devel-doc', 'One line description of project.',
-   'Miscellaneous'),
+    ('index', 'devel-doc', u'devel-doc Documentation',
+     u'Guillaume Baty', 'devel-doc', 'One line description of project.',
+     'Miscellaneous'),
 ]
 
 # Documents to append as an appendix to all manuals.

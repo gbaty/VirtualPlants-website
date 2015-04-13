@@ -26,6 +26,12 @@ If your editor do not support natively PEP8, you can search if a plugin exists o
 These tools may be available in your system package manager (apt-get, urpmi, ports, ...) or can be install using 
 `pip <https://pip.pypa.io/en/latest/>`_ or easy_install.
 
+To run autopep8:
+
+.. code-block:: bash
+
+    autopep8 -i -a --max-line-length=119 --ignore E26,E265 filename.py
+
 Indentation
 ===========
 
