@@ -1,75 +1,25 @@
-################
-Install Mars-Alt
-################
 
-Install tools
-#############
+Install Mars-Alt (developers)
+=============================
 
-install these tools:
+Install development tools
+-------------------------
 
-  - git
+.. include:: install-steps/dev-tools.rst
+
 
 Install dependencies
-####################
+--------------------
 
-Install external dependencies:
-
-  - ipython
-  - scons
-  - PyQt4 (apt: python-qt4)
-  - Vtk5 (apt: python-vtk5)
-  - Numpy (apt: python-numpy)
-  - matplotlib (apt: python-matplotlib)
-  - zlib headers (apt: zlib1g-dev)
-
-See `Linux <http://openalea.gforge.inria.fr/dokuwiki/doku.php?id=documentation:user:installation_linux>`_ or `MacOSX <http://openalea.gforge.inria.fr/dokuwiki/doku.php?id=documentation:user:installation_mac>`_ page on  `openalea website <http://openalea.gforge.inria.fr>`_.
-
-Then, if not yet installed, install openalea dependencies: **deploy** and **sconsx**
-
-Open a terminal, go to the directory where you want to install programs, for example
-
-.. code-block:: bash
-
-  cd $HOME/development
-
-.. code-block:: bash
-
-  git clone https://github.com/openalea/deploy.git
-  cd deploy
-  python setup.py COMMAND
-  cd -
-
-COMMAND can be:
-  
-  - `develop --user` : to install in developer mode, in your home dir
-  - `develop --prefix=$HOME/local` : to install in developer mode in directory of your choice
-  - `install` : to do a system installation
-  - `install --prefix=...` : to install in directory of your choice
-
-
-.. code-block:: bash
-
-  git clone https://github.com/openalea/sconsx.git
-  cd sconsx
-  python setup.py COMMAND
-  cd -
+.. include:: install-steps/marsalt-deps.rst
 
 Setup your environment
-######################
+----------------------
 
-If not yet done, edit your bashrc file (generally in /home/user/.bashrc) and add
-
-
-.. code-block:: bash
-
-  export PATH=$PATH:$HOME/.local/bin/
-
-Then close your terminal and open it again.
-
-To download private repository, you need to configure your `ssh key on gforge <https://gforge.inria.fr/account/editsshkeys.php>`_.
+.. include:: install-steps/setup-env.rst
 
 Download Mars-Alt
-#################
+-----------------
 
 Then, install Mars-Alt and **openalea** core components
 
@@ -84,7 +34,7 @@ These commands clone all repositories and must be done only one time !
 
 
 Update and install packages
-###########################
+---------------------------
 
 For these packages:
 
@@ -113,7 +63,7 @@ For this package:
 close terminal and reopen it.
 
 Download Test Data
-##################
+------------------
 
 .. code-block:: bash
 
@@ -121,14 +71,14 @@ Download Test Data
 
 
 Run programs
-############
+------------
 
 .. code-block:: bash
 
   visualea # to run Visualea to test mars-alt in dataflows
 
 Update packages
-###############
+---------------
 
 To get last version available, just do 
 
@@ -138,10 +88,37 @@ To get last version available, just do
   git pull
 
 
-Contribute to packges
-#####################
+Contribute to packages
+----------------------
 
 See :ref:`contribute` and :ref:`git-workflows`.
+
+
+
+Troubleshooting
+---------------
+
+Multiple installation
+#####################
+
+To be sure you are using the right installation, you can run this command:
+
+.. code-block:: bash
+
+  python -c 'import vplants.mars_alt; print vplants.mars_alt.__path__'
+
+
+Other troubles
+##############
+
+For other troubles, see:
+
+See `troubleshooting page <http://openalea.gforge.inria.fr/beta_doc/vplants/vtissue/doc/_build/html/user/mars_alt_v1/troubleshootings.html>`_
+
+
+.. seealso::
+
+  :ref:`Mars-alt Main Page <marsalt>`
 
 
 
