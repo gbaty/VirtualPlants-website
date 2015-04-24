@@ -56,9 +56,13 @@ Here a tip to change it without restarting from scratch:
 .. code-block:: bash
 
     git remote rename origin upstream
-    git remote add origin git:...
+    git remote add origin git@... 
+    # address is something like git@github.com:user/openalea.git
     git fetch upstream
     git fetch origin
+
+    # Do it for each branch you are working on
+    git checkout mybranch
     git push --set-upstream origin mybranch
 
 
