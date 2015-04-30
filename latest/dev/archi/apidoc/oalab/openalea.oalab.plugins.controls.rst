@@ -20,6 +20,14 @@ openalea.oalab.plugins.controls.painters module
     :undoc-members:
     :show-inheritance:
 
+openalea.oalab.plugins.controls.q_widgets module
+------------------------------------------------
+
+.. automodule:: openalea.oalab.plugins.controls.q_widgets
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 openalea.oalab.plugins.controls.selectors module
 ------------------------------------------------
 

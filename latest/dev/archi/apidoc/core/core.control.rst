@@ -36,6 +36,14 @@ core.control.pyserial module
     :undoc-members:
     :show-inheritance:
 
+core.control.serialization module
+---------------------------------
+
+.. automodule:: core.control.serialization
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
 Module contents
 ---------------

@@ -44,6 +44,14 @@ openalea.oalab.service.history module
     :undoc-members:
     :show-inheritance:
 
+openalea.oalab.service.notebook_control module
+----------------------------------------------
+
+.. automodule:: openalea.oalab.service.notebook_control
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 openalea.oalab.service.paradigm module
 --------------------------------------
 

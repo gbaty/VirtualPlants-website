@@ -28,6 +28,14 @@ core.project.project module
     :undoc-members:
     :show-inheritance:
 
+core.project.serialization module
+---------------------------------
+
+.. automodule:: core.project.serialization
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
 Module contents
 ---------------

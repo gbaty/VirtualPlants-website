@@ -12,6 +12,14 @@ core.interpreter.ipython module
     :undoc-members:
     :show-inheritance:
 
+core.interpreter.python module
+------------------------------
+
+.. automodule:: core.interpreter.python
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
 Module contents
 ---------------

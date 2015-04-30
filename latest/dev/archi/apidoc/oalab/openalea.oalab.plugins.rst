@@ -23,6 +23,14 @@ openalea.oalab.plugins.control module
     :undoc-members:
     :show-inheritance:
 
+openalea.oalab.plugins.interface module
+---------------------------------------
+
+.. automodule:: openalea.oalab.plugins.interface
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 openalea.oalab.plugins.project_repository module
 ------------------------------------------------
 

@@ -28,6 +28,14 @@ core.service.interface module
     :undoc-members:
     :show-inheritance:
 
+core.service.introspection module
+---------------------------------
+
+.. automodule:: core.service.introspection
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 core.service.ipython module
 ---------------------------
 

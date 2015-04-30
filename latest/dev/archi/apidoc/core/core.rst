@@ -250,6 +250,14 @@ core.script_library module
     :undoc-members:
     :show-inheritance:
 
+core.serialization module
+-------------------------
+
+.. automodule:: core.serialization
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 core.session module
 -------------------
 

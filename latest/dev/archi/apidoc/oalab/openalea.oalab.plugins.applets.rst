@@ -4,18 +4,18 @@ openalea.oalab.plugins.applets package
 Submodules
 ----------
 
-openalea.oalab.plugins.applets.controlmanager module
+openalea.oalab.plugins.applets.contextualmenu module
 ----------------------------------------------------
 
-.. automodule:: openalea.oalab.plugins.applets.controlmanager
+.. automodule:: openalea.oalab.plugins.applets.contextualmenu
     :members:
     :undoc-members:
     :show-inheritance:
 
-openalea.oalab.plugins.applets.controlpanel module
---------------------------------------------------
+openalea.oalab.plugins.applets.controlmanager module
+----------------------------------------------------
 
-.. automodule:: openalea.oalab.plugins.applets.controlpanel
+.. automodule:: openalea.oalab.plugins.applets.controlmanager
     :members:
     :undoc-members:
     :show-inheritance:
@@ -80,6 +80,22 @@ openalea.oalab.plugins.applets.projectwidget module
 ---------------------------------------------------
 
 .. automodule:: openalea.oalab.plugins.applets.projectwidget
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+openalea.oalab.plugins.applets.shellwidget module
+-------------------------------------------------
+
+.. automodule:: openalea.oalab.plugins.applets.shellwidget
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+openalea.oalab.plugins.applets.splitter module
+----------------------------------------------
+
+.. automodule:: openalea.oalab.plugins.applets.splitter
     :members:
     :undoc-members:
     :show-inheritance:
