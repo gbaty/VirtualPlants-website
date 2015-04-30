@@ -14,6 +14,6 @@ Several solutions exist:
 
 Documentation :
     - `Usage of libclang <http://szelei.me/code-generator/>`_
-    - Àutomatic generation of Cython code <https://github.com/cython/cython/wiki/AutoPxd>`_
+    - Automatic generation of Cython code <https://github.com/cython/cython/wiki/AutoPxd>`_
     
-  
+ 

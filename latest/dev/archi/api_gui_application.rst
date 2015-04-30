@@ -40,6 +40,12 @@ Group node widgets
 ------------------
 
 .. code-block:: python
+    :filename: lib.py
+    
+    def myfunc(a, b, c):
+        print(a, b, c)
+
+.. code-block:: python
 
     from openalea.core import Node, Factory, IBool, IInt, IStr
     from openalea.core.node import FuncNode
@@ -59,12 +65,12 @@ Group node widgets
         {'interface': IStr, 'name': 'c', 'value': '', 'desc': ''}
         ]
 
-    node_factory = Factory(name='toto',
+    node_factory = Factory(name='myfunc',
                     authors=' (wralea authors)',
                     description='',
                     category='Unclassified',
                     nodemodule='lib',
-                    nodeclass='f',
+                    nodeclass='myfunc',
                     inputs=inputs,
                     view=view,
                     )

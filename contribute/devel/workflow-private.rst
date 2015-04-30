@@ -21,14 +21,14 @@ For each new modification
   - submit your pull request
 
 .. include:: workflow-steps/notes.rst
-.. include:: workflow-steps/git-configure.rst
+.. include:: workflow-steps/git_configure.rst
 .. include:: workflow-steps/create_gforge_private_fork.rst
 .. include:: workflow-steps/configure_gforge_private_fork.rst
 .. include:: workflow-steps/create_devel_branch.rst
-.. include:: workflow-steps/work-on-modifs.rst
-.. include:: workflow-steps/commit-message.rst
+.. include:: workflow-steps/work_on_modifs.rst
+.. include:: workflow-steps/commit_message.rst
 .. include:: workflow-steps/push_branch.rst
-.. include:: workflow-steps/prepare-merging.rst
+.. include:: workflow-steps/prepare_merging.rst
 
 Submit your pull-request
 ========================

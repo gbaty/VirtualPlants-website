@@ -18,7 +18,7 @@ First create right now a new branch
 
 Now all your development are in both master and mybranch. You can check it with gitk.
 
-.. code-block::
+.. code-block:: bash
     
     gitk --all
 

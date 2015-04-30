@@ -47,6 +47,20 @@ How to contribute
 Developer documentation
 ~~~~~~~~~~~~~~~~~~~~~~~
 
+OpenAleaLab and OpenAlea concepts
+
+.. toctree::
+    :maxdepth: 1
+
+    latest/dev/archi/index
+    latest/dev/archi/api_plugin
+    latest/dev/archi/api_project
+    latest/dev/archi/api_model
+    latest/dev/archi/api_node
+    latest/dev/archi/api_control
+    latest/dev/archi/api_observer
+    latest/dev/archi/api_gui_application
+
 Developer documents
 
 .. toctree::
@@ -56,16 +70,3 @@ Developer documents
     latest/dev/peps/index
     latest/dev/commandline
     latest/glossary
-
-OpenAleaLab and OpenAlea concepts
-
-.. toctree::
-    :maxdepth: 1
-
-    latest/dev/archi/api_plugin
-    latest/dev/archi/api_project
-    latest/dev/archi/api_model
-    latest/dev/archi/api_node
-    latest/dev/archi/api_control
-    latest/dev/archi/api_observer
-    latest/dev/archi/api_gui_application

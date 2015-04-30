@@ -1,13 +1,6 @@
-=========================
-Developer's documentation
-=========================
-
-.. toctree::
-    :maxdepth: 1
-
-    api_project
-    components
-    api_gui_application
+============================
+OpenAleaLab API and concepts
+============================
 
 
 Concepts
@@ -16,10 +9,25 @@ Concepts
 .. toctree::
     :maxdepth: 1
 
+    components
     object_communication
     extensions
     coupling_use_cases
 
+.. toctree::
+    :maxdepth: 1
+    :glob:
+
+    api_*
+
+PEPS
+====
+
+.. toctree::
+    :maxdepth: 1
+    :glob:
+
+    ../peps/pep_*
 
 Full API
 ========

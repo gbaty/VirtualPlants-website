@@ -17,8 +17,8 @@ Inputs and outputs are declared in the factory.
 
     from openalea.core import Factory
     f = Factory(name = 'mynode',
-                inputs = ( (dict(name="x", interface=None, value=0.),),
-                outputs = ( (dict(name="y", interface=None),), 
+                inputs = (dict(name="x", interface=None, value=0.),),
+                outputs = (dict(name="y", interface=None),), 
                 nodemodule = 'mymodule',
                 nodeclass = 'myclass')
 
@@ -34,7 +34,10 @@ Real funct
 Metaclass approach
 ------------------
 
-.. testcode::
+.. code-block:: python
+
+    class MetaNode(object):
+        pass
 
     class MyNode(object):
 
