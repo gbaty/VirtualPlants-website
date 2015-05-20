@@ -1,9 +1,8 @@
 Install external dependencies:
 
-  - ipython
+  - ipython + qtconsole (apt: ipython, ipython-qtconsole)
   - scons
   - PyQt4 (apt: python-qt4)
-  - Vtk5 (apt: python-vtk5)
   - Numpy (apt: python-numpy)
   - matplotlib (apt: python-matplotlib)
   - zlib headers (apt: zlib1g-dev)
