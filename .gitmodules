@@ -1,3 +1,6 @@
 [submodule "openalea"]
 	path = openalea
 	url = git@github.com:openalea/openalea.git
+[submodule "openalea-components"]
+	path = openalea-components
+	url = git@github.com:openalea/openalea-components
