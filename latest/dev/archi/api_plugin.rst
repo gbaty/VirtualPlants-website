@@ -62,8 +62,7 @@ Plugin categories
   - :mod:`Applets<openalea.core.plugin.applet>` [oalab.applet] : Graphical component displayed in main window.
   - :ref:`Controls<label-plugin_control>` [oalab.qt_control, oalab.notebook_control]: Data editors and viewers
   - :mod:`Interfaces <openalea.core.plugin.interface>` [oalab.interface]: Description of data types
-
-  - :mod:`Imaging algorithms <openalea.image.plugin>` [openalea.image.*]: Imaging algorithms
+  - :mod:`Imaging algorithms <image.plugin>` [openalea.image.*]: Imaging algorithms
 
 
 How to define a plugin

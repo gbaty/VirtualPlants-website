@@ -10,6 +10,7 @@ Subpackages
     image.editor
     image.gui
     image.interpolation
+    image.plugin
     image.registration
     image.serial
 
@@ -28,14 +29,6 @@ image.pil module
 ----------------
 
 .. automodule:: image.pil
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-image.plugin module
--------------------
-
-.. automodule:: image.plugin
     :members:
     :undoc-members:
     :show-inheritance:

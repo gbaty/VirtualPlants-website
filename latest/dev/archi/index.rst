@@ -37,6 +37,7 @@ Full API
 
     openalea.oalab <apidoc/oalab/openalea.oalab>
     openalea.core <apidoc/core/core>
+    openalea.image <apidoc/components/image/image>
 
 Full API tree has been generated using
 
