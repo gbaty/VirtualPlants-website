@@ -27,11 +27,14 @@ Open a terminal, go to the directory where you want to install programs, for exa
 
 COMMAND can be:
   
-  - `develop --user` : to install in developer mode, in your home dir
+  - **develop --user** : to install in developer mode, in your home dir
   - `develop --prefix=$HOME/local` : to install in developer mode in directory of your choice
   - `install` : to do a system installation
   - `install --prefix=...` : to install in directory of your choice
 
+.. warning::
+
+  If you don't know exactly what to do, please use: **develop --user**
 
 .. code-block:: bash
 

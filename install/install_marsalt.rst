@@ -108,6 +108,36 @@ To be sure you are using the right installation, you can run this command:
   python -c 'import vplants.mars_alt; print vplants.mars_alt.__path__'
 
 
+Error loading tiff images
+#########################
+
+Install python-libtiff
+
+.. code-block:: bash
+
+  sudo apt-get install python-libtiff
+
+Check libtiff is installed correctly
+
+.. code-block:: bash
+
+  python -c "import libtiff"
+
+If you get this message: `ValueError: Failed to find TIFF header file (may be need to run: sudo apt-get install libtiff4-dev)`
+
+Diagnostic : File :download:`tiff_h_4_0_3.py <patch/tiff_h_4_0_3.py>` is missing...
+Add this file in the folder : /usr/lib/python2.7/dist-packages/libtiff/
+
+.. code-block:: bash
+
+  sudo cp tiff_h_4_0_3.py /usr/lib/python2.7/dist-packages/libtiff/
+
+Try again :
+
+.. code-block:: bash
+
+  python -c "import libtiff"
+
 Other troubles
 ##############
 

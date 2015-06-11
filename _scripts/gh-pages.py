@@ -120,6 +120,7 @@ if __name__ == '__main__':
             raise RuntimeError(e)
 
         sh('rm -rf openalea')  # ignore submodule
+        sh('rm -rf openalea-components')  # ignore submodule
         sh('rm -rf pages-public')  # ignore submodule
         sh('git add -A')
         sh('git commit -m"Updated website (automated commit)"')
