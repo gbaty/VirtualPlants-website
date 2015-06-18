@@ -1,12 +1,11 @@
 
-Install Mars-Alt (developers)
-=============================
+Install TissueLab (developers)
+==============================
 
 Install development tools
 -------------------------
 
 .. include:: install-steps/dev-tools.rst
-
 
 Install dependencies
 --------------------
@@ -18,10 +17,10 @@ Setup your environment
 
 .. include:: install-steps/setup-env.rst
 
-Download Mars-Alt
------------------
+Download TissueLab
+------------------
 
-Then, install Mars-Alt and **openalea** core components
+Then, install **openalea** core components and **tissuelab**
 
 These commands clone all repositories and must be done only one time !
 
@@ -29,15 +28,13 @@ These commands clone all repositories and must be done only one time !
 
   git clone https://github.com/openalea/openalea.git
   git clone https://github.com/openalea/openalea-components.git
-  git clone git+ssh://username@scm.gforge.inria.fr//gitroot/tissue/tissue.git
-  git clone git+ssh://username@scm.gforge.inria.fr//gitroot/marsalt/marsalt.git
+  git clone git+ssh://username@scm.gforge.inria.fr//gitroot/oalab/oalab-tissue.git
 
 
 During svn -> git migration
 ---------------------------
 
 .. include:: install-steps/transition-svn-git.rst
-
 
 Update and install packages
 ---------------------------
@@ -46,7 +43,6 @@ For these packages:
 
   - openalea
   - openalea-components
-  - mars-alt
 
 .. code-block:: bash
 
@@ -55,7 +51,7 @@ For these packages:
 
 For this package:
 
-  - tissue
+  - oalab-tissue
 
 .. code-block:: bash
 
