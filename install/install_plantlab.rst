@@ -28,7 +28,7 @@ These commands clone all repositories and must be done only one time !
 
   git clone https://github.com/openalea/openalea.git
   git clone https://github.com/openalea/openalea-components.git
-  git clone git+ssh://username@scm.gforge.inria.fr//gitroot/oalab/oalab-tissue.git
+  git clone https://github.com/openalea/plantlab
 
 
 During svn -> git migration
@@ -53,7 +53,7 @@ For this package:
 
   - deploy
   - sconsx
-  - oalab-tissue
+  - plantlab
 
 .. code-block:: bash
 
@@ -65,13 +65,6 @@ For this package:
   $HOME/.local/bin/alea_config
 
 close terminal and reopen it.
-
-Download Test Data
-------------------
-
-.. code-block:: bash
-
-  sudo $HOME/.local/bin/alea_install VPlants.VTissueData
 
 
 Run programs

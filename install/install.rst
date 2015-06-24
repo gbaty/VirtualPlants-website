@@ -10,6 +10,7 @@ Ubuntu (official support)
    :maxdepth: 1
 
    install_marsalt
+   install_plantlab
    install_tissuelab
 
 Other

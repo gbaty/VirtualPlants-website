@@ -1,9 +1,39 @@
-=======================================================
-Create a developer documentation with sphinx and github
-=======================================================
+===========================
+Contribute to documentation
+===========================
 
-Introduction
-============
+Improve openalea.github.io website
+==================================
+
+Follow github workflow on project VirtualPlants-website.
+
+**VirtualPlants-website**:
+
+.. include:: ../devel/project/summary-virtualplants-website.rst
+
+
+* Install softwares:
+
+    - `git <http://git-scm.com>`_
+    - `sphinx <http://sphinx-doc.org>`_
+
+.. toctree::
+
+    ../devel/workflow-pull-push
+
+
+To check if your modifications are correct, you need to build html documentation with:
+
+.. code-block::
+
+    make html
+
+Then check result in "_build/html" directory (open index.html with a web browser).
+If all is ok, you can push it to main repository.
+
+
+Create a new website based on sphinx and github
+===============================================
 
 When developing a software, it is necessary to have a place to share and put documentation.
 For users, this documentation must be nice and easy to read. It must allow to search specific topics. 
@@ -11,25 +41,19 @@ For developers, this documentation must be easy to write, easy to read and brows
 It is also important that documentation facilitate link to real code, for example by providing syntax highlighting or extraction of code's documentation.
 
 
-We choose to use sphinx to edit and build documentation and github to share it and keep history.
+We suggest to use sphinx to edit and build documentation and github to share it and keep history.
 Please have look to :ref:`Sphinx page <label-TODO>` and :ref:`github page <label-TODO>` for more information.
-
 
 All tips and models are based on excellent work done by `IPython Team <http://ipython.org>`_ .
 Parts of this documentation directly come from `IPython-doc <https://github.com/ipython/ipython-doc/tree/gh-pages>`_ and `IPython-website <https://github.com/ipython/ipython-website>`_.
 
 Create official organization website
-====================================
+------------------------------------
 
 If you just want to contribute, please go to next step. This step is useful for organization owners only.
 
-* Install softwares:
-
-    - `git <http://git-scm.com>`_
-    - `sphinx <http://sphinx-doc.org>`_
-
 Create source repository
-------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 * Generate a github project called "organization-website".
 
@@ -67,7 +91,7 @@ Create source repository
 
 
 Create html repository
-----------------------
+~~~~~~~~~~~~~~~~~~~~~~
 
 Create repository to put generated html files.
 
@@ -84,7 +108,7 @@ Create repository to put generated html files.
 
 
 Create your personal repositories
-=================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. warning::
 
@@ -119,10 +143,10 @@ Then, on a terminal, do
 
 
 Standard workflow
-=================
+-----------------
 
 Local Editing
--------------
+~~~~~~~~~~~~~
 
 While your documentation has not reached a stable step :
 
@@ -134,12 +158,12 @@ While your documentation has not reached a stable step :
 * check result in _build/html/index.html
 
 Share your work
----------------
+~~~~~~~~~~~~~~~
 
 When your modifications are enough stable, you may want to share your work with other
 
 * remove "_build" and "gh-pages" directory and do all checks again (links, doctests, errors and warnings)
-* Commit and push source modifications : see :ref:`github workflow <label-TODO>`
+* Commit and push source modifications : see :ref:`github workflow <workflow-github>`
 * generate html files and an associated commit with "make gh-pages"
 * check git state in gh-pages (normally all is ok)
 * push gh-pages

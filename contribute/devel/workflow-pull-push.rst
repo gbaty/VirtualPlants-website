@@ -23,7 +23,7 @@ For each new modification
 
 
 .. include:: workflow-steps/notes.rst
-.. include:: workflow-steps/git-configure.rst
+.. include:: workflow-steps/git_configure.rst
 
 Clone repository
 ================
@@ -36,8 +36,8 @@ Clone repository
 
 Your local repository is now ready to work on !
 
-.. include:: workflow-steps/work-on-modifs.rst
-.. include:: workflow-steps/commit-message.rst
+.. include:: workflow-steps/work_on_modifs.rst
+.. include:: workflow-steps/commit_message.rst
 
 Push your work
 ==============
