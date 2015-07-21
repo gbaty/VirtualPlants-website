@@ -1,6 +1,6 @@
 
-Install TissueLab (developers)
-==============================
+Install PlantLab (developers)
+=============================
 
 Install development tools
 -------------------------
@@ -10,17 +10,19 @@ Install development tools
 Install dependencies
 --------------------
 
-.. include:: install-steps/marsalt-deps.rst
+.. include:: install-steps/common-deps.rst
+.. include:: install-steps/plantlab-deps.rst
+.. include:: install-steps/deploy-deps.rst
 
 Setup your environment
 ----------------------
 
 .. include:: install-steps/setup-env.rst
 
-Download TissueLab
-------------------
+Download PlantLab
+-----------------
 
-Then, install **openalea** core components and **tissuelab**
+Then, install **openalea** core components and **plantlab**
 
 These commands clone all repositories and must be done only one time !
 

@@ -1,13 +1,3 @@
-If not yet installed, install external dependencies:
-On ubuntu 14.04, you need to install ipython manually because packaged version is too old.
-
-  - ipython 2.x + qtconsole (apt: ipython, ipython-qtconsole, ubuntu: pip install ipython==2.4.1)
-  - scons
-  - PyQt4 (apt: python-qt4)
-  - Numpy (apt: python-numpy)
-  - matplotlib (apt: python-matplotlib)
-  - zlib headers (apt: zlib1g-dev)
-
 See `Linux <http://openalea.gforge.inria.fr/dokuwiki/doku.php?id=documentation:user:installation_linux>`_ or `MacOSX <http://openalea.gforge.inria.fr/dokuwiki/doku.php?id=documentation:user:installation_mac>`_ page on  `openalea website <http://openalea.gforge.inria.fr>`_.
 
 Then, if not yet installed, install openalea dependencies: **deploy** and **sconsx**

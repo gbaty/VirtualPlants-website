@@ -10,7 +10,8 @@ Install development tools
 Install dependencies
 --------------------
 
-.. include:: install-steps/marsalt-deps.rst
+.. include:: install-steps/common-deps.rst
+.. include:: install-steps/deploy-deps.rst
 
 Setup your environment
 ----------------------
