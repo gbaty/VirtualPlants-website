@@ -22,6 +22,12 @@ Just copy url displayed on your web browser and pass it to git clone command:
 
     git clone https://github.com/yourname/project
 
+Change to newly created directory, usually project/:
+
+.. code-block:: bash
+
+    cd project/
+
 
 Add a reference to official repository.
 
