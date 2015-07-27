@@ -17,7 +17,7 @@ It is safer to create a new branch for rebase
 .. code-block:: bash
 
     git checkout wip_fix_app_crash_mac_os_10_9 # get your development branch
-    git checkout -b fix_app_crash_mac_os_10_9 # create and checkout new branch, not we removed the "wip"
+    git checkout -b fix_app_crash_mac_os_10_9 # create and checkout new branch, now we removed the "wip"
     git rebase master
 
 If master has diverged during your work, conflicts can occur !
