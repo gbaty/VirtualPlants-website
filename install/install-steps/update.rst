@@ -4,3 +4,7 @@ To get last version available, just do
 
   cd package
   git pull
+
+Then follow previous step "Update and install packages"
+
+ 
