@@ -24,7 +24,7 @@ Follow github workflow on project VirtualPlants-website.
 
 To check if your modifications are correct, you need to build html documentation with:
 
-.. code-block::
+.. code-block:: bash
 
     make html
 
