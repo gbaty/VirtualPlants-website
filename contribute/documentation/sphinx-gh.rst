@@ -185,6 +185,9 @@ Generally, if you are a maintainer of official website, you can push html files 
     #rm -rf gh-pages 
     make publish
 
+.. warning::
+	Won't work on Windows
+
 If you are a contributor, just create a pull-request following standard git workflow.
 
 
