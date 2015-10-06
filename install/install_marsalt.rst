@@ -1,6 +1,9 @@
 
-Install Mars-Alt (developers)
-=============================
+Install & Update Mars-Alt (developers)
+======================================
+
+First installation
+##################
 
 Install development tools
 -------------------------
@@ -85,17 +88,17 @@ Run programs
   visualea # to run Visualea to test mars-alt in dataflows
 
 Update packages
----------------
+###############
 
 .. include:: install-steps/update.rst
 
+
 Contribute to packages
-----------------------
+######################
 
 See :ref:`contribute` and :ref:`git-workflows`.
 
 Troubleshooting
----------------
+###############
 
 .. include:: install-steps/troubleshooting.rst
-

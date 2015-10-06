@@ -45,6 +45,17 @@ How to contribute
     contribute/devel/git-svn
     contribute/devel/testing
 
+
+Other projects
+~~~~~~~~~~~~~~
+
+.. toctree::
+    :maxdepth: 1
+    :glob:
+
+    contribute/devel/project/*
+
+
 Developer documentation
 ~~~~~~~~~~~~~~~~~~~~~~~
 

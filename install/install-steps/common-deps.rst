@@ -7,4 +7,5 @@ On ubuntu 14.04, you need to install ipython manually because packaged version i
   - Numpy (apt: python-numpy)
   - matplotlib (apt: python-matplotlib)
   - zlib headers (apt: zlib1g-dev)
+  - libpng headers (apt: libpng12-dev)
 

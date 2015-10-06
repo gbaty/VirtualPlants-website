@@ -1,6 +1,9 @@
 
-Install TissueLab (developers)
-==============================
+Install & Update TissueLab (developers)
+=======================================
+
+First installation
+##################
 
 Install development tools
 -------------------------
@@ -37,8 +40,8 @@ During svn -> git migration
 
 .. include:: install-steps/transition-svn-git.rst
 
-Update and install packages
----------------------------
+Install packages
+----------------
 
 For these packages:
 
@@ -83,17 +86,17 @@ Run programs
   visualea # to run Visualea to test mars-alt in dataflows
 
 Update packages
----------------
+###############
 
 .. include:: install-steps/update.rst
 
+
 Contribute to packages
-----------------------
+######################
 
 See :ref:`contribute` and :ref:`git-workflows`.
 
 Troubleshooting
----------------
+###############
 
 .. include:: install-steps/troubleshooting.rst
-

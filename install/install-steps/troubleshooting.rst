@@ -1,5 +1,5 @@
 Multiple installation
-#####################
+---------------------
 
 To be sure you are using the right installation, you can run this command:
 
@@ -9,7 +9,7 @@ To be sure you are using the right installation, you can run this command:
 
 
 Error loading tiff images
-#########################
+-------------------------
 
 Install python-libtiff
 
@@ -40,7 +40,7 @@ Try again :
 
 
 pkg_resources.DistributionNotFound: openalea.container
-######################################################
+------------------------------------------------------
 
 If you get an error message like this one:
 
@@ -86,7 +86,7 @@ Solution is easy : reinstall mydeps or uninstall myapp.
 
 
 Other troubles
-##############
+--------------
 
 For other troubles, see:
 
